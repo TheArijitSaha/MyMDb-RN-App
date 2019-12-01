@@ -1,2 +1,2 @@
-# movie-series-watch-tracker
+# Movie Series Watch Tracker
 A web app to keep track of what movies, series you have watched or wish to watch.
