@@ -11,14 +11,9 @@ class DataBase
     ////////////////////////////////////////////////////////////////////////////
 
     // Table Names:
-    // public static $user_table_name          = "ASARGUsers";
+    public static $movies_table_name        = "Movies";
     // public static $skill_table_name         = "ASARGSkills";
     // public static $skill_reg_table_name     = "ASARGSkillReg";
-    // public static $token_table_name         = "asargtokens";
-    // public static $posts_table_name         = "ASARGPosts";
-    // public static $follow_table_name        = "ASARGFollowers";
-    // public static $message_table_name       = "ASARGMessages";
-    // public static $like_table_name			= "ASARGLikes";
 
     private static function connect()
     {

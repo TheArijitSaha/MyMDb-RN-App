@@ -1,0 +1,39 @@
+.movieCard {
+    background-color: #4F5D75;
+}
+
+.namePlate {
+    padding: 20px 15px 5px 15px;
+}
+
+.Title {
+    /* font-family: 'Fredericka the Great', cursive; */
+    font-family: 'Odibee Sans', cursive;
+    display: block;
+    color: #BFC0C0;
+    font-size: 50px;
+}
+
+.Subtitle {
+    /* font-family: 'Fredericka the Great', cursive; */
+    display: block;
+    margin-top: -10px;
+    font-family: 'Strait', sans-serif;
+    color: #BFC0C0;
+    font-size: 25px;
+}
+
+.movieInfo {
+    text-align: right;
+    font-family: 'Strait', sans-serif;
+    color: #DCDCDD;
+    font-size: 22px;
+    margin: 0;
+}
+
+.movieValue {
+    font-family: 'Merriweather';
+    color: #DCDCDD;
+    font-size: 22px;
+    margin: 0;
+}

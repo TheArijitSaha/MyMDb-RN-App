@@ -1,0 +1,12 @@
+RewriteEngine on
+
+RewriteRule ^$              movies.php [END]
+
+RewriteRule ^(.*)/static/(.*)$  static/$2 [END]
+RewriteRule ^(.*)/async/(.*)$   async/$2 [END]
+
+RewriteRule ^Movies$        movies.php [END]
+RewriteRule ^Movies/Add$    addmovie.php [END]
+RewriteRule ^Movies/([0-9]+)$ detailmovie.php?id=$1 [END]
+
+RewriteRule ^Series$        series.php [END]

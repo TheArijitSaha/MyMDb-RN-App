@@ -1,0 +1,83 @@
+.stats {
+    overflow: hidden;
+    margin: 5px 32px 10px 32px;
+}
+.watchBanner{
+    margin-right: 15px;
+    float: left;
+    font-family: 'Strait', sans-serif;
+    color: #BFC0C0;
+    font-size: 22px;
+}
+
+.filmStat {
+    margin-right: 15px;
+    float: left;
+}
+
+.timeStat{
+    float:left;
+}
+
+.statPoint {
+    font-family: 'Strait', sans-serif;
+    color: #BFC0C0;
+    font-size: 22px;
+}
+
+.statValue {
+    font-family: 'Special Elite';
+    color: #BC3908;
+    font-size: 26px;
+}
+
+.addButton {
+    margin-top: 5px;
+}
+
+
+
+.movie-node {
+    padding: 10px 20px 10px 20px;
+    background-color: #373F51;
+    margin-bottom: 1px;
+}
+
+.movie-node:first-child {
+    border-radius: 5px 5px 0 0;
+}
+
+.movie-node:last-child {
+    border-radius: 0 0 5px 5px;
+}
+
+.movie-line {
+    overflow: hidden;
+    line-height: 40px;
+}
+
+.movie-line .movie-name {
+    color: #D8DBE2;
+    margin-right: 8px;
+    font-size: 25px;
+    font-family: "Verdana", Geneva, serif;
+    float: left;
+    line-height: inherit;
+}
+
+.movie-line .movie-year {
+    color: #A9BCD0;
+    margin-right: 8px;
+    font-family: 'Merriweather';
+    font-size: 15px;
+    float: left;
+    line-height: inherit;
+}
+
+.movie-line .movie-imdb-rating {
+    font-size: 19px;
+    font-family: 'Merriweather';
+    color: #D7D5D57A;
+    float: left;
+    line-height: inherit;
+}
