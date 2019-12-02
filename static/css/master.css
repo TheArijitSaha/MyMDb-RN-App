@@ -6,3 +6,11 @@ body {
     font-family: 'Aladin', cursive;
     color: #F6AA1C !important;
 }
+
+a{
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: none;
+}

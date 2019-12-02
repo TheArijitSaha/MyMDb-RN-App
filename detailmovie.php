@@ -27,9 +27,20 @@
         <p></p>
 
         <div class="container movieCard">
-            <div class="namePlate">
-                <span class="Title"><?php echo $current_movie->getTitle(); ?></span>
-                <span class="Subtitle"><?php echo $current_movie->getSubtitle(); ?></span>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-10 namePlate">
+                        <span class="Title"><?php echo $current_movie->getTitle(); ?></span>
+                        <span class="Subtitle"><?php echo $current_movie->getSubtitle(); ?></span>
+                    </div>
+                    <div class="col-lg">
+                        <?php if ($current_movie->watched()) { ?>
+                            <span class="watchedText watchDisp">Seen</span>
+                        <?php } else { ?>
+                            <span class="unwatchedText watchDisp">Unseen</span>
+                        <?php } ?>
+                    </div>
+                </div>
             </div>
             <hr>
             <div class="container-fluid">
@@ -38,90 +49,80 @@
                         <div class="container-fluid">
 
                             <div class="row">
-                                <div class="col-lg-5">
+                                <div class="col-lg-4">
                                     <p class="movieInfo">Year of Release </p>
                                 </div>
                                 <div class="col-lg">
-                                    <p><?php echo $current_movie->getReleaseYear(); ?></p>
+                                    <p class="movieValue"><?php echo $current_movie->getReleaseYear(); ?></p>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-5">
+                                <div class="col-lg-4">
                                     <p class="movieInfo">Directed By </p>
                                 </div>
                                 <div class="col-lg">
-                                    <p><?php echo $current_movie->getDirector(); ?></p>
+                                    <p class="movieValue"><?php echo $current_movie->getDirector(); ?></p>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-5">
+                                <div class="col-lg-4">
                                     <p class="movieInfo">Runtime </p>
                                 </div>
                                 <div class="col-lg">
-                                    <p><?php echo $current_movie->getRuntime()." Minutes"; ?></p>
+                                    <p class="movieValue"><?php echo $current_movie->getRuntime()." Minutes"; ?></p>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-5">
+                                <div class="col-lg-4">
                                     <p class="movieInfo">Starring </p>
                                 </div>
                                 <div class="col-lg">
-                                    <p><?php echo $current_movie->getCast(); ?></p>
+                                    <p class="movieValue"><?php echo $current_movie->getCast(); ?></p>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-5">
+                                <div class="col-lg-4">
                                     <p class="movieInfo">Genre </p>
                                 </div>
                                 <div class="col-lg">
-                                    <p><?php echo $current_movie->getGenre(); ?></p>
+                                    <p class="movieValue"><?php echo $current_movie->getGenre(); ?></p>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-5">
+                                <div class="col-lg-4">
                                     <p class="movieInfo">IMDb Rating </p>
                                 </div>
                                 <div class="col-lg">
-                                    <p><?php echo $current_movie->getIMDbRating(); ?></p>
+                                    <p class="movieValue"><?php echo $current_movie->getIMDbRating(); ?> <a class="imdbLink" href="<?php echo $current_movie->getIMDbLink(); ?>" target="_blank">(Link)</a></p>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-5">
-                                    <p class="movieInfo">IMDb Link </p>
-                                </div>
-                                <div class="col-lg">
-                                    <p><?php echo $current_movie->getIMDbLink(); ?></p>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-5">
+                                <div class="col-lg-4">
                                     <p class="movieInfo">Rotten Tomatoes Rating </p>
                                 </div>
                                 <div class="col-lg">
-                                    <p><?php echo $current_movie->getRottenTomatoesRating(); ?></p>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-5">
-                                    <p class="movieInfo">Seen </p>
-                                </div>
-                                <div class="col-lg">
-                                    <p><?php echo $current_movie->watched(); ?></p>
+                                    <p class="movieValue"><?php echo $current_movie->getRottenTomatoesRating(); ?></p>
                                 </div>
                             </div>
 
                         </div>
                     </div>
-                    <div class="col-3-lg">
-
+                    <div class="col-lg-3 flexCenterRow">
+                        <div class="posterHolder flexCenterCol">
+                            <div class="flexCenterRow noImage">
+                                <div>Poster</div>
+                            </div>
+                            <div class="flexCenterRow noImage">
+                                <div>Unavailable</div>
+                            </div>
+                            <img class="posterImage" src="<?php echo $current_movie->getPoster(); ?>" alt="">
+                        </div>
                     </div>
                 </div>
             </div>

@@ -14,6 +14,7 @@ class Movie
     private $imdb_rating;
     private $rotten_tomatoes_rating;
     private $runtime;
+    private $poster;
     private $seen;
 
     public function __construct($id)
@@ -37,6 +38,7 @@ class Movie
             $this->imdb_link = NULL;
             $this->rotten_tomatoes_rating = NULL;
             $this->runtime = NULL;
+            $this->poster = NULL;
             $this->seen = NULL;
             return;
         }
@@ -54,6 +56,7 @@ class Movie
         $this->imdb_link = $thismovie['imdb_link'];
         $this->rotten_tomatoes_rating = $thismovie['rotten_tomatoes_rating'];
         $this->runtime = $thismovie['runtime'];
+        $this->poster = $thismovie['poster'];
         $this->seen = $thismovie['seen'];
     }
 
@@ -70,6 +73,7 @@ class Movie
     //     `rotten_tomatoes_rating` int(10) DEFAULT NULL,
     //     `runtime` int(10) DEFAULT NULL,
     //     `seen` BOOLEAN DEFAULT FALSE,
+    //     `poster` varchar(256) DEFAULT NULL,
     //     PRIMARY KEY (`title`,`release_year`),
     //     UNIQUE KEY `id` (`id`)
     // );
@@ -89,6 +93,7 @@ class Movie
     public function getIMDbLink() {return $this->imdb_link;}
     public function getRottenTomatoesRating() {return $this->rotten_tomatoes_rating;}
     public function getRuntime() {return $this->runtime;}
+    public function getPoster() {return $this->poster;}
     public function watched() {return $this->seen;}
 
     // public function getProfilePicPath() {

@@ -1,5 +1,9 @@
 .movieCard {
-    background-color: #4F5D75;
+    background-color: #4C5C68;
+    padding-bottom: 30px;
+    border-radius: 5px;
+    height: 85vh;
+    min-height: 450px;
 }
 
 .namePlate {
@@ -24,6 +28,7 @@
 }
 
 .movieInfo {
+    line-height: 38px;
     text-align: right;
     font-family: 'Strait', sans-serif;
     color: #DCDCDD;
@@ -32,8 +37,63 @@
 }
 
 .movieValue {
+    line-height: 38px;
     font-family: 'Merriweather';
     color: #DCDCDD;
-    font-size: 22px;
+    font-size: 16px;
     margin: 0;
+}
+
+.imdbLink {
+    color: #f3E86E !important;
+    line-height: inherit;
+}
+
+.watchedText {
+    color: lightgreen;
+}
+
+.unwatchedText {
+    color: #A21200;
+}
+
+.watchDisp {
+    font-size: 30px;
+    font-family: 'Special Elite';
+    margin: 35px 0 0 0;
+    float: right;
+	display: inline-block;
+}
+
+.flexCenterRow {
+    display: flex;
+    justify-content: center;
+}
+
+.flexCenterCol {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.posterHolder {
+    height: 300px;
+    width: 220px;
+}
+
+.noImage {
+    font-family: 'Tomorrow', sans-serif;
+    font-size: 25px;
+    color: #2D3142;
+}
+
+.posterImage {
+    position: absolute;
+    height: 300px;
+    width: 220px;
+    left: 50%;
+    top: 50%;
+    margin-left: -110px;
+    margin-top: -150px;
+    border: gray 4px solid;
 }

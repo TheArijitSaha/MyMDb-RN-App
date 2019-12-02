@@ -31,7 +31,7 @@ class Nav
 class Fonts{
     public static function insertFonts()
     {
-        $retString='<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Strait|Aladin|Merriweather|Special+Elite|Fredericka+the+Great|Odibee+Sans&display=swap">';
+        $retString='<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Strait|Aladin|Merriweather|Special+Elite|Fredericka+the+Great|Odibee+Sans|Tomorrow&display=swap">';
         return $retString;
     }
 }
