@@ -57,12 +57,18 @@
     color: #A21200;
 }
 
+.editBtn {
+    font-size: 30px;
+    margin: 38px 0 0 0;
+    display: inline-block;
+}
+
 .watchDisp {
     font-size: 30px;
     font-family: 'Special Elite';
     margin: 35px 0 0 0;
     float: right;
-	display: inline-block;
+    display: inline-block;
 }
 
 .flexCenterRow {

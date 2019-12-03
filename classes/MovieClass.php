@@ -17,8 +17,7 @@ class Movie
     private $poster;
     private $seen;
 
-    public function __construct($id)
-    {
+    public function __construct($id) {
         $id = (int)$id;
         $result = DataBase::query('SELECT *'.
                                   ' FROM '.DataBase::$movies_table_name.
@@ -96,7 +95,7 @@ class Movie
     public function getPoster() {return $this->poster;}
     public function watched() {return $this->seen;}
 
-    public static function checkExisting($title,$year) {
+    public static function checkExistingPK($title,$year) {
         if( ( strlen($title) < 1 ) || ( $year === NULL ) ) {
             return NULL;
         }
@@ -117,8 +116,28 @@ class Movie
         return false;
     }
 
+    public static function checkExistingID($id) {
+        if ( $id === NULL ) {
+            return false;
+        }
+        $result = DataBase::query('SELECT count(*) AS filmcount'.
+                                  ' FROM '.DataBase::$movies_table_name.
+                                  ' WHERE id=:id',
+                                  array(':id'=>$id)
+                                );
+        if(!$result['executed']){
+            // echo "ERROR: Could not able to execute SQL<br>";
+            // print_r($result['errorInfo']);
+            return NULL;
+        }
+        if($result['data'][0]['filmcount']==='1'){
+            return true;
+        }
+        return false;
+    }
+
     public static function addMovieToDB ($data) {
-        $result = Movie::checkExisting($data['title'],$data['releaseyear']);
+        $result = Movie::checkExistingPK($data['title'],$data['releaseyear']);
         if ( $result === NULL ) {
             return NULL;
         } else if ( $result ) {
@@ -162,65 +181,46 @@ class Movie
         return $result['lastID'];
     }
 
-    // public function follows($following_id){
-    //     $following_user = new User($following_id);
-    //     if(! $following_user->isReal()){
-    //         return false;
-    //     }
-    //     if(! $this->exists){
-    //         return false;
-    //     }
-    //     $result = DataBase::query('SELECT * FROM '.DataBase::$follow_table_name.
-    //                               ' WHERE userid = :userid'.
-    //                                 ' AND followerid = :followerid',
-    //                               array(':userid'=>$following_id,
-    //                                     ':followerid'=>$this->id)
-    //                             );
-    //
-    //     if(!$result[executed]){
-    //         echo "ERROR: Could not able to execute SQL<br>";
-    //         print_r($result['errorInfo']);
-    //     }
-    //     if(count($result[data])===1){
-    //         return true;
-    //     }
-    //     return false;
-    // }
-    //
-    // public function noOfFollowers(){
-    //     if(! $this->exists){
-    //         return 0;
-    //     }
-    //     $result = DataBase::query('SELECT COUNT(*) AS count FROM '.DataBase::$follow_table_name.
-    //                               ' WHERE userid = :userid'.
-    //                                 ' AND NOT followerid = :userid',
-    //                               array(':userid'=>$this->id)
-    //                             );
-    //
-    //     if(!$result[executed]){
-    //         echo "ERROR: Could not able to execute SQL<br>";
-    //         print_r($result['errorInfo']);
-    //     }
-    //     return $result[data][0][count];
-    // }
-    //
-    // public function noOfFollowing(){
-    //     if(! $this->exists){
-    //         return 0;
-    //     }
-    //     $result = DataBase::query('SELECT COUNT(*) AS count FROM '.DataBase::$follow_table_name.
-    //                               ' WHERE followerid = :userid'.
-    //                                 ' AND NOT userid = :userid',
-    //                               array(':userid'=>$this->id)
-    //                             );
-    //
-    //     if(!$result[executed]){
-    //         echo "ERROR: Could not able to execute SQL<br>";
-    //         print_r($result['errorInfo']);
-    //     }
-    //     return $result[data][0][count];
-    // }
-
+    public static function updateMovieInDB ($data) {
+        $result = Movie::checkExistingID($data['id']);
+        if ( $result === NULL ) {
+            return NULL;
+        } else if ( !$result ) {
+            return false;
+        }
+        $result = DataBase::query('UPDATE '.DataBase::$movies_table_name.
+                                  ' SET'.
+                                    ' subtitle = :subtitle,'.
+                                    ' director = :director,'.
+                                    ' cast = :cast,'.
+                                    ' genre = :genre,'.
+                                    ' imdb_rating = :imdb_rating,'.
+                                    ' imdb_link = :imdb_link,'.
+                                    ' rotten_tomatoes_rating = :rotten_tomatoes_rating,'.
+                                    ' runtime = :runtime,'.
+                                    ' seen = :seen,'.
+                                    ' poster = :poster'.
+                                  ' WHERE id=:id',
+                                  array(':subtitle'=>$data['subtitle'],
+                                        ':director'=>$data['director'],
+                                        ':cast'=>$data['cast'],
+                                        ':genre'=>$data['genre'],
+                                        ':imdb_rating'=>$data['imdb_rating'],
+                                        ':imdb_link'=>$data['imdb_link'],
+                                        ':rotten_tomatoes_rating'=>$data['rotten_tomatoes_rating'],
+                                        ':runtime'=>$data['runtime'],
+                                        ':seen'=>$data['seen'],
+                                        ':poster'=>$data['poster'],
+                                        ':id'=>$data['id']
+                                    )
+                                );
+        if(!$result[executed]){
+            // echo "ERROR: Not able to execute SQL<br>";
+            // print_r($result['errorInfo']);
+            return NULL;
+        }
+        return $data['id'];
+    }
 
 }
 ?>

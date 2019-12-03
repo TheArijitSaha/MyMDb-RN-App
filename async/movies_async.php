@@ -51,4 +51,15 @@
         echo json_encode($result);
     }
 
+    // To edit a movie
+    if ( isset( $_POST['editMovie'] ) )
+    {
+        $formData = json_decode($_POST['editMovie'],True);
+        $result = Movie::updateMovieInDB($formData);
+        if ( ($result!==NULL) && ($result!==false) ) {
+            $result=NetworkVariables::$home_path.'Movies/'.$result;
+        }
+        echo json_encode($result);
+    }
+
 ?>

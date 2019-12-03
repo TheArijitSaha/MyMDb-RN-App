@@ -7,6 +7,9 @@
     require_once('classes/Nav.php');
 
     $current_movie = new Movie($_GET['id']);
+    if ( !$current_movie->isReal() ) {
+        header("Location: ".NetworkVariables::$home_path."Error");
+    }
 ?>
 
 <html lang="en" dir="ltr">
@@ -15,6 +18,7 @@
         <title>MyMDb | Movies</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <?php echo Fonts::insertFonts(); ?>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="static/css/master.css">
         <link rel="stylesheet" href="static/css/detailmovie_master.css">
     </head>
@@ -34,6 +38,7 @@
                         <span class="Subtitle"><?php echo $current_movie->getSubtitle(); ?></span>
                     </div>
                     <div class="col-lg">
+                        <a href="<?php echo $current_movie->getId().'/edit' ?>"><i class="fa fa-edit editBtn"></i></a>
                         <?php if ($current_movie->watched()) { ?>
                             <span class="watchedText watchDisp">Seen</span>
                         <?php } else { ?>
@@ -49,7 +54,7 @@
                         <div class="container-fluid">
 
                             <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     <p class="movieInfo">Year of Release </p>
                                 </div>
                                 <div class="col-lg">
@@ -58,7 +63,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     <p class="movieInfo">Directed By </p>
                                 </div>
                                 <div class="col-lg">
@@ -67,7 +72,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     <p class="movieInfo">Runtime </p>
                                 </div>
                                 <div class="col-lg">
@@ -76,7 +81,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     <p class="movieInfo">Starring </p>
                                 </div>
                                 <div class="col-lg">
@@ -85,7 +90,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     <p class="movieInfo">Genre </p>
                                 </div>
                                 <div class="col-lg">
@@ -94,8 +99,8 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-4">
-                                    <p class="movieInfo">IMDb Rating </p>
+                                <div class="col-lg-3">
+                                    <p class="movieInfo">IMDb</p>
                                 </div>
                                 <div class="col-lg">
                                     <p class="movieValue"><?php echo $current_movie->getIMDbRating(); ?> <a class="imdbLink" href="<?php echo $current_movie->getIMDbLink(); ?>" target="_blank">(Link)</a></p>
@@ -103,8 +108,8 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-lg-4">
-                                    <p class="movieInfo">Rotten Tomatoes Rating </p>
+                                <div class="col-lg-3">
+                                    <p class="movieInfo">Tomatometer</p>
                                 </div>
                                 <div class="col-lg">
                                     <p class="movieValue"><?php echo $current_movie->getRottenTomatoesRating(); ?></p>
