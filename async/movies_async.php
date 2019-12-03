@@ -5,36 +5,6 @@
     require_once('../classes/MovieClass.php');
     require_once('../classes/variables.php');
 
-
-    // To create a new post
-    // if(isset($_POST['createpost']))
-    // {
-    //     $postbody = $_POST['postbody'];
-    //     if (strlen($postbody) < 1)
-    //     {
-    //         die('Incorrect length!');
-    //     }
-    //
-    //     $result=DataBase::query('INSERT INTO '.DataBase::$posts_table_name.
-    //                             ' VALUES (DEFAULT, :postbody, NOW(), :userid, 0)',
-    //                             array(':postbody'=>$postbody,
-    //                                     ':userid'=>$current_user->getId()
-    //                                 )
-    //                         );
-    //
-    //     if ($result['executed']===false)
-    //     {
-    //         echo "ERROR: Could not able to execute SQL<br>";
-    //         print_r($result['errorInfo']);
-    //     }
-    //     else
-    //     {
-    //         $result_json=json_encode($result);
-    //         echo $result_json;
-    //     }
-    // }
-
-
     // To show all Movies
     if ( isset( $_POST['showAllMovies'] ) )
     {
@@ -70,31 +40,15 @@
         }
     }
 
-
-    // // To show posts of people who the current user follows ordered by time desc
-    // if(isset($_POST['showFollowingPost']))
-    // {
-    //     $result = DataBase::query('SELECT '.DataBase::$posts_table_name.'.id as postid,body,posted_at,name AS username,user_id AS userid,likes,profilepic'.
-    //                                 ' FROM '.DataBase::$posts_table_name.','.DataBase::$user_table_name.
-    //                                 ' WHERE user_id='.DataBase::$user_table_name.'.id'.
-    //                                     ' AND user_id IN (SELECT userid'.
-    //                                                     ' FROM '.DataBase::$follow_table_name.
-    //                                                     ' WHERE followerid = :currentuserid )'.
-    //                                 ' ORDER BY '.DataBase::$posts_table_name.'.id DESC',
-    //                                 array(':currentuserid'=>$current_user->getID())
-    //                             );
-    //     if ($result['executed']===false)
-    //     {
-    //         echo "ERROR: Not able to execute SQL<br>";
-    //         print_r($result['errorInfo']);
-    //     }
-    //     else
-    //     {
-    //         $result_json=json_encode($result);
-    //         echo $result_json;
-    //     }
-    // }
-
-
+    // To add a new movie
+    if ( isset( $_POST['addMovie'] ) )
+    {
+        $formData = json_decode($_POST['addMovie'],True);
+        $result = Movie::addMovieToDB($formData);
+        if ( ($result!==NULL) && ($result!==false) ) {
+            $result=NetworkVariables::$home_path.'Movies/'.$result;
+        }
+        echo json_encode($result);
+    }
 
 ?>

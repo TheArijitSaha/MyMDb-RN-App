@@ -12,8 +12,6 @@ class DataBase
 
     // Table Names:
     public static $movies_table_name        = "Movies";
-    // public static $skill_table_name         = "ASARGSkills";
-    // public static $skill_reg_table_name     = "ASARGSkillReg";
 
     private static function connect()
     {

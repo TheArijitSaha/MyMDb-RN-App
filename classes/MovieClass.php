@@ -96,10 +96,72 @@ class Movie
     public function getPoster() {return $this->poster;}
     public function watched() {return $this->seen;}
 
-    // public function getProfilePicPath() {
-    //     return $this->profilePicPath;
-    // }
-    //
+    public static function checkExisting($title,$year) {
+        if( ( strlen($title) < 1 ) || ( $year === NULL ) ) {
+            return NULL;
+        }
+        $result = DataBase::query('SELECT count(*) AS filmcount'.
+                                  ' FROM '.DataBase::$movies_table_name.
+                                  ' WHERE title=:title'.
+                                    ' AND release_year=:year',
+                                    array(':title'=>$title,':year'=>$year)
+                                );
+        if(!$result['executed']){
+            // echo "ERROR: Could not able to execute SQL<br>";
+            // print_r($result['errorInfo']);
+            return NULL;
+        }
+        if($result['data'][0]['filmcount']==='1'){
+            return true;
+        }
+        return false;
+    }
+
+    public static function addMovieToDB ($data) {
+        $result = Movie::checkExisting($data['title'],$data['releaseyear']);
+        if ( $result === NULL ) {
+            return NULL;
+        } else if ( $result ) {
+            return false;
+        }
+        $result = DataBase::query('INSERT INTO '.DataBase::$movies_table_name.
+                                  ' VALUES ('.
+                                      ' NULL, '.
+                                      ' :title,'.
+                                      ' :subtitle,'.
+                                      ' :release_year,'.
+                                      ' :director,'.
+                                      ' :cast,'.
+                                      ' :genre,'.
+                                      ' :imdb_rating,'.
+                                      ' :imdb_link,'.
+                                      ' :rotten_tomatoes_rating,'.
+                                      ' :runtime,'.
+                                      ' :seen,'.
+                                      ' :poster'.
+                                  ' )',
+                                  array(':title'=>$data['title'],
+                                        ':subtitle'=>$data['subtitle'],
+                                        ':release_year'=>$data['releaseyear'],
+                                        ':director'=>$data['director'],
+                                        ':cast'=>$data['cast'],
+                                        ':genre'=>$data['genre'],
+                                        ':imdb_rating'=>$data['imdb_rating'],
+                                        ':imdb_link'=>$data['imdb_link'],
+                                        ':rotten_tomatoes_rating'=>$data['rotten_tomatoes_rating'],
+                                        ':runtime'=>$data['runtime'],
+                                        ':seen'=>$data['seen'],
+                                        ':poster'=>$data['poster']
+                                    )
+                                );
+        if(!$result[executed]){
+            // echo "ERROR: Not able to execute SQL<br>";
+            // print_r($result['errorInfo']);
+            return NULL;
+        }
+        return $result['lastID'];
+    }
+
     // public function follows($following_id){
     //     $following_user = new User($following_id);
     //     if(! $following_user->isReal()){

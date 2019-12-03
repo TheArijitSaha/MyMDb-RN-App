@@ -1,0 +1,38 @@
+.formCard {
+    background-color: #4C5C68;
+    padding: 20px 40px 8px 2px;
+    /* padding-bottom: 30px; */
+    border-radius: 5px;
+    /* height: 85vh; */
+    /* min-height: 450px; */
+}
+
+.flexRightRow {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.formLabel {
+    font-family: 'Strait', sans-serif;
+    color: #A6A2A2;
+    font-size: 18px;
+}
+
+.toggleLabel {
+    font-family: 'Strait', sans-serif;
+    color: white;
+    font-size: 18px;
+}
+
+.formHeader {
+    /* font-family: "Verdana", Geneva, serif; */
+    font-family: 'Merriweather';
+    padding-left: 40px;
+    font-size: 32px;
+    color: #25223C;
+}
+
+.seenDiv {
+     width: 100px;
+     height: 38px;
+}
