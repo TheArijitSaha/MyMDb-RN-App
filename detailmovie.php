@@ -38,6 +38,7 @@
                         <span class="Subtitle"><?php echo $current_movie->getSubtitle(); ?></span>
                     </div>
                     <div class="col-lg">
+                        <i class="fa fa-trash deleteBtn" aria-hidden="true"></i>
                         <a href="<?php echo $current_movie->getId().'/edit' ?>"><i class="fa fa-edit editBtn"></i></a>
                         <?php if ($current_movie->watched()) { ?>
                             <span class="watchedText watchDisp">Seen</span>
@@ -132,10 +133,11 @@
                 </div>
             </div>
         </div>
+        <input type="number" id="currentID" value="<?php echo $current_movie->getId(); ?>" hidden>
 
         <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <script type="text/javascript" src="static/js/movies_script.js"></script>
+        <script type="text/javascript" src="static/js/detailmovie_script.js"></script>
     </body>
 </html>

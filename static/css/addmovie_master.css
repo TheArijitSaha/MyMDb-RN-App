@@ -36,3 +36,31 @@
      width: 100px;
      height: 38px;
 }
+
+.form-control-plaintext {
+    color: #C8C2AE;
+    font-family: 'Merriweather';
+    font-size: 18px;
+}
+
+.form-control{
+    background-color:#2B4141;
+    color: #C8C2AE;
+}
+
+.form-control:focus{
+    background-color:#636B61;
+    color: #E3D7FF;
+}
+
+::-webkit-input-placeholder { /* Edge */
+  color: rgba(185, 216, 194, 0.4) !important;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: rgba(185, 216, 194, 0.4) !important;
+}
+
+::placeholder {
+  color: rgba(185, 216, 194, 0.4) !important;
+}

@@ -222,5 +222,24 @@ class Movie
         return $data['id'];
     }
 
+    public static function deleteMovie ($id) {
+        $result = Movie::checkExistingID($id);
+        if ( $result === NULL ) {
+            return NULL;
+        } else if ( !$result ) {
+            return false;
+        }
+        $result = DataBase::query('DELETE FROM '.DataBase::$movies_table_name.
+                                  ' WHERE id=:id',
+                                  array(':id'=>$id)
+                                );
+        if(!$result[executed]){
+            // echo "ERROR: Not able to execute SQL<br>";
+            // print_r($result['errorInfo']);
+            return NULL;
+        }
+        return true;
+    }
+
 }
 ?>

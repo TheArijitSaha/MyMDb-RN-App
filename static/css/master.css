@@ -16,3 +16,14 @@ a:hover{
     text-decoration: none;
     color: inherit;
 }
+
+.flexCenterRow {
+    display: flex;
+    justify-content: center;
+}
+
+.flexCenterCol {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}

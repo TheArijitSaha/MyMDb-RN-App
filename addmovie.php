@@ -62,7 +62,7 @@
                 <div class="form-group row">
                     <label class='col-form-label col-lg-2 flexRightRow formLabel' for="titleInput"><strong>Title</strong></label>
                     <div class="col">
-                        <input class="form-control<?php if ($editMode) { echo '-plaintext'; }  ?>" type="text" name="title" id="titleInput" placeholder="e.g., Birdman" <?php if ($editMode) { echo 'value="'.$edit_movie->getTitle().'"'; }  ?> autocomplete="off">
+                        <input class="form-control<?php if ($editMode) { echo '-plaintext'; }  ?>" type="text" name="title" id="titleInput" placeholder="e.g., Birdman" <?php if ($editMode) { echo 'value="'.$edit_movie->getTitle().'"'; }  ?> autocomplete="off" <?php if ($editMode) { echo 'readonly'; }  ?> >
                     </div>
                 </div>
                 <div class="form-group row">
@@ -74,7 +74,7 @@
                 <div class="form-group row">
                     <label class='col-form-label col-lg-2 flexRightRow formLabel' for="releaseyearInput"><strong>Year of Release</strong></label>
                     <div class="col-lg-2">
-                        <input class="form-control<?php if ($editMode) { echo '-plaintext'; }  ?>" type="number" name="releaseyear" id="releaseyearInput" placeholder="e.g., 2014" <?php if ($editMode) { echo 'value="'.$edit_movie->getReleaseYear().'"'; }  ?> autocomplete="off">
+                        <input class="form-control<?php if ($editMode) { echo '-plaintext'; }  ?>" type="number" name="releaseyear" id="releaseyearInput" placeholder="e.g., 2014" <?php if ($editMode) { echo 'value="'.$edit_movie->getReleaseYear().'"'; }  ?> autocomplete="off" <?php if ($editMode) { echo 'readonly'; }  ?> >
                     </div>
                     <label class='col-form-label col-lg-2 flexRightRow formLabel' for="runtimeInput"><strong>Runtime</strong></label>
                     <div class="col-lg-2">
