@@ -143,6 +143,12 @@ class Movie
         } else if ( $result ) {
             return false;
         }
+        if ( !is_numeric($data['releaseyear'])) {
+            return NULL;
+        }
+        if ( !is_numeric($data['runtime'])) {
+            $data['runtime'] = 0;
+        }
         $result = DataBase::query('INSERT INTO '.DataBase::$movies_table_name.
                                   ' VALUES ('.
                                       ' NULL, '.
@@ -173,7 +179,7 @@ class Movie
                                         ':poster'=>$data['poster']
                                     )
                                 );
-        if(!$result[executed]){
+        if(!$result['executed']){
             // echo "ERROR: Not able to execute SQL<br>";
             // print_r($result['errorInfo']);
             return NULL;
@@ -187,6 +193,9 @@ class Movie
             return NULL;
         } else if ( !$result ) {
             return false;
+        }
+        if ( !is_numeric($data['runtime'])) {
+            $data['runtime'] = 0;
         }
         $result = DataBase::query('UPDATE '.DataBase::$movies_table_name.
                                   ' SET'.
@@ -214,7 +223,7 @@ class Movie
                                         ':id'=>$data['id']
                                     )
                                 );
-        if(!$result[executed]){
+        if(!$result['executed']){
             // echo "ERROR: Not able to execute SQL<br>";
             // print_r($result['errorInfo']);
             return NULL;
@@ -233,7 +242,7 @@ class Movie
                                   ' WHERE id=:id',
                                   array(':id'=>$id)
                                 );
-        if(!$result[executed]){
+        if(!$result['executed']){
             // echo "ERROR: Not able to execute SQL<br>";
             // print_r($result['errorInfo']);
             return NULL;

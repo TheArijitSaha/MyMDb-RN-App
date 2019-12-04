@@ -45,6 +45,9 @@ $(document).ready(function(){
         // change datatypes
         formData.releaseyear = parseInt(formData.releaseyear);
         formData.runtime = parseInt(formData.runtime);
+        if ( isNaN(formData.runtime) ) {
+            formData.runtime = 0;
+        }
         formData.imdb_rating = parseFloat(formData.imdb_rating);
         formData.rotten_tomatoes_rating = parseInt(formData.rotten_tomatoes_rating);
         if($('input[name="seen"]').prop("checked")) {
@@ -54,7 +57,7 @@ $(document).ready(function(){
             formData.seen=0;
         }
         formDataJSON = JSON.stringify(formData);
-        $.post("async/movies_async.php",{addMovie:formDataJSON}).done(function(result_json){
+        $.post("async/movies_async.php",{addMovie:encodeURIComponent(formDataJSON)}).done(function(result_json){
             let result=JSON.parse(result_json);
             if ( result === null ) {
                 this_alert=$(create_alert_string('There was some SQL Error, Sorry!','primary','add-alert'));
@@ -103,6 +106,9 @@ $(document).ready(function(){
         // change datatypes
         formData.releaseyear = parseInt(formData.releaseyear);
         formData.runtime = parseInt(formData.runtime);
+        if ( isNaN(formData.runtime) ) {
+            formData.runtime = 0;
+        }
         formData.imdb_rating = parseFloat(formData.imdb_rating);
         formData.rotten_tomatoes_rating = parseInt(formData.rotten_tomatoes_rating);
         // add ID
@@ -114,7 +120,7 @@ $(document).ready(function(){
             formData.seen=0;
         }
         formDataJSON = JSON.stringify(formData);
-        $.post("async/movies_async.php",{editMovie:formDataJSON}).done(function(result_json){
+        $.post("async/movies_async.php",{editMovie:encodeURIComponent(formDataJSON)}).done(function(result_json){
             let result=JSON.parse(result_json);
             if ( result === null ) {
                 this_alert=$(create_alert_string('There was some SQL Error, Sorry!','primary','add-alert'));

@@ -1,6 +1,5 @@
 <?php
     // PHP File for asynchronous requests of movies
-
     require_once('../classes/DataBase.php');
     require_once('../classes/MovieClass.php');
     require_once('../classes/variables.php');
@@ -40,7 +39,7 @@
 
     // To add a new movie
     if ( isset( $_POST['addMovie'] ) ) {
-        $formData = json_decode($_POST['addMovie'],True);
+        $formData = json_decode(urldecode($_POST['addMovie']),True);
         $result = Movie::addMovieToDB($formData);
         if ( ($result!==NULL) && ($result!==false) ) {
             $result=NetworkVariables::$home_path.'Movies/'.$result;
@@ -50,7 +49,7 @@
 
     // To edit a movie
     if ( isset( $_POST['editMovie'] ) ) {
-        $formData = json_decode($_POST['editMovie'],True);
+        $formData = json_decode(urldecode($_POST['editMovie']),True);
         $result = Movie::updateMovieInDB($formData);
         if ( ($result!==NULL) && ($result!==false) ) {
             $result=NetworkVariables::$home_path.'Movies/'.$result;
