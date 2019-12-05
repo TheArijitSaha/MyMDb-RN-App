@@ -1,7 +1,13 @@
+body {
+    padding-bottom: 40px;
+}
+
+
 .stats {
     overflow: hidden;
     margin: 5px 32px 10px 32px;
 }
+
 .watchBanner{
     margin-right: 15px;
     float: left;
@@ -41,6 +47,15 @@
     padding: 10px 20px 10px 20px;
     background-color: #373F51;
     margin-bottom: 1px;
+    position: relative;
+}
+
+.seen-node {
+    border-left: 10px solid #17301CCF;
+}
+
+.unseen-node {
+    border-left: 10px solid #632B30F2;
 }
 
 .movie-node:first-child {
@@ -51,12 +66,12 @@
     border-radius: 0 0 5px 5px;
 }
 
-.movie-line {
+.movie-first-line {
     overflow: hidden;
     line-height: 40px;
 }
 
-.movie-line .movie-name {
+.movie-first-line .movie-name {
     color: #D8DBE2;
     margin-right: 8px;
     font-size: 25px;
@@ -65,7 +80,7 @@
     line-height: inherit;
 }
 
-.movie-line .movie-year {
+.movie-first-line .movie-year {
     color: #A9BCD0;
     margin-right: 8px;
     font-family: 'Merriweather';
@@ -74,10 +89,41 @@
     line-height: inherit;
 }
 
-.movie-line .movie-imdb-rating {
+.movie-first-line .movie-imdb-rating {
     font-size: 19px;
     font-family: 'Merriweather';
     color: #D7D5D57A;
     float: left;
+    line-height: inherit;
+}
+
+.movie-first-line .movie-dir {
+    font-size: 19px;
+    font-family: 'Strait', sans-serif;
+    /* font-family: 'Merriweather'; */
+    color: #D7D5D57A;
+    float: right;
+    line-height: inherit;
+}
+
+.movie-second-line {
+    overflow: hidden;
+}
+
+.movie-second-line .movie-cast {
+    font-size: 16px;
+    font-family: 'Strait', sans-serif;
+    /* font-family: 'Merriweather'; */
+    color: #96897B;
+    float: left;
+    line-height: inherit;
+}
+
+.movie-second-line .movie-genre {
+    font-size: 16px;
+    font-family: 'Strait', sans-serif;
+    /* font-family: 'Merriweather'; */
+    color: #999799;
+    float: right;
     line-height: inherit;
 }

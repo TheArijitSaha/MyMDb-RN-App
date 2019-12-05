@@ -1,23 +1,27 @@
 //Helper Functions:
 function construct_movie_string(movie){
-    f='<div class="movie-node">' +
-        '<div class="movie-line">' +
+    console.log(movie);
+    f="";
+    if(movie.seen == 1) {
+        f='<div class="movie-node seen-node">';
+    }
+    else {
+        f='<div class="movie-node unseen-node">';
+    }
+
+    f+= '<div class="movie-first-line">' +
             '<span class="movie-id" hidden>' + movie.id + '</span>' +
             '<a href="Movies/' + movie.id + '"><span class="movie-name">' + movie.title + '</span></a>' +
             '<span class="movie-year">(' + movie.release_year + ')</span>' +
             '<span class="movie-imdb-rating">[' + movie.imdb_rating + ']</span>' +
+            '<span class="movie-dir">' + movie.director + '</span>' +
         '</div>' +
 
-        '<div class="movie-line">' +
-            '<span class="movie-dir">' + movie.director + '</span>' +
-            // '<div class="like-button">' +
-            //     '<span style="float:left;">' +
-            //         '<i class="fa fa-thumbs-up like">'+'</i>' +
-            //         '<span class="likenumber" id="fa_' + post.postid + '">'+'</span>'
-            //     '</span>'
-            // '</div>' +
+        '<div class="movie-second-line">' +
+            '<span class="movie-cast">' + movie.cast + '</span>' +
+            '<span class="movie-genre">' + movie.genre + '</span>' +
         '</div>' +
-    '</div>';
+      '</div>';
     return f;
 }
 
