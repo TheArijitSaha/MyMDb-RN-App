@@ -93,8 +93,8 @@
 
 .posterImage {
     position: absolute;
-    height: 300px;
-    width: 220px;
+    max-height: 300px;
+    max-width: 220px;
     left: 50%;
     top: 50%;
     margin-left: -110px;

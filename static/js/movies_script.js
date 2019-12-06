@@ -1,6 +1,5 @@
 //Helper Functions:
 function construct_movie_string(movie){
-    console.log(movie);
     f="";
     if(movie.seen == 1) {
         f='<div class="movie-node seen-node">';
@@ -28,7 +27,8 @@ function construct_movie_string(movie){
 
 
 $(document).ready(function(){
-
+    listCount = 0;
+    working = false;
 
     // Load stats
     function loadStats() {
@@ -41,10 +41,12 @@ $(document).ready(function(){
     loadStats();
 
     //for loading movies
-    function showMovies(movies_list_json){
-        $('.movieList').empty();
+    function showMovies(movies_list_json, clearList=true){
+        if (clearList) {
+            $('.movieList').empty();
+        }
         movie_list=JSON.parse(movies_list_json);
-        if(movie_list.data.length)
+        if(movie_list.data.length < 1)
         {
             // If there are no posts
         }
@@ -53,8 +55,51 @@ $(document).ready(function(){
             movie_node = $(construct_movie_string(movie_list.data[x]));
             $('.movieList').append(movie_node);
         }
+        listCount += movie_list.data.length;
     }
-    $.post("async/movies_async.php",{showAllMovies:true}).done(showMovies);
+    function appendMovies(movies_list_json){
+        showMovies(movies_list_json,false);
+    }
+    $.post("async/movies_async.php",{showAllMovies:listCount}).done(showMovies);
 
+    // For toggling SeenFilter Switch
+    $('.toggleGroup').on("click",function() {
+        if($('input[name="seenfilter"]').prop("checked")) {
+            // All movies
+            listCount = 0;
+            $('input[name="seenfilter"]').prop("checked",false);
+            $('.toggleSwitch').addClass('Off');
+            $.post("async/movies_async.php",{showAllMovies:listCount}).done(showMovies);
+            $('.stats').prop('hidden',false);
+        }
+        else {
+            // Unseen movies
+            listCount = 0;
+            $('input[name="seenfilter"]').prop("checked",true);
+            $('.toggleSwitch').removeClass('Off');
+            $.post("async/movies_async.php",{showUnseenMovies:listCount}).done(showMovies);
+            $('.stats').prop('hidden',true);
+        }
+    });
+
+    // For Infinite Scrolling
+    $(window).scroll(function() {
+        if ($(this).scrollTop() + 30 >= $('body').height() - $(window).height()) {
+            if (working == false) {
+                working = true;
+                if($('input[name="seenfilter"]').prop("checked")) {
+                    // Unseen movies
+                    $.post("async/movies_async.php",{showUnseenMovies:listCount}).done(appendMovies);
+                }
+                else {
+                    // All movies
+                    $.post("async/movies_async.php",{showAllMovies:listCount}).done(appendMovies);
+                }
+                setTimeout(function() {
+                    working = false;
+                }, 1500);
+            }
+        }
+    });
 
 });

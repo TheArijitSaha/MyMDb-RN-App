@@ -27,3 +27,86 @@ a:hover{
     justify-content: center;
     flex-direction: column;
 }
+
+/* Toggle Switch Begins */
+
+.toggleSwitch {
+    position: relative;
+    overflow: hidden;
+    width: 100px;
+    height: 38px;
+}
+
+.toggleSwitch input[type="checkbox"] {
+    display: none;
+}
+
+.toggleGroup {
+    position: absolute;
+    width: 200%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    transition: left .35s;
+    user-select: none;
+}
+
+.toggleSwitch.Off .toggleGroup {
+    left:-100%;
+}
+
+.toggleOn {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 50%;
+    margin: 0;
+    border: 0;
+    border-radius:0;
+}
+
+.toggleOff {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    right: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+}
+
+.toggleHandle {
+    position: relative;
+    margin: 0 auto;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 100%;
+    width: 0;
+    border-width: 0 1px;
+}
+
+.toggleSwitch.btn {
+    min-width: 59px;
+    min-height: 34px;
+    cursor: pointer;
+}
+
+.toggleOn.btn {
+    padding-right: 24px;
+}
+
+.toggleOff.btn {
+    padding-left: 24px;
+}
+
+.toggleLabel {
+    padding-top: 5px;
+    font-family: 'Strait', sans-serif;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* Toggle Switch Ends */

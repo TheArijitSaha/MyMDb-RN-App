@@ -93,7 +93,10 @@ class Movie
     public function getRottenTomatoesRating() {return $this->rotten_tomatoes_rating;}
     public function getRuntime() {return $this->runtime;}
     public function getPoster() {return $this->poster;}
-    public function watched() {return $this->seen;}
+    public function watched() {
+        if($this->seen == 0) return false;
+        return true;
+    }
 
     public static function checkExistingPK($title,$year) {
         if( ( strlen($title) < 1 ) || ( $year === NULL ) ) {

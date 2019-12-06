@@ -7,7 +7,28 @@
     // To show all Movies
     if ( isset( $_POST['showAllMovies'] ) ) {
         $result = DataBase::query('SELECT *'.
-                                 ' FROM '.DataBase::$movies_table_name);
+                                 ' FROM '.DataBase::$movies_table_name.
+                                 ' LIMIT '.((int)$_POST['showAllMovies']).',25'
+                                );
+        if ($result['executed']===false)
+        {
+            echo "ERROR: Could not able to execute SQL<br>";
+            print_r($result['errorInfo']);
+        }
+        else
+        {
+            $result_json=json_encode($result);
+            echo $result_json;
+        }
+    }
+
+    // To show all Unseen Movies
+    if ( isset( $_POST['showUnseenMovies'] ) ) {
+        $result = DataBase::query('SELECT *'.
+                                 ' FROM '.DataBase::$movies_table_name.
+                                 ' WHERE seen=0'.
+                                 ' LIMIT '.((int)$_POST['showUnseenMovies']).',25'
+                                );
         if ($result['executed']===false)
         {
             echo "ERROR: Could not able to execute SQL<br>";

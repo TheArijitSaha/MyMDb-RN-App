@@ -26,15 +26,27 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-10 stats">
-                    <span class="watchBanner">WatchCounter:</span>
-                    <div class="filmStat">
-                        <span class="statValue">-</span>
-                        <span class="statPoint">Films</span>
+                <div class="col-8 info">
+                    <div class="stats">
+                        <span class="watchBanner">WatchCounter:</span>
+                        <div class="filmStat">
+                            <span class="statValue">-</span>
+                            <span class="statPoint">Films</span>
+                        </div>
+                        <div class="timeStat">
+                            <span class="statValue">-</span>
+                            <span class="statPoint">Hrs</span>
+                        </div>
                     </div>
-                    <div class="timeStat">
-                        <span class="statValue">-</span>
-                        <span class="statPoint">Hrs</span>
+                </div>
+                <div class="col-2">
+                    <div class="toggleSwitch Off btn btn-light seenFilter">
+                        <input type="checkbox" name="seenfilter">
+                        <div class="toggleGroup">
+                            <label class="btn btn-danger toggleOn toggleLabel">Unseen</label>
+                            <label class="btn btn-success toggleOff toggleLabel">All</label>
+                            <span class="btn btn-light toggleHandle"></span>
+                        </div>
                     </div>
                 </div>
                 <div class="col">
