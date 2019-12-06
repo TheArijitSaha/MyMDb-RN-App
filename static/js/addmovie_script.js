@@ -11,14 +11,14 @@ function create_alert_string(message, alertClass, id){
 $(document).ready(function(){
 
     // For toggling Seen Switch
-    $('.toggle-group').on("click",function() {
+    $('.toggleGroup').on("click",function() {
         if($('input[name="seen"]').prop("checked")) {
             $('input[name="seen"]').prop("checked",false);
-            $(".toggle-group").animate({left: -$('.seenbutton').innerWidth()},60);
+            $('.toggleSwitch').addClass('Off');
         }
         else {
             $('input[name="seen"]').prop("checked",true);
-            $(".toggle-group").animate({left: "0px"},60);
+            $('.toggleSwitch').removeClass('Off');
         }
     });
 

@@ -26,7 +26,6 @@
         <?php echo Fonts::insertFonts(); ?>
         <link rel="stylesheet" href="static/css/master.css">
         <link rel="stylesheet" href="static/css/addmovie_master.css">
-        <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     </head>
     <body>
 
@@ -83,12 +82,12 @@
                     <div class="col-lg-2">
                     </div>
                     <div class="col-lg-2">
-                        <div class="toggle btn btn-light on seenDiv" data-toggle="toggle">
-                            <input type="checkbox" name="seen" checked="" data-toggle="toggle">
-                            <div class="toggle-group">
-                                <label class="btn btn-success toggle-on seenbutton toggleLabel">Seen</label>
-                                <label class="btn btn-danger active toggle-off unseenbutton toggleLabel">Unseen</label>
-                                <span class="toggle-handle btn btn-light middlebutton"></span>
+                        <div class="toggleSwitch<?php if ($editMode) { if (!$edit_movie->watched()) echo " Off"; } else { echo " Off"; } ?> btn btn-light">
+                            <input type="checkbox" name="seen"<?php if ($editMode) { if ($edit_movie->watched()) echo ' checked'; } ?>>
+                            <div class="toggleGroup">
+                                <label class="btn btn-success toggleOn toggleLabel">Seen</label>
+                                <label class="btn btn-danger toggleOff toggleLabel">Unseen</label>
+                                <span class="btn btn-light toggleHandle"></span>
                             </div>
                         </div>
                     </div>

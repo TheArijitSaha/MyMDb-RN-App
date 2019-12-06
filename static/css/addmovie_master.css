@@ -18,23 +18,12 @@
     font-size: 18px;
 }
 
-.toggleLabel {
-    font-family: 'Strait', sans-serif;
-    color: white;
-    font-size: 18px;
-}
-
 .formHeader {
     /* font-family: "Verdana", Geneva, serif; */
     font-family: 'Merriweather';
     padding-left: 40px;
     font-size: 32px;
     color: #25223C;
-}
-
-.seenDiv {
-     width: 100px;
-     height: 38px;
 }
 
 .form-control-plaintext {

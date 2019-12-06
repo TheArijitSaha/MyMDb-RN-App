@@ -3,7 +3,7 @@ body {
 }
 
 
-.stats {
+.info {
     overflow: hidden;
     margin: 5px 32px 10px 32px;
 }
@@ -37,11 +37,19 @@ body {
     font-size: 26px;
 }
 
-.addButton {
-    margin-top: 5px;
+.seenFilter {
+    margin-top: 3px;
 }
 
-
+.addButton {
+    margin-top: 5px;
+    margin-bottom: 11px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-family: 'Strait', sans-serif;
+    /* color: white; */
+    font-size: 18px;
+}
 
 .movie-node {
     padding: 10px 20px 10px 20px;
@@ -52,10 +60,12 @@ body {
 
 .seen-node {
     border-left: 10px solid #17301CCF;
+    border-right: 10px solid #17301CCF;
 }
 
 .unseen-node {
     border-left: 10px solid #632B30F2;
+    border-right: 10px solid #632B30F2;
 }
 
 .movie-node:first-child {
