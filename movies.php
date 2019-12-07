@@ -5,6 +5,20 @@
     require_once('classes/variables.php');
     require_once('classes/Nav.php');
 
+    $filter_pre_select = 0;
+    $filter_pre_string = '';
+
+    if ( isset( $_GET['director'] ) ) {
+        $filter_pre_string = urldecode($_GET['director']);
+        $filter_pre_select = 2;
+    } else if ( isset( $_GET['genre'] ) ) {
+        $filter_pre_string = urldecode($_GET['genre']);
+        $filter_pre_select = 4;
+    } else if ( isset( $_GET['release_year'] ) ) {
+        $filter_pre_string = $_GET['release_year'];
+        $filter_pre_select = 3;
+    }
+
 ?>
 
 <html lang="en" dir="ltr">
@@ -43,15 +57,20 @@
                 <div class="col-2">
                     <div class="filterOption">
                         <select id="movieFilter" class="form-control">
-                            <option selected>No Filter</option>
-                            <option>Name</option>
-                            <option>Director</option>
-                            <option>Release Year</option>
-                            <option>Genre</option>
+                            <option<?php if ($filter_pre_select === 0) echo ' selected' ?>>No Filter</option>
+                            <option<?php if ($filter_pre_select === 1) echo ' selected' ?>>Name</option>
+                            <option<?php if ($filter_pre_select === 2) echo ' selected' ?>>Director</option>
+                            <option<?php if ($filter_pre_select === 3) echo ' selected' ?>>Release Year</option>
+                            <option<?php if ($filter_pre_select === 4) echo ' selected' ?>>Genre</option>
                         </select>
                     </div>
                 </div>
                 <div id="filterActual" class="col-2">
+                    <?php if ($filter_pre_select === 3) { ?>
+                        <input class="form-control" type="number" id="filterString" value=<?php echo $filter_pre_string; ?> name="titleFilter" placeholder="Enter Name" autocomplete="off">
+                    <?php } else if ($filter_pre_select > 0) { ?>
+                        <input class="form-control" type="text" id="filterString" value="<?php echo $filter_pre_string; ?>" name="titleFilter" placeholder="Enter Name" autocomplete="off">
+                    <?php } ?>
                 </div>
                 <div class="col-2">
                     <div class="toggleSwitch Off btn btn-light seenFilter">

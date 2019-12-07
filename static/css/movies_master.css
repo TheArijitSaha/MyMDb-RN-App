@@ -122,6 +122,10 @@ body {
     line-height: inherit;
 }
 
+.movie-first-line .movie-year a:hover{
+    text-decoration: underline;
+}
+
 .movie-first-line .movie-imdb-rating {
     font-size: 19px;
     font-family: 'Merriweather';
@@ -163,4 +167,8 @@ body {
     color: #999799;
     float: right;
     line-height: inherit;
+}
+
+.movie-second-line .movie-genre a:hover{
+    text-decoration: underline;
 }

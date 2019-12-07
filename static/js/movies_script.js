@@ -12,6 +12,23 @@ function construct_director_string(directors) {
     return f;
 }
 
+function construct_genre_string(genres) {
+    genre_array = genres.split(', ');
+    f = "";
+    for (x in genre_array) {
+        f+='<a href="/MyMDb/Movies/Genre/' + encodeURIComponent(genre_array[x]) + '">' + genre_array[x] + '</a>';
+        if (x < genre_array.length-1) {
+            f+=', ';
+        }
+    }
+    return f;
+}
+
+function construct_releaseyear_string(year) {
+    f = '<a href="/MyMDb/Movies/Year/' + parseInt(year) + '">' + parseInt(year) + '</a>';
+    return f;
+}
+
 function construct_movie_string(movie){
     f="";
     if(movie.seen == 1) {
@@ -24,14 +41,14 @@ function construct_movie_string(movie){
     f+= '<div class="movie-first-line">' +
             '<span class="movie-id" hidden>' + movie.id + '</span>' +
             '<a href="Movies/' + movie.id + '"><span class="movie-name">' + movie.title + '</span></a>' +
-            '<span class="movie-year">(' + movie.release_year + ')</span>' +
+            '<span class="movie-year">(' + construct_releaseyear_string(movie.release_year) + ')</span>' +
             '<span class="movie-imdb-rating">[' + movie.imdb_rating + ']</span>' +
             '<span class="movie-dir">' + construct_director_string(movie.director) + '</span>' +
         '</div>' +
 
         '<div class="movie-second-line">' +
             '<span class="movie-cast">' + movie.cast + '</span>' +
-            '<span class="movie-genre">' + movie.genre + '</span>' +
+            '<span class="movie-genre">' + construct_genre_string(movie.genre) + '</span>' +
         '</div>' +
       '</div>';
     return f;

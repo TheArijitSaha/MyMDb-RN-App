@@ -14,6 +14,10 @@ RewriteRule ^Movies/Add$                addmovie.php [END]
 RewriteRule ^Movies/([0-9]+)$           detailmovie.php?id=$1 [END]
 RewriteRule ^Movies/([0-9]+)/edit$      addmovie.php?edit=$1 [END]
 RewriteRule ^Movies/Director/(.*)$      movies.php?director=$1 [END]
+RewriteRule ^Movies/Genre/(.*)$         movies.php?genre=$1 [END]
+RewriteRule ^Movies/Year/([0-9]+)$      movies.php?release_year=$1 [END]
 
 
 RewriteRule ^Series$                    series.php [END]
+
+RewriteRule ^.*$                        error_page.php [END]
