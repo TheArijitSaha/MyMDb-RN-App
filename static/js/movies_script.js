@@ -1,4 +1,17 @@
 //Helper Functions:
+
+function construct_director_string(directors) {
+    director_array = directors.split(', ');
+    f = "";
+    for (x in director_array) {
+        f+='<a href="/MyMDb/Movies/Director/' + encodeURIComponent(director_array[x]) + '">' + director_array[x] + '</a>';
+        if (x < director_array.length-1) {
+            f+=', ';
+        }
+    }
+    return f;
+}
+
 function construct_movie_string(movie){
     f="";
     if(movie.seen == 1) {
@@ -13,7 +26,7 @@ function construct_movie_string(movie){
             '<a href="Movies/' + movie.id + '"><span class="movie-name">' + movie.title + '</span></a>' +
             '<span class="movie-year">(' + movie.release_year + ')</span>' +
             '<span class="movie-imdb-rating">[' + movie.imdb_rating + ']</span>' +
-            '<span class="movie-dir">' + movie.director + '</span>' +
+            '<span class="movie-dir">' + construct_director_string(movie.director) + '</span>' +
         '</div>' +
 
         '<div class="movie-second-line">' +
@@ -25,10 +38,10 @@ function construct_movie_string(movie){
 }
 
 
-
 $(document).ready(function(){
     listCount = 0;
     working = false;
+    unseen = 0;
 
     // Load stats
     function loadStats() {
@@ -60,26 +73,68 @@ $(document).ready(function(){
     function appendMovies(movies_list_json){
         showMovies(movies_list_json,false);
     }
-    $.post("async/movies_async.php",{showAllMovies:listCount}).done(showMovies);
+    function loadMovies(clearList=false) {
+        listFunction = appendMovies;
+        if(clearList) {
+            listFunction = showMovies;
+            listCount = 0;
+        }
+        filter_string = '';
+        if ($('#movieFilter').val() === 'No Filter') {
+            filter_string = '';
+        }
+        else {
+            filter_string = $('#filterString').val();
+        }
+        $.post("async/movies_async.php",{
+                                            filterOption:$('#movieFilter').val(),
+                                            filterString:filter_string,
+                                            listCount:listCount,
+                                            unseen:unseen
+                                        }).done(listFunction);
+    }
+    loadMovies(true);
+
+    // For Switching Filter Options
+    $('#movieFilter').on('change',function(){
+        $('#filterActual').empty();
+        if ($('#movieFilter').val() === "No Filter") {
+            loadMovies(true);
+        }
+        else if ($('#movieFilter').val() === "Name") {
+            $('#filterActual').append('<input class="form-control" type="text" id="filterString" name="titleFilter" placeholder="Enter Name" autocomplete="off">');
+        }
+        else if ($('#movieFilter').val() === "Director") {
+            $('#filterActual').append('<input class="form-control" type="text" id="filterString" name="directorFilter" placeholder="Enter Director" autocomplete="off">');
+        }
+        else if ($('#movieFilter').val() === "Release Year") {
+            $('#filterActual').append('<input class="form-control" type="number" id="filterString" name="yearFilter" placeholder="Enter Year" autocomplete="off">');
+        }
+        else if ($('#movieFilter').val() === "Genre") {
+            $('#filterActual').append('<input class="form-control" type="text" id="filterString" name="genreFilter" placeholder="Enter Genre" autocomplete="off">');
+        }
+    });
+
+    // For applying filter
+    $(document).on('keyup','#filterString',function(){
+        loadMovies(true);
+    });
 
     // For toggling SeenFilter Switch
     $('.toggleGroup').on("click",function() {
         if($('input[name="seenfilter"]').prop("checked")) {
             // All movies
-            listCount = 0;
             $('input[name="seenfilter"]').prop("checked",false);
             $('.toggleSwitch').addClass('Off');
-            $.post("async/movies_async.php",{showAllMovies:listCount}).done(showMovies);
-            $('.stats').prop('hidden',false);
+            unseen = 0;
         }
         else {
             // Unseen movies
-            listCount = 0;
             $('input[name="seenfilter"]').prop("checked",true);
             $('.toggleSwitch').removeClass('Off');
-            $.post("async/movies_async.php",{showUnseenMovies:listCount}).done(showMovies);
-            $('.stats').prop('hidden',true);
+            unseen = 1;
         }
+        loadMovies(true);
     });
 
     // For Infinite Scrolling
@@ -87,14 +142,7 @@ $(document).ready(function(){
         if ($(this).scrollTop() + 30 >= $('body').height() - $(window).height()) {
             if (working == false) {
                 working = true;
-                if($('input[name="seenfilter"]').prop("checked")) {
-                    // Unseen movies
-                    $.post("async/movies_async.php",{showUnseenMovies:listCount}).done(appendMovies);
-                }
-                else {
-                    // All movies
-                    $.post("async/movies_async.php",{showAllMovies:listCount}).done(appendMovies);
-                }
+                loadMovies();
                 setTimeout(function() {
                     working = false;
                 }, 1500);

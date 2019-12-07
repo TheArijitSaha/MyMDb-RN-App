@@ -26,12 +26,6 @@
     color: #25223C;
 }
 
-.form-control-plaintext {
-    color: #C8C2AE;
-    font-family: 'Merriweather';
-    font-size: 18px;
-}
-
 .form-control{
     background-color:#2B4141;
     color: #C8C2AE;
@@ -40,6 +34,12 @@
 .form-control:focus{
     background-color:#636B61;
     color: #E3D7FF;
+}
+
+.form-control-plaintext {
+    color: #C8C2AE;
+    font-family: 'Merriweather';
+    font-size: 18px;
 }
 
 ::-webkit-input-placeholder { /* Edge */

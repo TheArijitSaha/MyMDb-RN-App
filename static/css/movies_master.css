@@ -41,13 +41,34 @@ body {
     margin-top: 3px;
 }
 
+.filterOption {
+    margin-top: 3px;
+}
+
+#filterActual {
+    margin-top: 3px;
+    font-family: 'Strait', sans-serif;
+    font-size: 18px;
+}
+
+.form-control{
+    font-family: 'Strait', sans-serif;
+    font-size: 18px;
+    background-color:#1F1F1F;
+    color: #C8C2AE;
+}
+
+.form-control:focus{
+    background-color:#2F2F2F;
+    color: #E3D7FF;
+}
+
 .addButton {
-    margin-top: 5px;
+    margin-top: 3px;
     margin-bottom: 11px;
     padding-top: 5px;
     padding-bottom: 5px;
     font-family: 'Strait', sans-serif;
-    /* color: white; */
     font-size: 18px;
 }
 
@@ -69,11 +90,13 @@ body {
 }
 
 .movie-node:first-child {
-    border-radius: 5px 5px 0 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 
 .movie-node:last-child {
-    border-radius: 0 0 5px 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .movie-first-line {
@@ -114,6 +137,10 @@ body {
     color: #D7D5D57A;
     float: right;
     line-height: inherit;
+}
+
+.movie-first-line .movie-dir a:hover {
+    text-decoration: underline;
 }
 
 .movie-second-line {

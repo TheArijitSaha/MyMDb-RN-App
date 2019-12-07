@@ -11,6 +11,7 @@
     <head>
         <meta charset="utf-8">
         <title>MyMDb | Movies</title>
+        <link rel="icon" href="/MyMDb/MyMDbIcon.png">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <?php echo Fonts::insertFonts(); ?>
         <link rel="stylesheet" href="static/css/master.css">
@@ -26,7 +27,7 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-8 info">
+                <div class="col-4 info">
                     <div class="stats">
                         <span class="watchBanner">WatchCounter:</span>
                         <div class="filmStat">
@@ -38,6 +39,19 @@
                             <span class="statPoint">Hrs</span>
                         </div>
                     </div>
+                </div>
+                <div class="col-2">
+                    <div class="filterOption">
+                        <select id="movieFilter" class="form-control">
+                            <option selected>No Filter</option>
+                            <option>Name</option>
+                            <option>Director</option>
+                            <option>Release Year</option>
+                            <option>Genre</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="filterActual" class="col-2">
                 </div>
                 <div class="col-2">
                     <div class="toggleSwitch Off btn btn-light seenFilter">
