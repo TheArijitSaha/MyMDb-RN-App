@@ -2,6 +2,8 @@ RewriteEngine on
 
 RewriteRule ^$                          movies.php [END]
 
+RewriteRule ^MyMDbIcon.png$             MyMDbIcon.png [END]
+
 RewriteRule ^(.*)/static/(.*)$          static/$2 [END]
 RewriteRule ^(.*)/async/(.*)$           async/$2 [END]
 
@@ -11,5 +13,7 @@ RewriteRule ^Movies$                    movies.php [END]
 RewriteRule ^Movies/Add$                addmovie.php [END]
 RewriteRule ^Movies/([0-9]+)$           detailmovie.php?id=$1 [END]
 RewriteRule ^Movies/([0-9]+)/edit$      addmovie.php?edit=$1 [END]
+RewriteRule ^Movies/Director/(.*)$      movies.php?director=$1 [END]
+
 
 RewriteRule ^Series$                    series.php [END]
