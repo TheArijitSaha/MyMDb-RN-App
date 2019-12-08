@@ -83,7 +83,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <a href="Movies/Add" class="btn btn-outline-danger addButton">Add</a>
+                    <a href="/MyMDb/Movies/Add" class="btn btn-outline-danger addButton">Add</a>
                 </div>
             </div>
         </div>

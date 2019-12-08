@@ -26,6 +26,12 @@
     color: #25223C;
 }
 
+.formHeaderCount {
+    color: #690500;
+    font-size: 30px;
+    font-family: 'Special Elite';
+}
+
 .form-control{
     background-color:#2B4141;
     color: #C8C2AE;

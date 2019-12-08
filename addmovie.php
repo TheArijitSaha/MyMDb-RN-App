@@ -42,7 +42,8 @@
                         <?php if ( isset($_GET['edit']) ) { ?>
                             <p class="formHeader">Make it Better!</p>
                         <?php } else { ?>
-                            <p class="formHeader">Another One!</p>
+                            <span class="formHeader">Movie </span>
+                            <span class="formHeaderCount">#<?php echo Movie::getCount()+1; ?> </span>
                         <?php } ?>
                     </div>
                     <div class="col-lg-6 errorBox">

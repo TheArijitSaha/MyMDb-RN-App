@@ -40,7 +40,7 @@ function construct_movie_string(movie){
 
     f+= '<div class="movie-first-line">' +
             '<span class="movie-id" hidden>' + movie.id + '</span>' +
-            '<a href="Movies/' + movie.id + '"><span class="movie-name">' + movie.title + '</span></a>' +
+            '<a href="/MyMDb/Movies/' + movie.id + '"><span class="movie-name">' + movie.title + '</span></a>' +
             '<span class="movie-year">(' + construct_releaseyear_string(movie.release_year) + ')</span>' +
             '<span class="movie-imdb-rating">[' + movie.imdb_rating + ']</span>' +
             '<span class="movie-dir">' + construct_director_string(movie.director) + '</span>' +

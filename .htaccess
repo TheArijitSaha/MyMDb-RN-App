@@ -19,5 +19,3 @@ RewriteRule ^Movies/Year/([0-9]+)$      movies.php?release_year=$1 [END]
 
 
 RewriteRule ^Series$                    series.php [END]
-
-RewriteRule ^.*$                        error_page.php [END]

@@ -98,6 +98,18 @@ class Movie
         return true;
     }
 
+    public static function getCount() {
+        $result = DataBase::query('SELECT COUNT(*) AS filmcount'.
+                                 ' FROM '.DataBase::$movies_table_name);
+        if ($result['executed']===false)
+        {
+            // echo "ERROR: Could not able to execute SQL<br>";
+            // print_r($result['errorInfo']);
+            return NULL;
+        }
+        return $result['data'][0]['filmcount'];
+    }
+
     public static function checkExistingPK($title,$year) {
         if( ( strlen($title) < 1 ) || ( $year === NULL ) ) {
             return NULL;

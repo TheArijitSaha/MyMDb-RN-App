@@ -19,7 +19,7 @@
         }
         // By Name
         else if ( $_POST['filterOption'] === "Name" ) {
-            $filter_string = ' WHERE ((title LIKE :filter1) or (title like :filter2))';
+            $filter_string = ' WHERE ((title LIKE :filter1) or (title like :filter2) or (subtitle like :filter1) or (subtitle like :filter2))';
             $filter_array = array(':filter1' => $_POST['filterString'].'%',
                                   ':filter2' => '% '.$_POST['filterString'].'%'
                                 );
