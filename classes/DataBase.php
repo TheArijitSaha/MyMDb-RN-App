@@ -32,7 +32,7 @@ class DataBase
         }
         if(explode(' ', $query)[0]=='SELECT') //checks if the first word of the query is select
         {
-            $data=$statement->fetchAll();
+            $data=$statement->fetchAll(PDO::FETCH_ASSOC);
             return array("executed"=>True,"errorInfo"=>$statement->errorInfo(),"data"=>$data);
         }
         if(explode(' ', $query)[0]=='INSERT') //checks if the first word of the query is insert

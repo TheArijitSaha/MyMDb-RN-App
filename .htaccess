@@ -1,6 +1,6 @@
 RewriteEngine on
 
-RewriteRule ^$                          movies.php [END]
+RewriteRule ^$                          home.php [END]
 
 RewriteRule ^MyMDbIcon.png$             MyMDbIcon.png [END]
 

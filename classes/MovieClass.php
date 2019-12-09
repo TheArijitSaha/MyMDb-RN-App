@@ -265,5 +265,20 @@ class Movie
         return true;
     }
 
+    public static function getUnwatchedMoviesID_Poster ($limit) {
+        $result = DataBase::query('SELECT id,poster '.
+                                  ' FROM '.DataBase::$movies_table_name.
+                                  ' WHERE seen=FALSE'.
+                                  ' ORDER BY rotten_tomatoes_rating DESC'.
+                                  ' LIMIT '.(int)$limit
+                                );
+        if(!$result['executed']){
+            // echo "ERROR: Not able to execute SQL<br>";
+            // print_r($result['errorInfo']);
+            return NULL;
+        }
+        return $result['data'];
+    }
+
 }
 ?>

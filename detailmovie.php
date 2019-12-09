@@ -10,12 +10,33 @@
     if ( !$current_movie->isReal() ) {
         header("Location: ".NetworkVariables::$home_path."Error");
     }
+
+    function directorString($directors) {
+        $director_array = explode(', ',$directors);
+        $f = "";
+        for ($i=0; $i < count($director_array)-1 ; $i++) {
+            $f = $f . '<a href="/MyMDb/Movies/Director/' . urlencode( $director_array[$i] ) . '">' . $director_array[$i] . '</a>, ';
+        }
+        $f = $f . '<a href="/MyMDb/Movies/Director/' . urlencode( $director_array[count($director_array)-1] ) . '">' . $director_array[count($director_array)-1] . '</a>';
+        return $f;
+    }
+
+    function genreString($genres) {
+        $genre_array = explode(', ',$genres);
+        $f = "";
+        for ($i=0; $i < count($genre_array)-1 ; $i++) {
+            $f = $f . '<a href="/MyMDb/Movies/Genre/' . urlencode( $genre_array[$i] ) . '">' . $genre_array[$i] . '</a>, ';
+        }
+        $f = $f . '<a href="/MyMDb/Movies/Genre/' . urlencode( $genre_array[count($genre_array)-1] ) . '">' . $genre_array[count($genre_array)-1] . '</a>';
+        return $f;
+    }
 ?>
 
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
         <title>MyMDb | Movies</title>
+        <link rel="icon" href="/MyMDb/MyMDbIcon.png">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <?php echo Fonts::insertFonts(); ?>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -59,7 +80,7 @@
                                     <p class="movieInfo">Year of Release </p>
                                 </div>
                                 <div class="col-lg">
-                                    <p class="movieValue"><?php echo $current_movie->getReleaseYear(); ?></p>
+                                    <p class="movieValue"><a href="<?php echo '/MyMDb/Movies/Year/'.((int)$current_movie->getReleaseYear()); ?>"><?php echo $current_movie->getReleaseYear(); ?></a></p>
                                 </div>
                             </div>
 
@@ -68,7 +89,7 @@
                                     <p class="movieInfo">Directed By </p>
                                 </div>
                                 <div class="col-lg">
-                                    <p class="movieValue"><?php echo $current_movie->getDirector(); ?></p>
+                                    <p class="movieValue"><?php echo directorString($current_movie->getDirector()); ?></p>
                                 </div>
                             </div>
 
@@ -95,7 +116,7 @@
                                     <p class="movieInfo">Genre </p>
                                 </div>
                                 <div class="col-lg">
-                                    <p class="movieValue"><?php echo $current_movie->getGenre(); ?></p>
+                                    <p class="movieValue"><?php echo genreString($current_movie->getGenre()); ?></p>
                                 </div>
                             </div>
 
