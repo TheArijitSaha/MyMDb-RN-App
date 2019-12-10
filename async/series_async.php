@@ -18,31 +18,31 @@
         else if ( $_POST['filterString'] === "" ) {
         }
         // By Name
-        // else if ( $_POST['filterOption'] === "Name" ) {
-        //     $filter_string = ' WHERE ((title LIKE :filter1) or (title like :filter2) or (subtitle like :filter1) or (subtitle like :filter2))';
-        //     $filter_array = array(':filter1' => $_POST['filterString'].'%',
-        //                           ':filter2' => '% '.$_POST['filterString'].'%'
-        //                         );
-        // }
-        // // By Director
-        // else if ( $_POST['filterOption'] === "Director" ) {
-        //     $filter_string = ' WHERE ((director LIKE :filter1) or (director like :filter2))';
-        //     $filter_array = array(':filter1' => $_POST['filterString'].'%',
-        //                           ':filter2' => '% '.$_POST['filterString'].'%'
-        //                         );
-        // }
-        // // By Release Year
-        // else if ( $_POST['filterOption'] === "Release Year" ) {
-        //     $filter_string = ' WHERE (release_year = :filteryear)';
-        //     $filter_array = array(':filteryear' => $_POST['filterString'].'%');
-        // }
-        // // By Genre
-        // else if ( $_POST['filterOption'] === "Genre" ) {
-        //     $filter_string = ' WHERE ((genre LIKE :filter1) or (genre like :filter2))';
-        //     $filter_array = array(':filter1' => $_POST['filterString'].'%',
-        //                           ':filter2' => '% '.$_POST['filterString'].'%'
-        //                         );
-        // }
+        else if ( $_POST['filterOption'] === "Name" ) {
+            $filter_string = ' WHERE ((title LIKE :filter1) or (title like :filter2))';
+            $filter_array = array(':filter1' => $_POST['filterString'].'%',
+                                  ':filter2' => '% '.$_POST['filterString'].'%'
+                                );
+        }
+        // By Creator
+        else if ( $_POST['filterOption'] === "Creator" ) {
+            $filter_string = ' WHERE ((creators LIKE :filter1) or (creators like :filter2))';
+            $filter_array = array(':filter1' => $_POST['filterString'].'%',
+                                  ':filter2' => '% '.$_POST['filterString'].'%'
+                                );
+        }
+        // By Year
+        else if ( $_POST['filterOption'] === "Year" ) {
+            $filter_string = ' WHERE ( (start_year <= :year) AND (end_year >= :year) )';
+            $filter_array = array(':year' => $_POST['filterString'].'%');
+        }
+        // By Genre
+        else if ( $_POST['filterOption'] === "Genre" ) {
+            $filter_string = ' WHERE ((genre LIKE :filter1) or (genre like :filter2))';
+            $filter_array = array(':filter1' => $_POST['filterString'].'%',
+                                  ':filter2' => '% '.$_POST['filterString'].'%'
+                                );
+        }
         // Invalid Filter
         else {
             echo json_encode(NULL);
@@ -53,17 +53,15 @@
         // Check if done or ongoing:
         if ($_POST['ongoing'] == 1) {
             if ($filter_string === '') {
-                $watchFilter = ' WHERE ('.
-                                    ' (seen_episodes < total_episodes)'.
-                                    ' OR ( end_year IS NULL )'.
-                                ' )';
+                $watchFilter = ' WHERE (';
             }
             else {
-                $watchFilter = ' AND ('.
+                $watchFilter = ' AND (';
+            }
+            $watchFilter = $watchFilter.
                                     ' (seen_episodes < total_episodes)'.
                                     ' OR ( end_year IS NULL )'.
                                 ' )';
-            }
         }
 
         $result = DataBase::query('SELECT *'.

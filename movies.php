@@ -70,9 +70,13 @@
                 </div>
                 <div id="filterActual" class="col-2">
                     <?php if ($filter_pre_select === 3) { ?>
-                        <input class="form-control" type="number" id="filterString" value=<?php echo $filter_pre_string; ?> name="titleFilter" placeholder="Enter Name" autocomplete="off">
-                    <?php } else if ($filter_pre_select > 0) { ?>
+                        <input class="form-control" type="number" id="filterString" value=<?php echo $filter_pre_string; ?> name="yearFilter" placeholder="Enter Year" autocomplete="off">
+                    <?php } else if ($filter_pre_select === 1) { ?>
                         <input class="form-control" type="text" id="filterString" value="<?php echo $filter_pre_string; ?>" name="titleFilter" placeholder="Enter Name" autocomplete="off">
+                    <?php } else if ($filter_pre_select === 2) { ?>
+                        <input class="form-control" type="text" id="filterString" value="<?php echo $filter_pre_string; ?>" name="directorFilter" placeholder="Enter Director" autocomplete="off">
+                    <?php } else if ($filter_pre_select === 4) { ?>
+                        <input class="form-control" type="text" id="filterString" value="<?php echo $filter_pre_string; ?>" name="genreFilter" placeholder="Enter Genre" autocomplete="off">
                     <?php } ?>
                 </div>
                 <div class="col-2">

@@ -37,21 +37,21 @@ body {
     font-size: 26px;
 }
 
-/* .seenFilter {
+.ongoingFilter {
     margin-top: 3px;
-} */
+}
 
-/* .filterOption {
+.filterOption {
     margin-top: 3px;
-} */
+}
 
-/* #filterActual {
+#filterActual {
     margin-top: 3px;
     font-family: 'Strait', sans-serif;
     font-size: 18px;
-} */
+}
 
-/* .form-control{
+.form-control{
     font-family: 'Strait', sans-serif;
     font-size: 18px;
     background-color:#1F1F1F;
@@ -72,39 +72,39 @@ body {
     font-size: 18px;
 }
 
-.movie-node {
+.series-node {
     padding: 10px 20px 10px 20px;
     background-color: #373F51;
     margin-bottom: 1px;
     position: relative;
 }
 
-.seen-node {
+/* .seen-node {
     border-left: 10px solid #17301CCF;
     border-right: 10px solid #17301CCF;
-}
+} */
 
-.unseen-node {
+/* .unseen-node {
     border-left: 10px solid #632B30F2;
     border-right: 10px solid #632B30F2;
-}
+} */
 
-.movie-node:first-child {
+.series-node:first-child {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
 
-.movie-node:last-child {
+.series-node:last-child {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
 }
 
-.movie-first-line {
+.series-first-line {
     overflow: hidden;
     line-height: 40px;
 }
 
-.movie-first-line .movie-name {
+.series-first-line .series-name {
     color: #D8DBE2;
     margin-right: 8px;
     font-size: 25px;
@@ -113,7 +113,7 @@ body {
     line-height: inherit;
 }
 
-.movie-first-line .movie-year {
+.series-first-line .series-year {
     color: #A9BCD0;
     margin-right: 8px;
     font-family: 'Merriweather';
@@ -122,11 +122,11 @@ body {
     line-height: inherit;
 }
 
-.movie-first-line .movie-year a:hover{
+.series-first-line .series-year a:hover{
     text-decoration: underline;
 }
 
-.movie-first-line .movie-imdb-rating {
+.series-first-line .series-imdb-rating {
     font-size: 19px;
     font-family: 'Merriweather';
     color: #D7D5D57A;
@@ -134,41 +134,38 @@ body {
     line-height: inherit;
 }
 
-.movie-first-line .movie-dir {
+.series-first-line .series-creators {
     font-size: 19px;
-    font-family: 'Strait', sans-serif; */
-    /* font-family: 'Merriweather'; */
-    /* color: #D7D5D57A;
+    font-family: 'Strait', sans-serif;
+    color: #D7D5D57A;
     float: right;
     line-height: inherit;
 }
 
-.movie-first-line .movie-dir a:hover {
+.series-first-line .series-creators a:hover {
     text-decoration: underline;
 }
 
-.movie-second-line {
+.series-second-line {
     overflow: hidden;
-} */
+}
 
-/* .movie-second-line .movie-cast {
+.series-second-line .series-cast {
     font-size: 16px;
-    font-family: 'Strait', sans-serif; */
-    /* font-family: 'Merriweather'; */
-    /* color: #96897B;
+    font-family: 'Strait', sans-serif;
+    color: #96897B;
     float: left;
     line-height: inherit;
-} */
+}
 
-/* .movie-second-line .movie-genre {
+.series-second-line .series-genre {
     font-size: 16px;
-    font-family: 'Strait', sans-serif; */
-    /* font-family: 'Merriweather'; */
-    /* color: #999799;
+    font-family: 'Strait', sans-serif;
+    color: #999799;
     float: right;
     line-height: inherit;
-} */
+}
 
-/* .movie-second-line .movie-genre a:hover{
+.series-second-line .series-genre a:hover{
     text-decoration: underline;
-} */
+}
