@@ -12,6 +12,7 @@ class DataBase
 
     // Table Names:
     public static $movies_table_name        = "Movies";
+    public static $series_table_name        = "Series";
 
     private static function connect()
     {

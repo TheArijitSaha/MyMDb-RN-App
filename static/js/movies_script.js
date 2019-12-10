@@ -60,16 +60,6 @@ $(document).ready(function(){
     working = false;
     unseen = 0;
 
-    // Load stats
-    function loadStats() {
-        $.post("async/movies_async.php",{getWatchedMovieStats:true}).done(function(stat_json){
-            stat=JSON.parse(stat_json);
-            $('.timeStat .statValue').text(Math.round(stat.totaltime/60));
-            $('.filmStat .statValue').text(stat.watchcount);
-        });
-    }
-    loadStats();
-
     //for loading movies
     function showMovies(movies_list_json, clearList=true){
         if (clearList) {

@@ -280,5 +280,21 @@ class Movie
         return $result['data'];
     }
 
+    public static function getWatchedMovieStats () {
+        $result = DataBase::query('SELECT SUM(runtime) AS totaltime,COUNT(*) AS watchcount'.
+                                 ' FROM '.DataBase::$movies_table_name.
+                                 ' WHERE seen=1');
+        if ($result['executed']===false)
+        {
+            // echo "ERROR: Could not able to execute SQL<br>";
+            // print_r($result['errorInfo']);
+            return NULL;
+        }
+        else
+        {
+            return $result['data'][0];
+        }
+    }
+
 }
 ?>

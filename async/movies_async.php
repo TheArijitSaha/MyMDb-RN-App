@@ -79,61 +79,6 @@
         }
     }
 
-
-    // To show all Movies
-    // if ( isset( $_POST['showAllMovies'] ) ) {
-    //     $result = DataBase::query('SELECT *'.
-    //                              ' FROM '.DataBase::$movies_table_name.
-    //                              ' LIMIT '.((int)$_POST['showAllMovies']).',25'
-    //                             );
-    //     if ($result['executed']===false)
-    //     {
-    //         echo "ERROR: Could not able to execute SQL<br>";
-    //         print_r($result['errorInfo']);
-    //     }
-    //     else
-    //     {
-    //         $result_json=json_encode($result);
-    //         echo $result_json;
-    //     }
-    // }
-
-    // To show all Unseen Movies
-    // if ( isset( $_POST['showUnseenMovies'] ) ) {
-    //     $result = DataBase::query('SELECT *'.
-    //                              ' FROM '.DataBase::$movies_table_name.
-    //                              ' WHERE seen=0'.
-    //                              ' LIMIT '.((int)$_POST['showUnseenMovies']).',25'
-    //                             );
-    //     if ($result['executed']===false)
-    //     {
-    //         echo "ERROR: Could not able to execute SQL<br>";
-    //         print_r($result['errorInfo']);
-    //     }
-    //     else
-    //     {
-    //         $result_json=json_encode($result);
-    //         echo $result_json;
-    //     }
-    // }
-
-    // To give stats of watched movies
-    if ( isset( $_POST['getWatchedMovieStats'] ) ) {
-        $result = DataBase::query('SELECT SUM(runtime) AS totaltime,COUNT(*) AS watchcount'.
-                                 ' FROM '.DataBase::$movies_table_name.
-                                 ' WHERE seen=1');
-        if ($result['executed']===false)
-        {
-            echo "ERROR: Could not able to execute SQL<br>";
-            print_r($result['errorInfo']);
-        }
-        else
-        {
-            $result_json=json_encode($result['data'][0]);
-            echo $result_json;
-        }
-    }
-
     // To add a new movie
     if ( isset( $_POST['addMovie'] ) ) {
         $formData = json_decode(urldecode($_POST['addMovie']),True);

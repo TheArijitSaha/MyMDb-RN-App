@@ -4,6 +4,7 @@
     require_once('classes/DataBase.php');
     require_once('classes/variables.php');
     require_once('classes/Nav.php');
+    require_once('classes/MovieClass.php');
 
     $filter_pre_select = 0;
     $filter_pre_string = '';
@@ -18,6 +19,8 @@
         $filter_pre_string = $_GET['release_year'];
         $filter_pre_select = 3;
     }
+
+    $stats = Movie::getWatchedMovieStats();
 
 ?>
 
@@ -45,11 +48,11 @@
                     <div class="stats">
                         <span class="watchBanner">WatchCounter:</span>
                         <div class="filmStat">
-                            <span class="statValue">-</span>
+                            <span class="statValue"><?php echo $stats['watchcount']; ?></span>
                             <span class="statPoint">Films</span>
                         </div>
                         <div class="timeStat">
-                            <span class="statValue">-</span>
+                            <span class="statValue"><?php echo round($stats['totaltime']/60); ?></span>
                             <span class="statPoint">Hrs</span>
                         </div>
                     </div>
