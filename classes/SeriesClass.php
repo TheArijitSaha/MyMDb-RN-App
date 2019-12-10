@@ -104,7 +104,26 @@ class Series
     public function getIMDbLink() {return $this->imdb_link;}
     public function getRottenTomatoesRating() {return $this->rotten_tomatoes_rating;}
     public function getPoster() {return $this->poster;}
-    public function getSeenEpisodes() {return $this->$seen_episodes;}
+    public function getSeenEpisodes() {return $this->seen_episodes;}
+    public function watched() {
+        if ( $this->end_year === NULL ) {
+            return false;
+        }
+        if ( $this->seen_episodes === $this->total_episodes ) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getPeriod() {
+        if ( $this->end_year === NULL ) {
+            if ( $this->start_year === NULL ) {
+                return NULL;
+            }
+            return 'Since '.$this->start_year;
+        }
+        return $this->start_year.' - '.$this->end_year;
+    }
 
     public static function getCount() {
         $result = DataBase::query('SELECT COUNT(*) AS seriescount'.
@@ -254,24 +273,24 @@ class Series
     //     return $data['id'];
     // }
 
-    // public static function deleteMovie ($id) {
-    //     $result = Series::checkExistingID($id);
-    //     if ( $result === NULL ) {
-    //         return NULL;
-    //     } else if ( !$result ) {
-    //         return false;
-    //     }
-    //     $result = DataBase::query('DELETE FROM '.DataBase::$series_table_name.
-    //                               ' WHERE id=:id',
-    //                               array(':id'=>$id)
-    //                             );
-    //     if(!$result['executed']){
-    //         // echo "ERROR: Not able to execute SQL<br>";
-    //         // print_r($result['errorInfo']);
-    //         return NULL;
-    //     }
-    //     return true;
-    // }
+    public static function deleteSeries ($id) {
+        $result = Series::checkExistingID($id);
+        if ( $result === NULL ) {
+            return NULL;
+        } else if ( !$result ) {
+            return false;
+        }
+        $result = DataBase::query('DELETE FROM '.DataBase::$series_table_name.
+                                  ' WHERE id=:id',
+                                  array(':id'=>$id)
+                                );
+        if(!$result['executed']){
+            // echo "ERROR: Not able to execute SQL<br>";
+            // print_r($result['errorInfo']);
+            return NULL;
+        }
+        return true;
+    }
 
     // public static function getUnwatchedMoviesID_Poster ($limit) {
     //     $result = DataBase::query('SELECT id,poster '.

@@ -53,12 +53,12 @@
         // Check if done or ongoing:
         if ($_POST['ongoing'] == 1) {
             if ($filter_string === '') {
-                $watchFilter = ' WHERE (';
+                $ongoingFilter = ' WHERE (';
             }
             else {
-                $watchFilter = ' AND (';
+                $ongoingFilter = ' AND (';
             }
-            $watchFilter = $watchFilter.
+            $ongoingFilter = $ongoingFilter.
                                     ' (seen_episodes < total_episodes)'.
                                     ' OR ( end_year IS NULL )'.
                                 ' )';
@@ -67,7 +67,7 @@
         $result = DataBase::query('SELECT *'.
                                  ' FROM '.DataBase::$series_table_name.
                                  $filter_string.
-                                 $watchFilter.
+                                 $ongoingFilter.
                                  ' LIMIT '.((int)$_POST['listCount']).',25',
                                  $filter_array
                                 );
@@ -87,9 +87,9 @@
     // // To add a new movie
     // if ( isset( $_POST['addMovie'] ) ) {
     //     $formData = json_decode(urldecode($_POST['addMovie']),True);
-    //     $result = Movie::addMovieToDB($formData);
+    //     $result = Series::addMovieToDB($formData);
     //     if ( ($result!==NULL) && ($result!==false) ) {
-    //         $result=NetworkVariables::$home_path.'Movies/'.$result;
+    //         $result=NetworkVariables::$home_path.'Series/'.$result;
     //     }
     //     echo json_encode($result);
     // }
@@ -97,20 +97,20 @@
     // // To edit a movie
     // if ( isset( $_POST['editMovie'] ) ) {
     //     $formData = json_decode(urldecode($_POST['editMovie']),True);
-    //     $result = Movie::updateMovieInDB($formData);
+    //     $result = Series::updateMovieInDB($formData);
     //     if ( ($result!==NULL) && ($result!==false) ) {
-    //         $result=NetworkVariables::$home_path.'Movies/'.$result;
+    //         $result=NetworkVariables::$home_path.'Series/'.$result;
     //     }
     //     echo json_encode($result);
     // }
-    //
-    // // To delete a movie
-    // if ( isset( $_POST['deleteMovie'] ) ) {
-    //     $result = Movie::deleteMovie($_POST['deleteMovie']);
-    //     if ( ($result!==NULL) && ($result!==false) ) {
-    //         $result=NetworkVariables::$home_path.'Movies';
-    //     }
-    //     echo json_encode($result);
-    // }
+
+    // To delete a movie
+    if ( isset( $_POST['deleteSeries'] ) ) {
+        $result = Series::deleteSeries($_POST['deleteSeries']);
+        if ( ($result!==NULL) && ($result!==false) ) {
+            $result=NetworkVariables::$home_path.'Series';
+        }
+        echo json_encode($result);
+    }
 
 ?>

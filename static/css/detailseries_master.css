@@ -1,4 +1,4 @@
-.movieCard {
+.seriesCard {
     background-color: #4C5C68;
     padding-bottom: 30px;
     border-radius: 5px;
@@ -8,6 +8,7 @@
 
 .namePlate {
     padding: 20px 15px 5px 15px;
+    margin-bottom: -10px;
 }
 
 .Title {
@@ -17,15 +18,7 @@
     font-size: 50px;
 }
 
-.Subtitle {
-    display: block;
-    margin-top: -10px;
-    font-family: 'Strait', sans-serif;
-    color: #BFC0C0;
-    font-size: 25px;
-}
-
-.movieInfo {
+.seriesInfo {
     line-height: 38px;
     text-align: right;
     font-family: 'Strait', sans-serif;
@@ -34,7 +27,7 @@
     margin: 0;
 }
 
-.movieValue {
+.seriesValue {
     line-height: 38px;
     font-family: 'Merriweather';
     color: #DCDCDD;
@@ -42,7 +35,7 @@
     margin: 0;
 }
 
-.movieValue a:hover {
+.seriesValue a:hover {
     text-decoration: underline;
 }
 
