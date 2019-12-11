@@ -84,27 +84,27 @@
         }
     }
 
-    // // To add a new movie
-    // if ( isset( $_POST['addMovie'] ) ) {
-    //     $formData = json_decode(urldecode($_POST['addMovie']),True);
-    //     $result = Series::addMovieToDB($formData);
-    //     if ( ($result!==NULL) && ($result!==false) ) {
-    //         $result=NetworkVariables::$home_path.'Series/'.$result;
-    //     }
-    //     echo json_encode($result);
-    // }
-    //
-    // // To edit a movie
-    // if ( isset( $_POST['editMovie'] ) ) {
-    //     $formData = json_decode(urldecode($_POST['editMovie']),True);
-    //     $result = Series::updateMovieInDB($formData);
-    //     if ( ($result!==NULL) && ($result!==false) ) {
-    //         $result=NetworkVariables::$home_path.'Series/'.$result;
-    //     }
-    //     echo json_encode($result);
-    // }
+    // To add a new series
+    if ( isset( $_POST['addSeries'] ) ) {
+        $formData = json_decode(urldecode($_POST['addSeries']),True);
+        $result = Series::addSeriesToDB($formData);
+        if ( ($result!==NULL) && ($result!==false) ) {
+            $result=NetworkVariables::$home_path.'Series/'.$result;
+        }
+        echo json_encode($result);
+    }
 
-    // To delete a movie
+    // To edit a series
+    if ( isset( $_POST['editSeries'] ) ) {
+        $formData = json_decode(urldecode($_POST['editSeries']),True);
+        $result = Series::updateSeriesInDB($formData);
+        if ( ($result!==NULL) && ($result!==false) ) {
+            $result=NetworkVariables::$home_path.'Series/'.$result;
+        }
+        echo json_encode($result);
+    }
+
+    // To delete a series
     if ( isset( $_POST['deleteSeries'] ) ) {
         $result = Series::deleteSeries($_POST['deleteSeries']);
         if ( ($result!==NULL) && ($result!==false) ) {

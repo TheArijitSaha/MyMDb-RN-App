@@ -61,9 +61,9 @@
                         <i class="fa fa-trash deleteBtn" aria-hidden="true"></i>
                         <a href="<?php echo $current_series->getId().'/edit' ?>"><i class="fa fa-edit editBtn"></i></a>
                         <?php if ($current_series->watched()) { ?>
-                            <span class="watchedText watchDisp">Seen</span>
+                            <span class="watchDisp watchedText">Seen</span>
                         <?php } else { ?>
-                            <span class="unwatchedText watchDisp">Ongoing</span>
+                            <span class="watchDisp unwatchedText">Ongoing</span>
                         <?php } ?>
                     </div>
                 </div>

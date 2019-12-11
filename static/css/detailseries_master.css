@@ -44,12 +44,21 @@
     line-height: inherit;
 }
 
+.watchDisp {
+    font-size: 30px;
+    font-family: 'Special Elite';
+    margin: 35px 0 0 0;
+    float: right;
+    display: inline-block;
+}
+
 .watchedText {
     color: lightgreen;
 }
 
 .unwatchedText {
     color: #A21200;
+    font-size: 25px;
 }
 
 .deleteBtn {
@@ -64,14 +73,6 @@
 .editBtn {
     font-size: 30px;
     margin: 38px 0 0 0;
-    display: inline-block;
-}
-
-.watchDisp {
-    font-size: 30px;
-    font-family: 'Special Elite';
-    margin: 35px 0 0 0;
-    float: right;
     display: inline-block;
 }
 

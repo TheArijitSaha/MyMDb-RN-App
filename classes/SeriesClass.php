@@ -178,100 +178,133 @@ class Series
         return false;
     }
 
-    // public static function addSeriesToDB ($data) {
-    //     $result = Series::checkExistingPK($data['title'],$data['start_year']);
-    //     if ( $result === NULL ) {
-    //         return NULL;
-    //     } else if ( $result ) {
-    //         return false;
-    //     }
-    //     if ( !is_numeric($data['start_year'])) {
-    //         return NULL;
-    //     }
-    //     if ( !is_numeric($data['runtime'])) {
-    //         $data['runtime'] = 0;
-    //     }
-    //     $result = DataBase::query('INSERT INTO '.DataBase::$series_table_name.
-    //                               ' VALUES ('.
-    //                                   ' NULL, '.
-    //                                   ' :title,'.
-    //                                   ' :subtitle,'.
-    //                                   ' :release_year,'.
-    //                                   ' :director,'.
-    //                                   ' :cast,'.
-    //                                   ' :genre,'.
-    //                                   ' :imdb_rating,'.
-    //                                   ' :imdb_link,'.
-    //                                   ' :rotten_tomatoes_rating,'.
-    //                                   ' :runtime,'.
-    //                                   ' :seen,'.
-    //                                   ' :poster'.
-    //                               ' )',
-    //                               array(':title'=>$data['title'],
-    //                                     ':subtitle'=>$data['subtitle'],
-    //                                     ':release_year'=>$data['releaseyear'],
-    //                                     ':director'=>$data['director'],
-    //                                     ':cast'=>$data['cast'],
-    //                                     ':genre'=>$data['genre'],
-    //                                     ':imdb_rating'=>$data['imdb_rating'],
-    //                                     ':imdb_link'=>$data['imdb_link'],
-    //                                     ':rotten_tomatoes_rating'=>$data['rotten_tomatoes_rating'],
-    //                                     ':runtime'=>$data['runtime'],
-    //                                     ':seen'=>$data['seen'],
-    //                                     ':poster'=>$data['poster']
-    //                                 )
-    //                             );
-    //     if(!$result['executed']){
-    //         // echo "ERROR: Not able to execute SQL<br>";
-    //         // print_r($result['errorInfo']);
-    //         return NULL;
-    //     }
-    //     return $result['lastID'];
-    // }
+    public static function addSeriesToDB ($data) {
+        $result = Series::checkExistingPK($data['title'],$data['start_year']);
+        if ( $result === NULL ) {
+            return NULL;
+        } else if ( $result ) {
+            return false;
+        }
+        if ( !is_numeric($data['start_year'])) {
+            return NULL;
+        }
+        if ( !is_numeric($data['avg_length'])) {
+            $data['avg_length'] = 0;
+        }
+        if ( !is_numeric($data['end_year'])) {
+            $data['end_year'] = NULL;
+        }
+        if ( !is_numeric($data['seen_episodes'])) {
+            $data['seen_episodes'] = 0;
+        }
+        if ( !is_numeric($data['total_episodes'])) {
+            $data['total_episodes'] = 0;
+        }
+        if ( !is_numeric($data['total_seasons'])) {
+            $data['total_seasons'] = 0;
+        }
+        $result = DataBase::query('INSERT INTO '.DataBase::$series_table_name.
+                                  ' VALUES ('.
+                                      ' NULL, '.
+                                      ' :title,'.
+                                      ' :start_year,'.
+                                      ' :end_year,'.
+                                      ' :creators,'.
+                                      ' :cast,'.
+                                      ' :genre,'.
+                                      ' :total_seasons,'.
+                                      ' :total_episodes,'.
+                                      ' :avg_runtime,'.
+                                      ' :imdb_rating,'.
+                                      ' :imdb_link,'.
+                                      ' :rotten_tomatoes_rating,'.
+                                      ' :seen_episodes,'.
+                                      ' :poster'.
+                                  ' )',
+                                  array(':title'=>$data['title'],
+                                        ':start_year'=>$data['start_year'],
+                                        ':end_year'=>$data['end_year'],
+                                        ':creators'=>$data['creators'],
+                                        ':cast'=>$data['cast'],
+                                        ':genre'=>$data['genre'],
+                                        ':total_seasons'=>$data['total_seasons'],
+                                        ':total_episodes'=>$data['total_episodes'],
+                                        ':avg_runtime'=>$data['avg_length'],
+                                        ':imdb_rating'=>$data['imdb_rating'],
+                                        ':imdb_link'=>$data['imdb_link'],
+                                        ':rotten_tomatoes_rating'=>$data['rotten_tomatoes_rating'],
+                                        ':seen_episodes'=>$data['seen_episodes'],
+                                        ':poster'=>$data['poster']
+                                    )
+                                );
+        if(!$result['executed']){
+            // echo "ERROR: Not able to execute SQL<br>";
+            // print_r($result['errorInfo']);
+            return NULL;
+        }
+        return $result['lastID'];
+    }
 
-    // public static function updateMovieInDB ($data) {
-    //     $result = Series::checkExistingID($data['id']);
-    //     if ( $result === NULL ) {
-    //         return NULL;
-    //     } else if ( !$result ) {
-    //         return false;
-    //     }
-    //     if ( !is_numeric($data['runtime'])) {
-    //         $data['runtime'] = 0;
-    //     }
-    //     $result = DataBase::query('UPDATE '.DataBase::$series_table_name.
-    //                               ' SET'.
-    //                                 ' subtitle = :subtitle,'.
-    //                                 ' director = :director,'.
-    //                                 ' cast = :cast,'.
-    //                                 ' genre = :genre,'.
-    //                                 ' imdb_rating = :imdb_rating,'.
-    //                                 ' imdb_link = :imdb_link,'.
-    //                                 ' rotten_tomatoes_rating = :rotten_tomatoes_rating,'.
-    //                                 ' runtime = :runtime,'.
-    //                                 ' seen = :seen,'.
-    //                                 ' poster = :poster'.
-    //                               ' WHERE id=:id',
-    //                               array(':subtitle'=>$data['subtitle'],
-    //                                     ':director'=>$data['director'],
-    //                                     ':cast'=>$data['cast'],
-    //                                     ':genre'=>$data['genre'],
-    //                                     ':imdb_rating'=>$data['imdb_rating'],
-    //                                     ':imdb_link'=>$data['imdb_link'],
-    //                                     ':rotten_tomatoes_rating'=>$data['rotten_tomatoes_rating'],
-    //                                     ':runtime'=>$data['runtime'],
-    //                                     ':seen'=>$data['seen'],
-    //                                     ':poster'=>$data['poster'],
-    //                                     ':id'=>$data['id']
-    //                                 )
-    //                             );
-    //     if(!$result['executed']){
-    //         // echo "ERROR: Not able to execute SQL<br>";
-    //         // print_r($result['errorInfo']);
-    //         return NULL;
-    //     }
-    //     return $data['id'];
-    // }
+    public static function updateSeriesInDB ($data) {
+        $result = Series::checkExistingID($data['id']);
+        if ( $result === NULL ) {
+            return NULL;
+        } else if ( !$result ) {
+            return false;
+        }
+        if ( !is_numeric($data['avg_length'])) {
+            $data['avg_length'] = 0;
+        }
+        if ( !is_numeric($data['end_year'])) {
+            $data['end_year'] = NULL;
+        }
+        if ( !is_numeric($data['seen_episodes'])) {
+            $data['seen_episodes'] = 0;
+        }
+        if ( !is_numeric($data['total_episodes'])) {
+            $data['total_episodes'] = 0;
+        }
+        if ( !is_numeric($data['total_seasons'])) {
+            $data['total_seasons'] = 0;
+        }
+
+        $result = DataBase::query('UPDATE '.DataBase::$series_table_name.
+                                  ' SET'.
+                                    ' end_year = :end_year,'.
+                                    ' creators = :creators,'.
+                                    ' cast = :cast,'.
+                                    ' genre = :genre,'.
+                                    ' total_seasons = :total_seasons,'.
+                                    ' total_episodes = :total_episodes,'.
+                                    ' seen_episodes = :seen_episodes,'.
+                                    ' imdb_rating = :imdb_rating,'.
+                                    ' imdb_link = :imdb_link,'.
+                                    ' rotten_tomatoes_rating = :rotten_tomatoes_rating,'.
+                                    ' avg_runtime = :avg_runtime,'.
+                                    ' poster = :poster'.
+                                  ' WHERE id=:id',
+                                  array(':end_year'=>$data['end_year'],
+                                        ':creators'=>$data['creators'],
+                                        ':cast'=>$data['cast'],
+                                        ':genre'=>$data['genre'],
+                                        ':total_seasons'=>$data['total_seasons'],
+                                        ':total_episodes'=>$data['total_episodes'],
+                                        ':seen_episodes'=>$data['seen_episodes'],
+                                        ':imdb_rating'=>$data['imdb_rating'],
+                                        ':imdb_link'=>$data['imdb_link'],
+                                        ':rotten_tomatoes_rating'=>$data['rotten_tomatoes_rating'],
+                                        ':avg_runtime'=>$data['avg_length'],
+                                        ':poster'=>$data['poster'],
+                                        ':id'=>$data['id']
+                                    )
+                                );
+        if(!$result['executed']){
+            // echo "ERROR: Not able to execute SQL<br>";
+            // print_r($result['errorInfo']);
+            return NULL;
+        }
+        return $data['id'];
+    }
 
     public static function deleteSeries ($id) {
         $result = Series::checkExistingID($id);
@@ -295,7 +328,7 @@ class Series
     // public static function getUnwatchedMoviesID_Poster ($limit) {
     //     $result = DataBase::query('SELECT id,poster '.
     //                               ' FROM '.DataBase::$series_table_name.
-    //                               ' WHERE seen=FALSE'.
+    //                               ' WHERE seen_episodes=FALSE'.
     //                               ' ORDER BY rotten_tomatoes_rating DESC'.
     //                               ' LIMIT '.(int)$limit
     //                             );
