@@ -3,7 +3,7 @@
 function construct_creators_string(creators) {
     creators_array = creators.split(', ');
     f = "";
-    for (x in creators_array) {
+    for (let x in creators_array) {
         f+='<a href="/MyMDb/Series/Creator/' + encodeURIComponent(creators_array[x]) + '">' + creators_array[x] + '</a>';
         if (x < creators_array.length-1) {
             f+=', ';
@@ -15,7 +15,7 @@ function construct_creators_string(creators) {
 function construct_genre_string(genres) {
     genre_array = genres.split(', ');
     f = "";
-    for (x in genre_array) {
+    for (let x in genre_array) {
         f+='<a href="/MyMDb/Series/Genre/' + encodeURIComponent(genre_array[x]) + '">' + genre_array[x] + '</a>';
         if (x < genre_array.length-1) {
             f+=', ';
@@ -31,8 +31,12 @@ function construct_year_string(start_year,end_year) {
     return parseInt(start_year) + '-' + parseInt(end_year);
 }
 
+function perc_progress(series) {
+    console.log(series);
+    return Math.round((parseInt(series.seen_episodes)/parseInt(series.total_episodes))*100);
+}
+
 function construct_series_string(series) {
-    f="";
     f='<div class="series-node">';
     f+= '<div class="series-first-line">' +
             '<span class="series-id" hidden>' + series.id + '</span>' +
@@ -48,10 +52,11 @@ function construct_series_string(series) {
             '<span class="series-cast">' + series.cast + '</span>' +
             '<span class="series-genre">' + construct_genre_string(series.genre) + '</span>' +
         '</div>' +
+        '<div class="series-progress">' +
+        '</div>' +
       '</div>';
     return f;
 }
-
 
 $(document).ready(function(){
     listCount = 0;
@@ -69,9 +74,15 @@ $(document).ready(function(){
             // If there are no posts
         }
 
-        for ( x in series_list.data ) {
-            series_node = $(construct_series_string(series_list.data[x]));
+        for (let x in series_list.data ) {
+            let series_node = $(construct_series_string(series_list.data[x]));
             $('.seriesList').append(series_node);
+            let perc = perc_progress(series_list.data[x]);
+            if (perc > 0) {
+                series_node.children('.series-progress').css('border-top-left-radius','0');
+                series_node.children('.series-progress').css('border-bottom-left-radius','0');
+            }
+            series_node.children('.series-progress').css('left',perc_progress(series_list.data[x])+'%');
         }
         listCount += series_list.data.length;
     }
