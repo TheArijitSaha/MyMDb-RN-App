@@ -33,7 +33,7 @@
         }
         // By Year
         else if ( $_POST['filterOption'] === "Year" ) {
-            $filter_string = ' WHERE ( (start_year <= :year) AND (end_year >= :year) )';
+            $filter_string = ' WHERE ( (start_year <= :year) AND ( (end_year IS NULL) OR (end_year >= :year) ) )';
             $filter_array = array(':year' => $_POST['filterString'].'%');
         }
         // By Genre

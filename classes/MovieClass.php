@@ -269,7 +269,7 @@ class Movie
         $result = DataBase::query('SELECT id,poster '.
                                   ' FROM '.DataBase::$movies_table_name.
                                   ' WHERE seen=FALSE'.
-                                  ' ORDER BY rotten_tomatoes_rating DESC'.
+                                  ' ORDER BY rotten_tomatoes_rating*imdb_rating DESC'.
                                   ' LIMIT '.(int)$limit
                                 );
         if(!$result['executed']){

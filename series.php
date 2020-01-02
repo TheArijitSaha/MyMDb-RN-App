@@ -89,6 +89,11 @@
                         </div>
                     </div>
                 </div>
+                <!-- <div class="col-2">
+                    <div class="trippleToggle">
+
+                    </div>
+                </div> -->
                 <div class="col">
                     <a href="/MyMDb/Series/Add" class="btn btn-outline-danger addButton">Add</a>
                 </div>
