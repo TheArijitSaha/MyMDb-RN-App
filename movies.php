@@ -44,7 +44,7 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-4 info">
+                <div class="col-4 info" style="padding-left: 10px;padding-right: 10px;">
                     <div class="stats">
                         <span class="watchBanner">WatchCounter:</span>
                         <div class="filmStat">
