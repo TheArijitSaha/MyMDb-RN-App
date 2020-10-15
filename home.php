@@ -1,19 +1,16 @@
 <!DOCTYPE html>
-
-<?php
-    require_once('classes/DataBase.php');
-    // require_once('classes/variables.php');
-    require_once('classes/Nav.php');
-    require_once('classes/MovieClass.php');
-    $suggestion_times = 3;
-    $suggestion_no = 5;
-    $suggestion_array = Movie::getUnwatchedMoviesID_Poster($suggestion_no * $suggestion_times);
-    while (count($suggestion_array) < $suggestion_no) {
-        $suggestion_array->append( $suggestion_array[0] );
-    }
-?>
-
 <html lang="en" dir="ltr">
+    <?php
+        require_once('classes/Nav.php');
+        require_once('classes/MovieClass.php');
+        $suggestion_times = 3;
+        $suggestion_no = 5;
+        $suggestion_array = Movie::getUnwatchedMoviesID_Poster($suggestion_no * $suggestion_times);
+        while (count($suggestion_array) < $suggestion_no * $suggestion_times) {
+            $suggestion_array->append( $suggestion_array[0] );
+        }
+    ?>
+
     <head>
         <meta charset="utf-8">
         <title>MyMDb | Home</title>
@@ -25,30 +22,38 @@
     </head>
     <body>
         <!-- Navbar Begins-->
-        <?php echo Nav::insertNavbar('Movies'); ?>
+        <?php echo Nav::insertNavbar(); ?>
         <!-- Navbar Ends-->
 
         <p></p>
 
         <div class="container">
             <div class="row">
+                <div class="nextPreviousButtonDiv">
+                  <button type="button" name="previousButton">&#8249;</button>
+                </div>
+
                 <?php for ($i=0; $i < $suggestion_no; $i++) { ?>
                     <div class="col-lg">
                         <div class="envelope3d">
                             <div class="flexCenterRow inner3d">
-                                <a class="flexCenterRow suggetLink sug0" href="<?php echo '/MyMDb/Movies/'.$suggestion_array[$i]['id'] ?>">
+                                <a class="flexCenterRow suggetLink sug0" href="<?php echo '/MyMDb/Movies/'.$suggestion_array[$i]['id'] ?>" title = "<?php echo $suggestion_array[$i]['title'] ?>">
                                     <img class="suggestImg" src="<?php echo $suggestion_array[$i]['poster']; ?>">
                                 </a>
-                                <a class="flexCenterRow suggetLink sug1" href="<?php echo '/MyMDb/Movies/'.$suggestion_array[$i+5]['id'] ?>">
+                                <a class="flexCenterRow suggetLink sug1" href="<?php echo '/MyMDb/Movies/'.$suggestion_array[$i+5]['id'] ?>" title = "<?php echo $suggestion_array[$i+5]['title'] ?>">
                                     <img class="suggestImg" src="<?php echo $suggestion_array[$i+5]['poster']; ?>">
                                 </a>
-                                <a class="flexCenterRow suggetLink sug2" href="<?php echo '/MyMDb/Movies/'.$suggestion_array[$i+10]['id'] ?>">
+                                <a class="flexCenterRow suggetLink sug2" href="<?php echo '/MyMDb/Movies/'.$suggestion_array[$i+10]['id'] ?>" title = "<?php echo $suggestion_array[$i+10]['title'] ?>">
                                     <img class="suggestImg" src="<?php echo $suggestion_array[$i+10]['poster']; ?>">
                                 </a>
                             </div>
                         </div>
                     </div>
                 <?php } ?>
+
+                <div class="nextPreviousButtonDiv">
+                  <button type="button" name="nextButton">&#8250;</button>
+                </div>
             </div>
         </div>
 

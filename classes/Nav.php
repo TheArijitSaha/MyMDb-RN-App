@@ -5,7 +5,7 @@ require_once('variables.php');
 
 class Nav
 {
-    public static function insertNavbar($pagename)
+    public static function insertNavbar($pagename='')
     {
         $retString='<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
                         <a class="navbar-brand" href="'.NetworkVariables::$home_path.'">MyMDb</a>

@@ -1,102 +1,102 @@
 <?php
 require_once('DataBase.php');
 
-class Movie
-{
-    private $exists;
-    private $id;
-    private $title;
-    private $subtitle;
-    private $release_year;
-    private $director;
-    private $cast;
-    private $genre;
-    private $imdb_rating;
-    private $rotten_tomatoes_rating;
-    private $runtime;
-    private $poster;
-    private $seen;
+/**
+ * Movies Table Structure:
+ * `id` int(10) NOT NULL AUTO_INCREMENT,
+ * `title` varchar(100) NOT NULL,
+ * `subtitle` varchar(100) DEFAULT NULL,
+ * `release_year` int(10) NOT NULL,
+ * `director` varchar(100) DEFAULT NULL,
+ * `cast` varchar(256) DEFAULT NULL,
+ * `genre` varchar(256) DEFAULT NULL,
+ * `imdb_rating` DECIMAL(3,1) DEFAULT NULL,
+ * `imdb_link` varchar(256) DEFAULT NULL,
+ * `rotten_tomatoes_rating` int(10) DEFAULT NULL,
+ * `runtime` int(10) DEFAULT NULL,
+ * `seen` BOOLEAN DEFAULT FALSE,
+ * `poster` varchar(256) DEFAULT NULL,
+ * PRIMARY KEY (`title`,`release_year`),
+ * UNIQUE KEY `id` (`id`)
+ */
+class Movie {
+  private $exists;
+  private $id;
+  private $title;
+  private $subtitle;
+  private $release_year;
+  private $director;
+  private $cast;
+  private $genre;
+  private $imdb_rating;
+  private $rotten_tomatoes_rating;
+  private $runtime;
+  private $poster;
+  private $seen;
 
-    public function __construct($id) {
-        $id = (int)$id;
-        $result = DataBase::query('SELECT *'.
-                                  ' FROM '.DataBase::$movies_table_name.
-                                  ' WHERE id=:id',
-                                    array(':id'=>$id) ) ['data'];
+  public function __construct($id) {
+    $id = (int)$id;
+    $result = DataBase::query('SELECT *'.
+                              ' FROM '.DataBase::$movies_table_name.
+                              ' WHERE id=:id',
+                              array(':id'=>$id) ) ['data'];
 
-        if ( count($result)===0 ) {
-            $this->exists = false;
-            $this->id = NULL;
-            $this->title = NULL;
-            $this->subtitle = NULL;
-            $this->release_year = NULL;
-            $this->director = NULL;
-            $this->cast = NULL;
-            $this->genre = NULL;
-            $this->imdb_rating = NULL;
-            $this->imdb_link = NULL;
-            $this->rotten_tomatoes_rating = NULL;
-            $this->runtime = NULL;
-            $this->poster = NULL;
-            $this->seen = NULL;
-            return;
-        }
-        $thismovie=$result[0];
-
-        $this->exists = true;
-        $this->id = $thismovie['id'];
-        $this->title = $thismovie['title'];
-        $this->subtitle = $thismovie['subtitle'];
-        $this->release_year = $thismovie['release_year'];
-        $this->director = $thismovie['director'];
-        $this->genre = $thismovie['genre'];
-        $this->cast = $thismovie['cast'];
-        $this->imdb_rating = $thismovie['imdb_rating'];
-        $this->imdb_link = $thismovie['imdb_link'];
-        $this->rotten_tomatoes_rating = $thismovie['rotten_tomatoes_rating'];
-        $this->runtime = $thismovie['runtime'];
-        $this->poster = $thismovie['poster'];
-        $this->seen = $thismovie['seen'];
+    if (count($result) === 0) {
+        $this->exists = false;
+        $this->id = NULL;
+        $this->title = NULL;
+        $this->subtitle = NULL;
+        $this->release_year = NULL;
+        $this->director = NULL;
+        $this->cast = NULL;
+        $this->genre = NULL;
+        $this->imdb_rating = NULL;
+        $this->imdb_link = NULL;
+        $this->rotten_tomatoes_rating = NULL;
+        $this->runtime = NULL;
+        $this->poster = NULL;
+        $this->seen = NULL;
+        return;
     }
 
-    // CREATE TABLE Movies(
-    //     `id` int(10) NOT NULL AUTO_INCREMENT,
-    //     `title` varchar(100) NOT NULL,
-    //     `subtitle` varchar(100) DEFAULT NULL,
-    //     `release_year` int(10) NOT NULL,
-    //     `director` varchar(100) DEFAULT NULL,
-    //     `cast` varchar(256) DEFAULT NULL,
-    //     `genre` varchar(256) DEFAULT NULL,
-    //     `imdb_rating` DECIMAL(3,1) DEFAULT NULL,
-    //     `imdb_link` varchar(256) DEFAULT NULL,
-    //     `rotten_tomatoes_rating` int(10) DEFAULT NULL,
-    //     `runtime` int(10) DEFAULT NULL,
-    //     `seen` BOOLEAN DEFAULT FALSE,
-    //     `poster` varchar(256) DEFAULT NULL,
-    //     PRIMARY KEY (`title`,`release_year`),
-    //     UNIQUE KEY `id` (`id`)
-    // );
+    $thismovie = $result[0];
 
-    public function isReal() {
-        return $this->exists;
-    }
+    $this->exists = true;
+    $this->id = $thismovie['id'];
+    $this->title = $thismovie['title'];
+    $this->subtitle = $thismovie['subtitle'];
+    $this->release_year = $thismovie['release_year'];
+    $this->director = $thismovie['director'];
+    $this->genre = $thismovie['genre'];
+    $this->cast = $thismovie['cast'];
+    $this->imdb_rating = $thismovie['imdb_rating'];
+    $this->imdb_link = $thismovie['imdb_link'];
+    $this->rotten_tomatoes_rating = $thismovie['rotten_tomatoes_rating'];
+    $this->runtime = $thismovie['runtime'];
+    $this->poster = $thismovie['poster'];
+    $this->seen = $thismovie['seen'];
+  }
 
-    public function getId() {return $this->id;}
-    public function getTitle() {return $this->title;}
-    public function getSubtitle() {return $this->subtitle;}
-    public function getReleaseYear() {return $this->release_year;}
-    public function getDirector() {return $this->director;}
-    public function getCast() {return $this->cast;}
-    public function getGenre() {return $this->genre;}
-    public function getIMDbRating() {return $this->imdb_rating;}
-    public function getIMDbLink() {return $this->imdb_link;}
-    public function getRottenTomatoesRating() {return $this->rotten_tomatoes_rating;}
-    public function getRuntime() {return $this->runtime;}
-    public function getPoster() {return $this->poster;}
-    public function watched() {
-        if($this->seen == 0) return false;
-        return true;
-    }
+  public function isReal() {
+      return $this->exists;
+  }
+
+  public function getId() {return $this->id;}
+  public function getTitle() {return $this->title;}
+  public function getSubtitle() {return $this->subtitle;}
+  public function getReleaseYear() {return $this->release_year;}
+  public function getDirector() {return $this->director;}
+  public function getCast() {return $this->cast;}
+  public function getGenre() {return $this->genre;}
+  public function getIMDbRating() {return $this->imdb_rating;}
+  public function getIMDbLink() {return $this->imdb_link;}
+  public function getRottenTomatoesRating() {return $this->rotten_tomatoes_rating;}
+  public function getRuntime() {return $this->runtime;}
+  public function getPoster() {return $this->poster;}
+  public function watched() {
+      if($this->seen == 0) return false;
+      return true;
+  }
 
     public static function getCount() {
         $result = DataBase::query('SELECT COUNT(*) AS filmcount'.
@@ -266,7 +266,7 @@ class Movie
     }
 
     public static function getUnwatchedMoviesID_Poster ($limit) {
-        $result = DataBase::query('SELECT id,poster '.
+        $result = DataBase::query('SELECT id,title,poster '.
                                   ' FROM '.DataBase::$movies_table_name.
                                   ' WHERE seen=FALSE'.
                                   ' ORDER BY rotten_tomatoes_rating*imdb_rating DESC'.

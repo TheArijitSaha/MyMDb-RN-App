@@ -57,13 +57,29 @@ $(document).ready(function(){
     });
 
     var current = 0;
-    function changeSuggestions() {
+    function changeSuggestions(direction = 1, repeatCall = true) {
         $('.sug' + current).css('opacity',0);
         $('.sug' + current).css('z-index',-1);
-        current = (current + 1) % 3;
+
+        if (direction == -1) {
+          current = (current - 1 + 3) % 3;
+        } else {
+          current = (current + 1) % 3;
+        }
         $('.sug' + current).css('opacity',1);
         $('.sug' + current).css('z-index',0);
-        setTimeout(changeSuggestions, 10000);
+
+        if (repeatCall) {
+          setTimeout(changeSuggestions, 10000);
+        }
     }
     setTimeout(changeSuggestions, 10000);
+
+    $('button[name="previousButton"]').on("click", function(event) {
+      changeSuggestions(-1, false);
+    });
+
+    $('button[name="nextButton"]').on("click", function(event) {
+      changeSuggestions(1, false);
+    });
 });

@@ -1,41 +1,54 @@
 .envelope3d {
-    /* This will come into play later */
-    perspective: 40px;
+  /* This will come into play later */
+  perspective: 40px;
 }
 
 .inner3d {
-    height: 250px;
-    /* background-color: white; */
-    transition: transform 0.25s, box-shadow 0.25s;
+  height: 250px;
+  /* background-color: white; */
+  transition: transform 0.25s, box-shadow 0.25s;
 }
 
 .inner3d a {
-    height: inherit;
+  height: inherit;
 }
 
 .suggestImg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-left: -85px;
-    margin-top: -125px;
-    height: inherit;
-    width: 170px;
-    border-radius: 5px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -85px;
+  margin-top: -125px;
+  height: inherit;
+  width: 170px;
+  border-radius: 5px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
 }
 
 .suggestImg:hover {
-    box-shadow: 0 0 18px 1px #66afbf;
+  box-shadow: 0 0 18px 1px #66afbf;
 }
 
 .sug0,.sug1,.sug2 {
-    transition: opacity 2s;
+  transition: opacity 2s;
 }
 
 .sug1, .sug2 {
-    opacity: 0;
-    z-index: -1;
+  opacity: 0;
+  z-index: -1;
+}
+
+.nextPreviousButtonDiv button {
+  border: none;
+  height: 250px;
+  background-color: inherit;
+  font-size: 40px;
+  transition: color 0.3s;
+  outline: none;
+}
+
+.nextPreviousButtonDiv button:hover {
+  color: #39393C;
 }
