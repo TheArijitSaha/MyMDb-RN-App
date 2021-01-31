@@ -296,5 +296,21 @@ class Movie {
         }
     }
 
+    public static function getUnwatchedMovieCount () {
+        $result = DataBase::query('SELECT COUNT(*) AS unseencount'.
+                                 ' FROM '.DataBase::$movies_table_name.
+                                 ' WHERE seen=0');
+        if ($result['executed']===false)
+        {
+            // echo "ERROR: Could not able to execute SQL<br>";
+            // print_r($result['errorInfo']);
+            return NULL;
+        }
+        else
+        {
+            return $result['data'][0];
+        }
+    }
+
 }
 ?>

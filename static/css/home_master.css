@@ -52,3 +52,19 @@
 .nextPreviousButtonDiv button:hover {
   color: #39393C;
 }
+
+.unseenBanner {
+  padding: 20px;
+}
+
+.unseenCount {
+  font-family: 'Special Elite';
+  color: #BC3908;
+  font-size: 26px;
+}
+
+.unseenText {
+  font-family: 'Strait', sans-serif;
+  color: #BFC0C0;
+  font-size: 22px;
+}

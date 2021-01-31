@@ -7,7 +7,7 @@
         $suggestion_no = 5;
         $suggestion_array = Movie::getUnwatchedMoviesID_Poster($suggestion_no * $suggestion_times);
         while (count($suggestion_array) < $suggestion_no * $suggestion_times) {
-            $suggestion_array->append( $suggestion_array[0] );
+            array_push($suggestion_array, $suggestion_array[0]);
         }
     ?>
 
@@ -53,6 +53,13 @@
 
                 <div class="nextPreviousButtonDiv">
                   <button type="button" name="nextButton">&#8250;</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col unseenBanner">
+                    <span class="unseenCount"><?php echo (Movie::getUnwatchedMovieCount())['unseencount']; ?></span>
+                    <span class="unseenText">movies left to watch</span>
                 </div>
             </div>
         </div>
