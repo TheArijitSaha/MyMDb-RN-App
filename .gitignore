@@ -1,2 +1,4 @@
 *.swp
 MyMDbDump.sql
+node_modules/
+dist/
