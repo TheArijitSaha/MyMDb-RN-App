@@ -73,7 +73,7 @@ UserSchema.methods.generateJWT = function generateJWT(): string {
       email: this.email,
       id: this._id,
     },
-    process.env.JWT_SIGN_SECRET || "secret",
+    process.env.JWT_SECRET || "secret",
     {
       expiresIn: "2d",
     }
