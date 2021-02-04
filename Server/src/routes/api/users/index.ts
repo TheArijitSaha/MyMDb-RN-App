@@ -45,10 +45,10 @@ router.post("/login", (req: Request, res: Response, next: NextFunction) => {
       }
 
       if (passportUser) {
-        const user = passportUser;
-        user.token = passportUser.generateJWT();
+        const authenticatedUser = passportUser;
+        authenticatedUser.token = passportUser.generateJWT();
 
-        return res.json({ user: user.toAuthJSON() });
+        return res.json({ user: authenticatedUser.toAuthJSON() });
       }
 
       return res.status(400).json(info);
@@ -67,7 +67,7 @@ router.get(
       )}`
     );
 
-    if (!req.user) {
+    if (!req.payload) {
       // No JWT was given, first login from a device
       return res.json({ error: "No JWT" });
     }
