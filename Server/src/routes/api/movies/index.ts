@@ -11,7 +11,7 @@ const currentRoute = "/api/movies";
 // GET / - fetches list of movies
 router.get(
   "/",
-  // Auth.required,
+  Auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     const defaultLimit = 25;
     const defaultOffset = 0;
