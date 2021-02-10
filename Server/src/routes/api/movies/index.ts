@@ -8,7 +8,7 @@ import Movie from "../../../models/Movie";
 const router = express.Router();
 const currentRoute = "/api/movies";
 
-// GET list of movies
+// GET / - fetches list of movies
 router.get(
   "/",
   Auth.required,
@@ -154,6 +154,41 @@ router.get(
       const data = await query.skip(offset).limit(limit);
       res.json(data);
     } catch (e) {
+      next(e);
+    }
+  }
+);
+
+// PATCH /:id - update a movie
+router.patch(
+  "/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id.toString();
+
+    if (!req.body.movie || !(req.body.movie._id === id)) {
+      res.status(422).json({
+        error:
+          "The Movie object with the unique id must be given to identify it.",
+      });
+      return;
+    }
+
+    let updatedMovie = req.body.movie;
+
+    // Delete title and releaseYear as they should not be edited
+    delete updatedMovie.title;
+    delete updatedMovie.releaseYear;
+
+    try {
+      const data = await Movie.findOneAndUpdate(
+        { _id: updatedMovie._id },
+        { ...updatedMovie },
+        { new: true }
+      );
+
+      res.json(data);
+    } catch (e) {
+      console.error(e);
       next(e);
     }
   }
