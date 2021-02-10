@@ -162,6 +162,7 @@ router.get(
 // PATCH /:id - update a movie
 router.patch(
   "/:id",
+  Auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id.toString();
 
