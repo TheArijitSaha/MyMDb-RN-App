@@ -20,9 +20,13 @@ export default function MoviesStack() {
         name="Movies"
         component={MovieListScreen}
         options={{
-          headerShown: true,
+          // If header is shown in this screen, the flatlist cannot be scrolled
+          // down to the very end, a marginBottom has to be added. If you do
+          // decide to show the header, give necessary marginBottom (~90) to
+          // the main container in MovieListScreen.
+          headerShown: false,
           // headerTransparent: true,
-          headerTitle: "Movies",
+          // headerTitle: "Movies",
           // headerLeft: () => (
           //   <Icon
           //     name="three-bars"

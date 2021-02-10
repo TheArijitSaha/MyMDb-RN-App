@@ -156,19 +156,19 @@ router.get(
 
       switch (req.query.sort) {
         case "releaseYear":
-          query.sort(`${orderString}releaseYear`);
+          query.sort(`${orderString}releaseYear title`);
           break;
         case "rottenTomatoesRating":
-          query.sort(`${orderString}rottenTomatoes.rating`);
+          query.sort(`${orderString}rottenTomatoes.rating title`);
           break;
         case "IMDBRating":
-          query.sort(`${orderString}imdb.rating`);
+          query.sort(`${orderString}imdb.rating title`);
           break;
         case "title":
           query.sort(`${orderString}title`);
           break;
         case "runtime":
-          query.sort(`${orderString}runtime`);
+          query.sort(`${orderString}runtime title`);
           break;
       }
     }
