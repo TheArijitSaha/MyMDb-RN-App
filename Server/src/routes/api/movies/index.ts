@@ -11,7 +11,7 @@ const currentRoute = "/api/movies";
 // GET / - fetches list of movies
 router.get(
   "/",
-  Auth.required,
+  // Auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     const defaultLimit = 25;
     const defaultOffset = 0;
@@ -68,7 +68,7 @@ router.get(
       }
     }
 
-    // Genres Filter
+    // Genre Filter
     if (req.query.genre) {
       try {
         logString += chalk.gray(`, genre=${req.query.genre as string}`);
@@ -148,6 +148,29 @@ router.get(
     let query = Movie.find();
     if (filterArray.length > 0) {
       query = query.and(filterArray);
+    }
+
+    // Apply sort
+    if (req.query.sort) {
+      const orderString = req.query.order === "desc" ? "-" : "";
+
+      switch (req.query.sort) {
+        case "releaseYear":
+          query.sort(`${orderString}releaseYear`);
+          break;
+        case "rottenTomatoesRating":
+          query.sort(`${orderString}rottenTomatoes.rating`);
+          break;
+        case "IMDBRating":
+          query.sort(`${orderString}imdb.rating`);
+          break;
+        case "title":
+          query.sort(`${orderString}title`);
+          break;
+        case "runtime":
+          query.sort(`${orderString}runtime`);
+          break;
+      }
     }
 
     try {
