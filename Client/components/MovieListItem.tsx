@@ -23,6 +23,7 @@ export default class MovieListItem extends PureComponent<MovieListItemProps> {
 
     const styles = StyleSheet.create({
       container: {
+        flex: 1,
         width: "50%",
         height: 280,
         display: "flex",
