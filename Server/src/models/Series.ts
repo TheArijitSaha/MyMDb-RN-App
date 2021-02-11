@@ -18,7 +18,6 @@ export interface SeriesDocument extends Document {
   rottenTomatoes: { rating: number | null };
   seenEpisodes: number;
   poster: string;
-  status: "seen" | "ongoing" | "unseen";
 }
 
 // For model type

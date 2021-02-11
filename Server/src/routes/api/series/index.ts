@@ -135,10 +135,75 @@ router.get(
       query = query.and(filterArray);
     }
 
+    // Apply sort
+    if (req.query.sort) {
+      const orderString = req.query.order === "desc" ? "-" : "";
+
+      switch (req.query.sort) {
+        case "rottenTomatoesRating":
+          query.sort(`${orderString}rottenTomatoes.rating title`);
+          break;
+        case "IMDBRating":
+          query.sort(`${orderString}imdb.rating title`);
+          break;
+        case "title":
+          query.sort(`${orderString}title`);
+          break;
+        case "firstAir":
+          query.sort(`${orderString}timeSpan.start title`);
+          break;
+        case "lastAir":
+          query.sort(`${orderString}timeSpan.end title`);
+          break;
+        case "episodes":
+          query.sort(`${orderString}episodes title`);
+          break;
+        case "seasons":
+          query.sort(`${orderString}seasons title`);
+          break;
+      }
+    }
+
     try {
       const data = await query.skip(offset).limit(limit);
       res.json(data);
     } catch (e) {
+      next(e);
+    }
+  }
+);
+
+// PATCH /:id - update a series
+router.patch(
+  "/:id",
+  Auth.required,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id.toString();
+
+    if (!req.body.series || !(req.body.series._id === id)) {
+      res.status(422).json({
+        error:
+          "The Movie object with the unique id must be given to identify it.",
+      });
+      return;
+    }
+
+    let updatedSeries = req.body.series;
+
+    // Delete title and releaseYear as they should not be edited
+    delete updatedSeries.title;
+    delete updatedSeries.timeSpan.start;
+
+    try {
+      const data = await Series.findOneAndUpdate(
+        { _id: updatedSeries._id },
+        { ...updatedSeries },
+        { new: true }
+      );
+
+      res.json(data);
+    } catch (e) {
+      console.error(e);
       next(e);
     }
   }
