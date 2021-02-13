@@ -18,11 +18,14 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.arijit.mymdb",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       }
     },
+    "privacy": "unlisted",
     "web": {
       "favicon": "./assets/favicon.png"
     }

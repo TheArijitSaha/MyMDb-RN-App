@@ -1,6 +1,5 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 
-// import { StatusBar, setStatusBarStyle } from "expo-status-bar";
 import {
   //   Alert,
   //   Button,
@@ -12,19 +11,22 @@ import {
   View,
 } from "react-native";
 import {
+  createDrawerNavigator,
+  DrawerContentComponentProps,
   DrawerContentScrollView,
-  //   DrawerView,
   DrawerItem,
   DrawerItemList,
-  createDrawerNavigator,
+  //   DrawerView,
 } from "@react-navigation/drawer";
 
 import MoviesStack from "./moviesStack";
-// import ProfileStack from "./profileStack";
 import { AuthContext } from "../contexts/AuthContext";
-// import styles from "../../styles/navigation-styles";
 
-const CustomDrawer = (props) => {
+type CustomDrawerProps = DrawerContentComponentProps<DrawerContentOptions> & {
+  signOutHandler: () => Promise<void>;
+};
+
+const CustomDrawer = (props: CustomDrawerProps) => {
   return (
     <React.Fragment>
       <DrawerContentScrollView {...props}>
@@ -61,26 +63,21 @@ const CustomDrawer = (props) => {
 
 const Drawer = createDrawerNavigator();
 
-export default function QnQDrawer(
-  {
-    /* navigation */
-  }
-) {
-  // const { signOut } = useContext(AuthContext);
+export default function QnQDrawer() {
+  const { signOut } = useContext(AuthContext);
 
   return (
     <Drawer.Navigator
-      drawerContent={CustomDrawer}
+      drawerContent={(props) => (
+        <CustomDrawer {...props} signOutHandler={signOut} />
+      )}
       drawerContentOptions={{
         activeTintColor: "#eb233a",
         inactiveTintColor: "#eb233a",
-        // signOutHandler: signOut,
-        // user: user,
       }}
       drawerPosition="left"
       drawerStyle={styles.drawer}
       drawerType="front"
-      //headerMode="screen"
       initialRouteName="MoviesStack"
     >
       <Drawer.Screen
@@ -88,13 +85,6 @@ export default function QnQDrawer(
         component={MoviesStack}
         options={{ title: "Movies" }}
       />
-      {
-        //   <Drawer.Screen
-        //     name="ProfileStack"
-        //     component={ProfileStack}
-        //     options={{ title: "Profile" }}
-        //   />
-      }
     </Drawer.Navigator>
   );
 }
