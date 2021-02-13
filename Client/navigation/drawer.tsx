@@ -1,22 +1,12 @@
 import React, { useContext } from "react";
 
-import {
-  //   Alert,
-  //   Button,
-  //   Image,
-  //   SafeAreaView,
-  //   ScrollView,
-  StyleSheet,
-  //   Text,
-  View,
-} from "react-native";
+import { Image, SafeAreaView, StyleSheet, View } from "react-native";
 import {
   createDrawerNavigator,
   DrawerContentComponentProps,
   DrawerContentScrollView,
   DrawerItem,
   DrawerItemList,
-  //   DrawerView,
 } from "@react-navigation/drawer";
 
 import MoviesStack from "./moviesStack";
@@ -30,20 +20,12 @@ const CustomDrawer = (props: CustomDrawerProps) => {
   return (
     <React.Fragment>
       <DrawerContentScrollView {...props}>
-        {
-          //         <SafeAreaView style={styles.drawerProfileView}>
-          //           <Image
-          //             source={require("../../assets/avatar-placeholder.jpg")}
-          //             style={styles.drawerProfileImage}
-          //           ></Image>
-          //           <View style={styles.drawerProfileText}>
-          //             <Text style={styles.drawerProfileName}>
-          //               {props.user ? props.user.name : ""}
-          //             </Text>
-          //             <Text style={styles.drawerProfileRating}>rating</Text>
-          //           </View>
-          //         </SafeAreaView>
-        }
+        <SafeAreaView style={styles.drawerBannerView}>
+          <Image
+            source={require("../assets/icon.png")}
+            style={styles.drawerAppImage}
+          ></Image>
+        </SafeAreaView>
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
       <View
@@ -94,33 +76,20 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     width: 300,
   },
-  drawerProfileImage: {
-    borderRadius: 50,
-    height: 60,
-    marginLeft: 18,
-    marginTop: 30,
-    width: 60,
-  },
-  drawerProfileText: {
-    marginLeft: 8,
-    justifyContent: "center",
-  },
-  drawerProfileView: {
+  drawerBannerView: {
     backgroundColor: "black",
-    borderBottomWidth: 1,
-    flexDirection: "row",
+    flexDirection: "column",
     height: 120,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingBottom: 30,
   },
-  drawerProfileName: {
-    color: "white",
-    fontSize: 20,
-    height: 35,
-    paddingLeft: 8,
-  },
-  drawerProfileRating: {
-    color: "gray",
-    fontSize: 15,
-    paddingLeft: 8,
+  drawerAppImage: {
+    borderRadius: 50,
+    height: 100,
+    marginTop: 10,
+    width: 100,
+    marginBottom: -10,
   },
   drawerLogoutItem: {
     color: "white",
