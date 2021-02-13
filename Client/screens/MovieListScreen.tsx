@@ -311,7 +311,7 @@ export default function MovieListScreen({ navigation, route }: Props) {
   };
 
   const changeSearchCriteria = (newCriteria: SearchCriteria) => {
-    // If the criteria changes
+    // If the search criteria changes
     if (newCriteria !== searchCriteria) {
       dispatch({
         type: "CHANGE_SEARCH_CRITERIA",
@@ -331,8 +331,8 @@ export default function MovieListScreen({ navigation, route }: Props) {
   };
 
   const changeSortCriteria = (newCriteria: SortCriteria) => {
-    // If the criteria changes
-    if (newCriteria !== searchCriteria) {
+    // If the sort criteria changes
+    if (newCriteria !== sortCriteria) {
       dispatch({
         type: "CHANGE_SORT_CRITERIA",
         data: { criteria: newCriteria },
