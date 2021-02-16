@@ -39,6 +39,7 @@ type State = {
   readonly sortOrder: SortOrder;
   readonly sortCriteria: SortCriteria;
   readonly isSelectingSortCriteria: boolean;
+  readonly hasMore: boolean;
 };
 
 type Props = StackScreenProps<MoviesStackParamList, "Movies">;
@@ -78,6 +79,7 @@ const initialState: State = {
   sortOrder: "desc",
   sortCriteria: "releaseYear",
   isSelectingSortCriteria: false,
+  hasMore: true,
 };
 
 function reducer(prevState: State, action: Action): State {
@@ -87,6 +89,7 @@ function reducer(prevState: State, action: Action): State {
         ...prevState,
         isLoading: false,
         movies: [...prevState.movies, ...action.data.additionalMovies],
+        hasMore: action.data.additionalMovies.length !== 0,
       };
     case "WAIT_TO_LOAD":
       return {
@@ -101,7 +104,7 @@ function reducer(prevState: State, action: Action): State {
         isSelectingSortCriteria: false,
       };
     case "CLEAR_LIST":
-      return { ...prevState, movies: [] };
+      return { ...prevState, movies: [], hasMore: true };
     case "SINGLE_UPDATE":
       return {
         ...prevState,
@@ -158,6 +161,7 @@ export default function MovieListScreen({ navigation, route }: Props) {
   const [
     {
       movies,
+      hasMore,
       isLoading,
       isSelectingSearchCriteria,
       searchCriteria,
@@ -614,15 +618,17 @@ export default function MovieListScreen({ navigation, route }: Props) {
             data={movies}
             renderItem={renderMovie}
             keyExtractor={(movie: Movie) => movie._id}
-            onEndReached={() =>
-              loadMovies(
-                unseenFilter,
-                searchCriteria,
-                searchString,
-                sortCriteria,
-                sortOrder
-              )
-            }
+            onEndReached={() => {
+              if (hasMore) {
+                loadMovies(
+                  unseenFilter,
+                  searchCriteria,
+                  searchString,
+                  sortCriteria,
+                  sortOrder
+                );
+              }
+            }}
             onEndReachedThreshold={0.1}
             numColumns={2}
             ListFooterComponent={() => (
