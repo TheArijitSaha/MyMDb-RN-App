@@ -560,7 +560,7 @@ export default function MovieDetailScreen({ navigation, route }: Props) {
                     placeholderTextColor="#aaaaaa"
                   />
                 ) : (
-                  movie.rottenTomatoes.rating && (
+                  movie.rottenTomatoes.rating === null && (
                     <Text style={styles.infoText}>
                       {movie.rottenTomatoes.rating}
                     </Text>
