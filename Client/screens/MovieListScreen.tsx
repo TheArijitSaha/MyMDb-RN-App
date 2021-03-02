@@ -408,6 +408,9 @@ export default function MovieListScreen({ navigation, route }: Props) {
           }
           value={searchString}
           onChangeText={handleSearchStringChange}
+          keyboardType={
+            searchCriteria === "releaseYear" ? "number-pad" : "default"
+          }
         />
         <TouchableOpacity onPress={handleUnseenFilterToggle}>
           <Icon
