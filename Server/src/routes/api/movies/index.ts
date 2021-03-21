@@ -1,6 +1,8 @@
 import express, { Request, Response, NextFunction } from "express";
 
+import axios from "axios";
 import chalk from "chalk";
+import { load } from "cheerio";
 
 import Auth from "../../auth";
 import Movie from "../../../models/Movie";
@@ -213,6 +215,85 @@ router.patch(
       res.json(data);
     } catch (e) {
       console.error(e);
+      next(e);
+    }
+  }
+);
+
+// GET /scrape/imdb - fetches scraped data from IMDB
+router.get(
+  "/scrape/imdb",
+  async (req: Request, res: Response, next: NextFunction) => {
+    const link = req.query.link.toString();
+
+    const response = await axios.get(link, {
+      headers: { "Accept-Language": "en-US,en;" },
+    });
+
+    const $ = load(response.data, { xmlMode: true });
+
+    const title = $("div.title_wrapper h1")
+      .eq(0)
+      .text()
+      .trim()
+      .split("&nbsp;")[0]
+      .trim();
+
+    const subtitle = $("div.originalTitle")
+      .eq(0)
+      .text()
+      .trim()
+      .split("(original")[0]
+      .trim();
+
+    let imdbMovie = JSON.parse(
+      $('script[type="application/ld+json"]').eq(0).html()
+    );
+
+    let directors = [];
+    if (Array.isArray(imdbMovie.director)) {
+      for (let dir of imdbMovie.director) {
+        directors.push(dir.name);
+      }
+    } else {
+      directors.push(imdbMovie.director.name);
+    }
+
+    let cast = [];
+    for (let i = 0; i < Math.min(imdbMovie.actor.length, 3); ++i) {
+      cast.push(imdbMovie.actor[i].name);
+    }
+
+    let genres = [];
+    for (let i = 0; i < Math.min(imdbMovie.genre.length, 3); ++i) {
+      genres.push(imdbMovie.genre[i]);
+    }
+
+    let runtimeArray = imdbMovie.duration
+      .substring(2, imdbMovie.duration.length - 1)
+      .split("H");
+    let runtime =
+      runtimeArray.length == 2
+        ? parseInt(runtimeArray[0], 10) * 60 + parseInt(runtimeArray[1], 10)
+        : parseInt(runtimeArray[0], 10);
+
+    const scrapedMovie = {
+      title,
+      subtitle: subtitle.length > 0 ? subtitle : null,
+      releaseYear: parseInt(imdbMovie.datePublished, 10),
+      directors,
+      cast,
+      genres,
+      imdb: {
+        rating: parseFloat(imdbMovie.aggregateRating.ratingValue),
+        link,
+      },
+      runtime,
+    };
+
+    try {
+      res.json(scrapedMovie);
+    } catch (e) {
       next(e);
     }
   }
