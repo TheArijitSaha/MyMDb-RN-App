@@ -224,6 +224,11 @@ router.patch(
 router.get(
   "/scrape/imdb",
   async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.query.link) {
+      res.status(400).send("No link to scrape");
+      return;
+    }
+
     const link = req.query.link.toString();
 
     const response = await axios.get(link, {
