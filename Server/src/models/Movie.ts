@@ -48,20 +48,6 @@ const MovieSchema = new Schema<MovieDocument, MovieModelInterface>(
 
 MovieSchema.index({ title: 1, releaseYear: 1 }, { unique: true });
 
-function handleE11000(error: any, movie: MovieDocument, next: NextFunction) {
-  if (error.name === "MongoError" && error.code === 11000) {
-    next(
-      new Error(
-        `Duplicate Entry: ${movie.title} [${movie.releaseYear}] already exists!`
-      )
-    );
-  } else {
-    next(error);
-  }
-}
-
-MovieSchema.post("save", handleE11000);
-
 // create model for Movies
 const MovieModel: Model<MovieDocument> = model("Movie", MovieSchema, "Movies");
 
