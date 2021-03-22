@@ -7,8 +7,7 @@ interface DrawerContentOptions {
   signOutHandler?: () => Promise<void>;
 }
 
-interface Movie {
-  _id: string;
+interface MovieWithoutID {
   title: string;
   subtitle: string | null;
   releaseYear: number;
@@ -20,4 +19,8 @@ interface Movie {
   runtime: number;
   seen: boolean;
   poster: string;
+}
+
+interface Movie extends MovieWithoutID {
+  _id: string;
 }

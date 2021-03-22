@@ -20,7 +20,7 @@ import { debounce } from "lodash";
 import { API_URL } from "../constants";
 import { AuthContext } from "../contexts/AuthContext";
 import { MoviesStackParamList } from "../navigation/moviesStack";
-import Information from "../components/common/Information";
+import ArrayInformation from "../components/common/ArrayInformation";
 
 type EditedMovie = {
   subtitle: string;
@@ -479,7 +479,7 @@ export default function MovieDetailScreen({ navigation, route }: Props) {
               </View>
             </View>
 
-            <Information
+            <ArrayInformation
               value={isEditing ? editedMovie.directors : movie.directors}
               label="Directed By"
               editMode={isEditing}
@@ -488,7 +488,7 @@ export default function MovieDetailScreen({ navigation, route }: Props) {
               infoDeleteHandlerMaker={directorDeleteHandlerMaker}
             />
 
-            <Information
+            <ArrayInformation
               value={isEditing ? editedMovie.cast : movie.cast}
               label="Starring"
               editMode={isEditing}
@@ -518,7 +518,7 @@ export default function MovieDetailScreen({ navigation, route }: Props) {
               </View>
             </View>
 
-            <Information
+            <ArrayInformation
               value={isEditing ? editedMovie.genres : movie.genres}
               label="Genres"
               editMode={isEditing}
@@ -546,7 +546,7 @@ export default function MovieDetailScreen({ navigation, route }: Props) {
             </View>
 
             <View style={styles.detailView}>
-              {(movie.rottenTomatoes.rating || isEditing) && (
+              {(movie.rottenTomatoes.rating !== null || isEditing) && (
                 <Text style={styles.label}>Tomatometer</Text>
               )}
               <View style={styles.infoView}>
@@ -560,7 +560,7 @@ export default function MovieDetailScreen({ navigation, route }: Props) {
                     placeholderTextColor="#aaaaaa"
                   />
                 ) : (
-                  movie.rottenTomatoes.rating === null && (
+                  movie.rottenTomatoes.rating !== null && (
                     <Text style={styles.infoText}>
                       {movie.rottenTomatoes.rating}
                     </Text>

@@ -1,70 +1,67 @@
 import React from "react";
 
-import {
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
-// import { debounce } from "lodash";
+import { Text, StyleSheet, TextInput, View } from "react-native";
 
 type Props = {
   editMode: boolean;
-  label: string;
-  value: string[];
-  infoAddHandler: () => void;
-  infoChangeHandlerMaker: (index: number) => (text: string) => void;
-  infoDeleteHandlerMaker: (index: number) => () => void;
+  label: string | false;
+  value: string;
+  infoChangeHandler: (text: string) => void;
+  placeholder: string;
+  keyboardType?: "default" | "decimal-pad" | "number-pad";
+  followText?: false | string;
 };
 
 export default function Information({
   editMode,
-  infoAddHandler,
-  infoChangeHandlerMaker,
-  infoDeleteHandlerMaker,
+  infoChangeHandler,
   label,
   value,
+  placeholder,
+  keyboardType,
+  followText = false,
 }: Props) {
-  const isArray = Array.isArray(value);
-
-  const info = editMode
-    ? value.map((val, index) => (
-        <View key={index} style={styles.infoRow}>
-          <TextInput
-            value={val}
-            style={styles.infoText}
-            onChangeText={infoChangeHandlerMaker(index)}
-          />
-          <TouchableOpacity
-            style={styles.deleteInfoIcon}
-            onPress={infoDeleteHandlerMaker(index)}
-          >
-            <Icon name="close-sharp" size={18} color="lightgray" />
-          </TouchableOpacity>
-        </View>
-      ))
-    : value.map((val, index) => (
-        <View key={index} style={styles.infoRow}>
-          <Text style={styles.infoText}>{val}</Text>
-        </View>
-      ));
+  const Input = () => (
+    <TextInput
+      style={
+        followText
+          ? styles.infoTextOpenWidth
+          : [
+              styles.infoText,
+              label ? styles.leftAlignedText : styles.centerAlignedText,
+            ]
+      }
+      value={value}
+      onChangeText={infoChangeHandler}
+      keyboardType={keyboardType ?? "default"}
+      placeholder={placeholder}
+      placeholderTextColor="#555555"
+    />
+  );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
+      {label && <Text style={styles.label}>{label}</Text>}
       <View style={styles.infoView}>
-        {info}
-        {isArray && editMode && (
-          <View style={styles.infoRow}>
-            <TouchableOpacity
-              style={styles.deleteInfoIcon}
-              onPress={infoAddHandler}
-            >
-              <Icon name="add" size={18} color="lightgray" />
-            </TouchableOpacity>
-          </View>
+        {editMode ? (
+          followText ? (
+            <View style={styles.runtimeEditView}>
+              {Input()}
+              <Text style={styles.infoTextOpenWidth}>{followText}</Text>
+            </View>
+          ) : (
+            Input()
+          )
+        ) : (
+          <Text
+            style={[
+              styles.infoText,
+              label ? styles.leftAlignedText : styles.centerAlignedText,
+            ]}
+          >
+            {value}
+            {followText}
+          </Text>
         )}
       </View>
     </View>
@@ -94,28 +91,26 @@ const styles = StyleSheet.create({
     flex: 13,
     paddingRight: 20,
   },
-  infoRow: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
   infoText: {
     padding: 2,
     fontSize: 18,
     color: "#eeeeee",
     fontFamily: "monospace",
   },
-  watchBanner: {
+  leftAlignedText: {
+    textAlign: "left",
+  },
+  centerAlignedText: {
+    textAlign: "center",
+  },
+  infoTextOpenWidth: {
+    padding: 2,
+    fontSize: 18,
+    color: "#eeeeee",
+    fontFamily: "monospace",
+  },
+  runtimeEditView: {
     display: "flex",
-    alignItems: "center",
-  },
-  watchedIcon: {},
-  deleteInfoIcon: {
-    paddingLeft: 5,
-  },
-  editIcon: {
-    position: "absolute",
-    right: 0,
-    paddingRight: 7,
-    paddingTop: 2,
+    flexDirection: "row",
   },
 });
