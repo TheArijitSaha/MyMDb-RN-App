@@ -379,6 +379,17 @@ export default function MovieListScreen({ navigation, route }: Props) {
 
       <View style={styles.banner}>
         <Text style={styles.bannerText}>Movies</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("MovieAdd", {})}
+          style={styles.bannerRight}
+        >
+          <Icon
+            name="add"
+            size={25}
+            color={isSelectingSearchCriteria ? "#3698d6" : "gray"}
+            style={styles.addMovieIcon}
+          />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.searchBar}>
@@ -766,5 +777,14 @@ const styles = StyleSheet.create({
     borderBottomColor: "gray",
     borderWidth: 1,
     margin: 4,
+  },
+  bannerRight: {
+    position: "absolute",
+    right: 0,
+  },
+  addMovieIcon: {
+    paddingHorizontal: 12,
+    paddingVertical: 3,
+    fontFamily: "sans-serif-thin",
   },
 });

@@ -3,12 +3,14 @@ import React from "react";
 // import Icon from "react-native-vector-icons/Octicons";
 import { createStackNavigator } from "@react-navigation/stack";
 
+import MovieAddScreen from "../screens/MovieAddScreen";
 import MovieListScreen from "../screens/MovieListScreen";
 import MovieDetailScreen from "../screens/MovieDetailScreen";
 
 export type MoviesStackParamList = {
   Movies: { singleUpdate: { movie: Movie } } | undefined;
   MovieDetail: { movie: Movie };
+  MovieAdd: {};
 };
 
 const Stack = createStackNavigator<MoviesStackParamList>();
@@ -40,6 +42,13 @@ export default function MoviesStack() {
       <Stack.Screen
         name="MovieDetail"
         component={MovieDetailScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="MovieAdd"
+        component={MovieAddScreen}
         options={{
           headerShown: false,
         }}
