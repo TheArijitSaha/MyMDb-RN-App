@@ -56,8 +56,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     error: err.message,
   });
 
-  console.log(chalk.red(err.message));
-  console.log(err);
+  console.error(err);
   next();
 });
 

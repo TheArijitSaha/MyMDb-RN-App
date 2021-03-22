@@ -184,6 +184,45 @@ router.get(
   }
 );
 
+// POST /:id - create a movie
+router.post(
+  "/",
+  Auth.required,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { movie } = req.body;
+
+    // If any of the two required body parameters (title, releaseYear) are
+    // missing then send Status 422: Unprocessable Entity
+    if (!movie) {
+      res.status(422).json("required body parameter 'movie' missing");
+      return;
+    }
+    if (!movie.title) {
+      res.status(422).json("required movie parameter 'title' missing");
+      return;
+    }
+    if (!movie.releaseYear) {
+      res.status(422).json("required movie parameter 'releaseYear' missing");
+      return;
+    }
+
+    try {
+      const data = await Movie.create({ ...movie });
+
+      res.status(201).json(data);
+    } catch (e) {
+      // If the error is caused due to duplicate movie entry being requested,
+      // return Response Status 409: Conflict
+      if (e.name === "MongoError" && e.code === 11000) {
+        res.status(409).json("Duplicate movie");
+        return;
+      }
+
+      next(e);
+    }
+  }
+);
+
 // PATCH /:id - update a movie
 router.patch(
   "/:id",
