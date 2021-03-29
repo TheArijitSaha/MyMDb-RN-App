@@ -304,13 +304,21 @@ router.get(
     }
 
     let cast = [];
-    for (let i = 0; i < Math.min(imdbMovie.actor.length, 3); ++i) {
-      cast.push(imdbMovie.actor[i].name);
+    if (Array.isArray(imdbMovie.actor)) {
+      for (let i = 0; i < Math.min(imdbMovie.actor.length, 3); ++i) {
+        cast.push(imdbMovie.actor[i].name);
+      }
+    } else {
+      cast.push(imdbMovie.actor.name);
     }
 
     let genres = [];
-    for (let i = 0; i < Math.min(imdbMovie.genre.length, 3); ++i) {
-      genres.push(imdbMovie.genre[i]);
+    if (Array.isArray(imdbMovie.genre)) {
+      for (let i = 0; i < Math.min(imdbMovie.genre.length, 3); ++i) {
+        genres.push(imdbMovie.genre[i]);
+      }
+    } else {
+      genres.push(imdbMovie.genre);
     }
 
     let runtimeArray = imdbMovie.duration
@@ -319,6 +327,8 @@ router.get(
     let runtime =
       runtimeArray.length == 2
         ? parseInt(runtimeArray[0], 10) * 60 + parseInt(runtimeArray[1], 10)
+        : imdbMovie.duration[imdbMovie.duration.length - 1] === "H"
+        ? parseInt(runtimeArray[0], 10) * 60
         : parseInt(runtimeArray[0], 10);
 
     const scrapedMovie = {
