@@ -24,3 +24,20 @@ interface MovieWithoutID {
 interface Movie extends MovieWithoutID {
   _id: string;
 }
+
+interface Series {
+  _id: string;
+  title: string;
+  timeSpan: { start: number; end: number | null };
+  creators: string[];
+  cast: string[];
+  genres: string[];
+  seasons: number[];
+  meanRuntime: number;
+  imdb: { rating: number; link: string };
+  rottenTomatoes: { rating: number | null };
+  seenEpisodes: number;
+  poster: string;
+}
+
+type SeriesWithoutId = Omit<Series, "_id">;

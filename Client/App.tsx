@@ -121,49 +121,47 @@ export default function App() {
     () => ({
       signIn: async (data: SignInData) => {
         if (data.email.length < 1) {
-          // TODO: show alert in input boxes itself or login form addition
-          Alert.alert("Enter email!");
-          return;
+          return { error: "Enter email!" };
         }
 
         if (data.password.length < 1) {
-          // TODO: show alert in input boxes itself or login form addition
-          Alert.alert("Enter password!");
-          return;
+          return { error: "Enter password!" };
         }
 
-        fetch(API_URL + "users/login", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user: {
-              email: data.email,
-              password: data.password,
+        try {
+          const jsonResponse = await fetch(API_URL + "users/login", {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
             },
-          }),
-        })
-          .then((jsonResponse) => jsonResponse.json())
-          .then((response) => {
-            if (response.message) {
-              console.info(response.message);
-              // TODO: show alert in input boxes itself or login form addition
-              return;
-            }
-
-            // Persist token in AsyncStorage and then dispatch SIGN_IN action
-            AsyncStorage.setItem(USER_TOKEN, response.user.token).then(() => {
-              dispatch({
-                type: "SIGN_IN",
-                data: { token: response.user.token, user: response.user },
-              });
-            });
-          })
-          .catch((error) => {
-            console.error(error);
+            body: JSON.stringify({
+              user: {
+                email: data.email,
+                password: data.password,
+              },
+            }),
           });
+
+          const response = await jsonResponse.json();
+
+          if (response.message) {
+            return { error: response.message };
+          }
+
+          // Persist token in AsyncStorage
+          await AsyncStorage.setItem(USER_TOKEN, response.user.token);
+
+          // dispatch SIGN_IN action
+          dispatch({
+            type: "SIGN_IN",
+            data: { token: response.user.token, user: response.user },
+          });
+          return true;
+        } catch (error) {
+          console.error(error);
+          return { error: "Some Error Occured" };
+        }
       },
       signOut: async () => {
         // Remove token in AsyncStorage and then dispatch SIGN_OUT action

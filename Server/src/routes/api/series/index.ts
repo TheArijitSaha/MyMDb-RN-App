@@ -104,20 +104,20 @@ router.get(
               "timeSpan.end": { $ne: null },
             });
             filterArray.push({
-              $expr: { $eq: ["$seenEpisodes", "$episodes"] },
+              $expr: { $eq: ["$seenEpisodes", { $sum: "$seasons" }] },
             });
             break;
           case "ongoing":
             filterArray.push({
               $or: [
-                { $expr: { $lt: ["$seenEpisodes", "$episodes"] } },
+                { $expr: { $lt: ["$seenEpisodes", { $sum: "$seasons" }] } },
                 { "timeSpan.end": null },
               ],
             });
             break;
           case "unseen":
             filterArray.push({
-              $expr: { $lt: ["$seenEpisodes", "$episodes"] },
+              $expr: { $lt: ["$seenEpisodes", { $sum: "$seasons" }] },
             });
             break;
         }
@@ -155,12 +155,9 @@ router.get(
         case "lastAir":
           query.sort(`${orderString}timeSpan.end title`);
           break;
-        case "episodes":
-          query.sort(`${orderString}episodes title`);
-          break;
-        case "seasons":
-          query.sort(`${orderString}seasons title`);
-          break;
+        // case "episodes":
+        //   query.sort(`${orderString}episodes title`);
+        //   break;
       }
     }
 
@@ -195,6 +192,12 @@ router.patch(
     delete updatedSeries.timeSpan.start;
 
     try {
+      const originalSeries = await Series.findById(updatedSeries._id);
+
+      // Replenish deleted nested detail timeSpan.start
+      // otherwise it will update incorrectly
+      updatedSeries.timeSpan.start = originalSeries.timeSpan.start;
+
       const data = await Series.findOneAndUpdate(
         { _id: updatedSeries._id },
         { ...updatedSeries },

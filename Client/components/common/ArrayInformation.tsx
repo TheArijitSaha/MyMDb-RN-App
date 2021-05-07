@@ -13,6 +13,7 @@ type Props = {
   editMode: boolean;
   label: string;
   value: string[];
+  keyboardType?: "default" | "number-pad" | "decimal-pad";
   infoAddHandler: () => void;
   infoChangeHandlerMaker: (index: number) => (text: string) => void;
   infoDeleteHandlerMaker: (index: number) => () => void;
@@ -25,6 +26,7 @@ export default function ArrayInformation({
   infoDeleteHandlerMaker,
   label,
   value,
+  keyboardType = "default",
 }: Props) {
   const info = editMode
     ? value.map((val, index) => (
@@ -33,6 +35,7 @@ export default function ArrayInformation({
             value={val}
             style={styles.infoText}
             onChangeText={infoChangeHandlerMaker(index)}
+            keyboardType={keyboardType}
           />
           <TouchableOpacity
             style={styles.deleteInfoIcon}

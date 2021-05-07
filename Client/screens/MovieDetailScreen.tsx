@@ -21,6 +21,9 @@ import { API_URL } from "../constants";
 import { AuthContext } from "../contexts/AuthContext";
 import { MoviesStackParamList } from "../navigation/moviesStack";
 import ArrayInformation from "../components/common/ArrayInformation";
+import DictInformation from "../components/common/DictInformation";
+import Information from "../components/common/Information";
+import { getIntFromString, getFloatFromString } from "./MovieAddScreen";
 
 type EditedMovie = {
   subtitle: string;
@@ -37,6 +40,15 @@ type EditedMovie = {
   };
   poster: string;
 };
+
+type EditableAtomicFields =
+  | "subtitle"
+  | "imdb.rating"
+  | "imdb.link"
+  | "rottenTomatoes.rating"
+  | "poster"
+  | "runtime";
+type EditableArrayFields = "directors" | "cast" | "genres";
 
 const getEditedMovie = (movie: Movie): EditedMovie => {
   return {
@@ -155,264 +167,6 @@ export default function MovieDetailScreen({ navigation, route }: Props) {
     });
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      const onBackPress = () => {
-        navigation.navigate("Movies", { singleUpdate: { movie: movie } });
-        return true;
-      };
-
-      BackHandler.addEventListener("hardwareBackPress", onBackPress);
-
-      return () =>
-        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
-    }, [movie])
-  );
-
-  const handleRuntimeChange = (textRuntime: string) => {
-    dispatch({
-      type: "EDIT_MOVIE",
-      data: {
-        editedMovie: {
-          ...editedMovie,
-          runtime: textRuntime,
-        },
-      },
-    });
-  };
-
-  const handleTomatometerChange = (textRating: string) => {
-    dispatch({
-      type: "EDIT_MOVIE",
-      data: {
-        editedMovie: {
-          ...editedMovie,
-          rottenTomatoes: { rating: textRating },
-        },
-      },
-    });
-  };
-
-  const handleImdbRatingChange = (textRating: string) => {
-    dispatch({
-      type: "EDIT_MOVIE",
-      data: {
-        editedMovie: {
-          ...editedMovie,
-          imdb: { ...editedMovie.imdb, rating: textRating },
-        },
-      },
-    });
-  };
-
-  const handleSubtitleChange = (newSubtitle: string) => {
-    dispatch({
-      type: "EDIT_MOVIE",
-      data: {
-        editedMovie: {
-          ...editedMovie,
-          subtitle: newSubtitle,
-        },
-      },
-    });
-  };
-
-  const handlePosterChange = (newPoster: string) => {
-    dispatch({
-      type: "EDIT_MOVIE",
-      data: {
-        editedMovie: {
-          ...editedMovie,
-          poster: newPoster,
-        },
-      },
-    });
-  };
-
-  const directorChangeHandlerMaker = (
-    index: number
-  ): ((text: string) => void) => {
-    let newDirectors = editedMovie.directors;
-
-    const directorChangeHandler = (newDirector: string) => {
-      newDirectors[index] = newDirector;
-      dispatch({
-        type: "EDIT_MOVIE",
-        data: {
-          editedMovie: {
-            ...editedMovie,
-            directors: newDirectors,
-          },
-        },
-      });
-    };
-
-    return directorChangeHandler;
-  };
-
-  const directorDeleteHandlerMaker = (index: number): (() => void) => {
-    let newDirectors = editedMovie.directors;
-
-    const directorDeleteHandler = () => {
-      newDirectors.splice(index, 1);
-
-      dispatch({
-        type: "EDIT_MOVIE",
-        data: {
-          editedMovie: {
-            ...editedMovie,
-            directors: newDirectors,
-          },
-        },
-      });
-    };
-
-    return directorDeleteHandler;
-  };
-
-  const directorAddHandler = () => {
-    const newDirectors = [...editedMovie.directors, ""];
-
-    dispatch({
-      type: "EDIT_MOVIE",
-      data: {
-        editedMovie: {
-          ...editedMovie,
-          directors: newDirectors,
-        },
-      },
-    });
-  };
-
-  const castChangeHandlerMaker = (index: number): ((text: string) => void) => {
-    let newCast = editedMovie.cast;
-
-    const castChangeHandler = (newActor: string) => {
-      newCast[index] = newActor;
-      dispatch({
-        type: "EDIT_MOVIE",
-        data: {
-          editedMovie: {
-            ...editedMovie,
-            cast: newCast,
-          },
-        },
-      });
-    };
-
-    return castChangeHandler;
-  };
-
-  const castDeleteHandlerMaker = (index: number): (() => void) => {
-    let newCast = editedMovie.cast;
-
-    const castDeleteHandler = () => {
-      newCast.splice(index, 1);
-
-      dispatch({
-        type: "EDIT_MOVIE",
-        data: {
-          editedMovie: {
-            ...editedMovie,
-            cast: newCast,
-          },
-        },
-      });
-    };
-
-    return castDeleteHandler;
-  };
-
-  const castAddHandler = () => {
-    const newCast = [...editedMovie.cast, ""];
-
-    dispatch({
-      type: "EDIT_MOVIE",
-      data: {
-        editedMovie: {
-          ...editedMovie,
-          cast: newCast,
-        },
-      },
-    });
-  };
-
-  const genreChangeHandlerMaker = (index: number): ((text: string) => void) => {
-    let newGenres = editedMovie.genres;
-
-    const genreChangeHandler = (newGenre: string) => {
-      newGenres[index] = newGenre;
-      dispatch({
-        type: "EDIT_MOVIE",
-        data: {
-          editedMovie: {
-            ...editedMovie,
-            genres: newGenres,
-          },
-        },
-      });
-    };
-
-    return genreChangeHandler;
-  };
-
-  const genreDeleteHandlerMaker = (index: number): (() => void) => {
-    let newGenres = editedMovie.genres;
-
-    const genresDeleteHandler = () => {
-      newGenres.splice(index, 1);
-
-      dispatch({
-        type: "EDIT_MOVIE",
-        data: {
-          editedMovie: {
-            ...editedMovie,
-            genres: newGenres,
-          },
-        },
-      });
-    };
-
-    return genresDeleteHandler;
-  };
-
-  const genreAddHandler = () => {
-    const newGenres = [...editedMovie.genres, ""];
-
-    dispatch({
-      type: "EDIT_MOVIE",
-      data: {
-        editedMovie: {
-          ...editedMovie,
-          genres: newGenres,
-        },
-      },
-    });
-  };
-
-  const getFloatFromString = (num: string, defaultRes: number) => {
-    try {
-      let parsedNum = parseFloat(num);
-
-      if (isNaN(parsedNum)) return defaultRes;
-      return parsedNum;
-    } catch (e) {
-      return defaultRes;
-    }
-  };
-
-  const getIntFromString = (num: string, defaultRes: number | null) => {
-    if (num.length === 0) return null;
-    try {
-      let parsedNum = parseInt(num, 10);
-
-      if (isNaN(parsedNum)) return defaultRes;
-      return parsedNum;
-    } catch (e) {
-      return defaultRes;
-    }
-  };
-
   const saveEdit = () => {
     let converted: Movie = { ...movie };
 
@@ -439,6 +193,118 @@ export default function MovieDetailScreen({ navigation, route }: Props) {
     dispatch({ type: "SAVE_EDIT", data: { movie: converted } });
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        navigation.navigate("Movies", { singleUpdate: { movie: movie } });
+        return true;
+      };
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    }, [movie])
+  );
+
+  const getChangeHandler = (
+    property: EditableAtomicFields
+  ): ((text: string) => void) => {
+    const changeHandler = (newValue: string) => {
+      switch (property) {
+        case "imdb.rating":
+        case "imdb.link":
+        case "rottenTomatoes.rating":
+          dispatch({
+            type: "EDIT_MOVIE",
+            data: {
+              editedMovie: {
+                ...editedMovie,
+                [property.split(".")[0]]: {
+                  // @ts-ignore
+                  ...editedMovie[property.split(".")[0]],
+                  [property.split(".")[1]]: newValue,
+                },
+              },
+            },
+          });
+          break;
+        default:
+          dispatch({
+            type: "EDIT_MOVIE",
+            data: {
+              editedMovie: { ...editedMovie, [property]: newValue },
+            },
+          });
+      }
+    };
+
+    return changeHandler;
+  };
+
+  const getArrayChangeHandler = (
+    property: EditableArrayFields,
+    index: number
+  ): ((text: string) => void) => {
+    let newArray = editedMovie[property];
+
+    const changeHandler = (newValue: string) => {
+      newArray[index] = newValue;
+
+      dispatch({
+        type: "EDIT_MOVIE",
+        data: {
+          editedMovie: {
+            ...editedMovie,
+            [property]: newArray,
+          },
+        },
+      });
+    };
+
+    return changeHandler;
+  };
+
+  const getArrayAddHandler = (property: EditableArrayFields) => {
+    const addHandler = () => {
+      const newArray = [...editedMovie[property], ""];
+
+      dispatch({
+        type: "EDIT_MOVIE",
+        data: {
+          editedMovie: {
+            ...editedMovie,
+            [property]: newArray,
+          },
+        },
+      });
+    };
+    return addHandler;
+  };
+
+  const getArrayDeleteHandler = (
+    property: EditableArrayFields,
+    index: number
+  ): (() => void) => {
+    let newArray = editedMovie[property];
+
+    const deleteHandler = () => {
+      newArray.splice(index, 1);
+
+      dispatch({
+        type: "EDIT_MOVIE",
+        data: {
+          editedMovie: {
+            ...editedMovie,
+            [property]: newArray,
+          },
+        },
+      });
+    };
+
+    return deleteHandler;
+  };
+
   return (
     <View>
       <StatusBar style={isDrawerOpen ? "light" : "dark"} />
@@ -456,7 +322,7 @@ export default function MovieDetailScreen({ navigation, route }: Props) {
                 <TextInput
                   style={styles.subtitle}
                   value={editedMovie.subtitle}
-                  onChangeText={handleSubtitleChange}
+                  onChangeText={getChangeHandler("subtitle")}
                   keyboardType="default"
                   placeholder="subtitle"
                   placeholderTextColor="#aaaaaa"
@@ -483,106 +349,92 @@ export default function MovieDetailScreen({ navigation, route }: Props) {
               value={isEditing ? editedMovie.directors : movie.directors}
               label="Directed By"
               editMode={isEditing}
-              infoAddHandler={directorAddHandler}
-              infoChangeHandlerMaker={directorChangeHandlerMaker}
-              infoDeleteHandlerMaker={directorDeleteHandlerMaker}
+              infoAddHandler={getArrayAddHandler("directors")}
+              infoChangeHandlerMaker={(index) =>
+                getArrayChangeHandler("directors", index)
+              }
+              infoDeleteHandlerMaker={(index) =>
+                getArrayDeleteHandler("directors", index)
+              }
             />
-
             <ArrayInformation
               value={isEditing ? editedMovie.cast : movie.cast}
               label="Starring"
               editMode={isEditing}
-              infoAddHandler={castAddHandler}
-              infoChangeHandlerMaker={castChangeHandlerMaker}
-              infoDeleteHandlerMaker={castDeleteHandlerMaker}
+              infoAddHandler={getArrayAddHandler("cast")}
+              infoChangeHandlerMaker={(index) =>
+                getArrayChangeHandler("cast", index)
+              }
+              infoDeleteHandlerMaker={(index) =>
+                getArrayDeleteHandler("cast", index)
+              }
             />
-
-            <View style={styles.detailView}>
-              <Text style={styles.label}>Runtime</Text>
-              <View style={styles.infoView}>
-                {isEditing ? (
-                  <View style={styles.runtimeEditView}>
-                    <TextInput
-                      style={styles.infoTextOpenWidth}
-                      value={editedMovie.runtime}
-                      onChangeText={handleRuntimeChange}
-                      keyboardType="number-pad"
-                      placeholder="0"
-                      placeholderTextColor="#aaaaaa"
-                    />
-                    <Text style={styles.infoTextOpenWidth}> mins</Text>
-                  </View>
-                ) : (
-                  <Text style={styles.infoText}>{movie.runtime} mins</Text>
-                )}
-              </View>
-            </View>
-
+            <Information
+              value={isEditing ? editedMovie.runtime : movie.runtime.toString()}
+              editMode={isEditing}
+              label="Runtime"
+              infoChangeHandler={getChangeHandler("runtime")}
+              placeholder="0"
+              keyboardType="number-pad"
+              followText=" mins"
+            />
             <ArrayInformation
               value={isEditing ? editedMovie.genres : movie.genres}
               label="Genres"
               editMode={isEditing}
-              infoAddHandler={genreAddHandler}
-              infoChangeHandlerMaker={genreChangeHandlerMaker}
-              infoDeleteHandlerMaker={genreDeleteHandlerMaker}
+              infoAddHandler={getArrayAddHandler("genres")}
+              infoChangeHandlerMaker={(index) =>
+                getArrayChangeHandler("genres", index)
+              }
+              infoDeleteHandlerMaker={(index) =>
+                getArrayDeleteHandler("genres", index)
+              }
             />
-
-            <View style={styles.detailView}>
-              <Text style={styles.label}>IMDB</Text>
-              <View style={styles.infoView}>
-                {isEditing ? (
-                  <TextInput
-                    style={styles.infoText}
-                    value={editedMovie.imdb.rating}
-                    onChangeText={handleImdbRatingChange}
-                    keyboardType="decimal-pad"
-                    placeholder="rating"
-                    placeholderTextColor="#aaaaaa"
-                  />
-                ) : (
-                  <Text style={styles.infoText}>{movie.imdb.rating}</Text>
-                )}
-              </View>
-            </View>
-
-            <View style={styles.detailView}>
-              {(movie.rottenTomatoes.rating !== null || isEditing) && (
-                <Text style={styles.label}>Tomatometer</Text>
-              )}
-              <View style={styles.infoView}>
-                {isEditing ? (
-                  <TextInput
-                    style={styles.infoText}
-                    value={editedMovie.rottenTomatoes.rating}
-                    onChangeText={handleTomatometerChange}
-                    keyboardType="number-pad"
-                    placeholder="rating"
-                    placeholderTextColor="#aaaaaa"
-                  />
-                ) : (
-                  movie.rottenTomatoes.rating !== null && (
-                    <Text style={styles.infoText}>
-                      {movie.rottenTomatoes.rating}
-                    </Text>
-                  )
-                )}
-              </View>
-            </View>
-
+            <DictInformation
+              info={[
+                {
+                  value: isEditing
+                    ? editedMovie.imdb.rating
+                    : movie.imdb.rating.toString(),
+                  placeholder: "rating",
+                  keyboardType: "decimal-pad",
+                  infoChangeHandler: getChangeHandler("imdb.rating"),
+                },
+                {
+                  value: movie.imdb.link,
+                  placeholder: "link",
+                  keyboardType: "default",
+                  infoChangeHandler: getChangeHandler("imdb.link"),
+                  excludeInViewMode: true,
+                },
+              ]}
+              editMode={isEditing}
+              label="IMDB"
+            />
+            {(isEditing || movie.rottenTomatoes.rating !== null) && (
+              <Information
+                value={
+                  isEditing
+                    ? editedMovie.rottenTomatoes.rating
+                    : // @ts-ignore // Object movie.rottenTomatoes.rating cannot possibly be null
+                      movie.rottenTomatoes.rating.toString()
+                }
+                editMode={isEditing}
+                label="Tomatometer"
+                infoChangeHandler={getChangeHandler("rottenTomatoes.rating")}
+                placeholder="rating"
+                keyboardType="decimal-pad"
+              />
+            )}
             {isEditing && (
-              <View style={styles.detailView}>
-                <Text style={styles.label}>Poster</Text>
-                <View style={styles.infoView}>
-                  <TextInput
-                    style={styles.infoText}
-                    value={editedMovie.poster}
-                    onChangeText={handlePosterChange}
-                    keyboardType="default"
-                    placeholder="url"
-                    placeholderTextColor="#aaaaaa"
-                  />
-                </View>
-              </View>
+              <Information
+                value={movie.poster}
+                editMode={isEditing}
+                label="Poster"
+                infoChangeHandler={getChangeHandler("poster")}
+                placeholder="link"
+                keyboardType="default"
+              />
             )}
 
             {!isEditing && (
@@ -629,8 +481,21 @@ const styles = StyleSheet.create({
     height: "100%",
     display: "flex",
   },
-  scrollView: {
-    minHeight: "100%",
+  deleteInfoIcon: {
+    paddingLeft: 5,
+  },
+  discardButton: {
+    flex: 1,
+    padding: 2,
+    fontSize: 18,
+    color: "#dddddd",
+    fontFamily: "sans-serif-light",
+  },
+  editIcon: {
+    position: "absolute",
+    right: 0,
+    paddingRight: 7,
+    paddingTop: 2,
   },
   movieInfo: {
     backgroundColor: "rgba( 120, 120, 120, 0.6 )",
@@ -645,24 +510,30 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
   },
-  detailView: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "flex-start",
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 3,
-    paddingBottom: 3,
-  },
-  runtimeEditView: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  title: {
+  releaseYear: {
+    alignSelf: "center",
     textAlign: "center",
-    fontSize: 23,
+    fontSize: 18,
     color: "#eeeeee",
     fontFamily: "monospace",
+  },
+  saveButton: {
+    flex: 1,
+    padding: 2,
+    fontSize: 18,
+    color: "#dddddd",
+    fontFamily: "sans-serif-light",
+  },
+  saveEditedBanner: {
+    display: "flex",
+    flexDirection: "row",
+    // alignItems: "center",
+    justifyContent: "space-around",
+    paddingTop: 30,
+    paddingBottom: 20,
+  },
+  scrollView: {
+    minHeight: "100%",
   },
   subtitle: {
     textAlign: "center",
@@ -671,10 +542,9 @@ const styles = StyleSheet.create({
     fontFamily: "monospace",
     minWidth: 100,
   },
-  releaseYear: {
-    alignSelf: "center",
+  title: {
     textAlign: "center",
-    fontSize: 18,
+    fontSize: 23,
     color: "#eeeeee",
     fontFamily: "monospace",
   },
@@ -684,68 +554,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     position: "relative",
   },
-  label: {
-    flex: 7,
-    textAlign: "right",
-    padding: 2,
-    paddingRight: 10,
-    color: "white",
-    fontFamily: "sans-serif-thin",
-    fontSize: 18,
-  },
-  infoView: {
-    flex: 13,
-    paddingRight: 20,
-  },
-  infoRow: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  infoText: {
-    // minWidth: "100%",
-    padding: 2,
-    fontSize: 18,
-    color: "#eeeeee",
-    fontFamily: "monospace",
-  },
-  infoTextOpenWidth: {
-    padding: 2,
-    fontSize: 18,
-    color: "#eeeeee",
-    fontFamily: "monospace",
-  },
   watchBanner: {
     display: "flex",
     alignItems: "center",
   },
   watchedIcon: {},
-  deleteInfoIcon: {
-    paddingLeft: 5,
-  },
-  editIcon: {
-    position: "absolute",
-    right: 0,
-    paddingRight: 7,
-    paddingTop: 2,
-  },
-  saveEditedBanner: {
-    display: "flex",
-    flexDirection: "row",
-    // alignItems: "center",
-    justifyContent: "space-around",
-  },
-  saveButton: {
-    flex: 1,
-    padding: 2,
-    fontSize: 18,
-    color: "#dddddd",
-    fontFamily: "sans-serif-light",
-  },
-  discardButton: {
-    flex: 1,
-    padding: 2,
-    fontSize: 18,
-    color: "#dddddd",
-    fontFamily: "sans-serif-light",
-  },
 });

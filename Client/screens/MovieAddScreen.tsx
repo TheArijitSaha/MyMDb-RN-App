@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useReducer } from "react";
+import React, { useContext, useReducer } from "react";
 
 import { StatusBar } from "expo-status-bar";
 import {
@@ -10,11 +10,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-// import { useIsDrawerOpen } from "@react-navigation/drawer";
-// import { useFocusEffect } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/Ionicons";
-import { get, set } from "lodash";
 
 import { API_URL } from "../constants";
 import { AuthContext } from "../contexts/AuthContext";
@@ -42,7 +39,7 @@ type NewMovie = {
   seen: boolean;
 };
 
-const getFloatFromString = (num: string, defaultRes: number) => {
+export const getFloatFromString = (num: string, defaultRes: number) => {
   try {
     let parsedNum = parseFloat(num);
 
@@ -53,7 +50,7 @@ const getFloatFromString = (num: string, defaultRes: number) => {
   }
 };
 
-const getIntFromString = (num: string, defaultRes: number) => {
+export const getIntFromString = (num: string, defaultRes: number | null) => {
   try {
     let parsedNum = parseInt(num, 10);
 
@@ -68,8 +65,8 @@ const getNewMovie = (movie: NewMovie): MovieWithoutID => {
   return {
     title: movie.title,
     subtitle: movie.subtitle.length > 0 ? movie.subtitle : null,
-    releaseYear: getIntFromString(movie.releaseYear, 0),
-    runtime: getIntFromString(movie.runtime, 0),
+    releaseYear: getIntFromString(movie.releaseYear, 0) ?? 0,
+    runtime: getIntFromString(movie.runtime, 0) ?? 0,
     directors: [...movie.directors],
     cast: [...movie.cast],
     genres: [...movie.genres],
@@ -80,7 +77,7 @@ const getNewMovie = (movie: NewMovie): MovieWithoutID => {
     rottenTomatoes: {
       rating:
         movie.rottenTomatoes.rating.length > 0
-          ? getIntFromString(movie.rottenTomatoes.rating, 10)
+          ? getIntFromString(movie.rottenTomatoes.rating, 0)
           : null,
     },
     poster: movie.poster,
@@ -271,7 +268,6 @@ export default function MovieAddScreen({ navigation }: Props) {
             },
           });
           break;
-
         case "rottenTomatoes.rating":
           dispatch({
             type: "EDIT_MOVIE",

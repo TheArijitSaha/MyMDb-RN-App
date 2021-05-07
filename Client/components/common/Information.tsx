@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 
 import { Text, StyleSheet, TextInput, View } from "react-native";
 
@@ -6,21 +6,21 @@ type Props = {
   editMode: boolean;
   label: string | false;
   value: string;
-  infoChangeHandler: (text: string) => void;
-  placeholder: string;
+  infoChangeHandler?: (text: string) => void;
+  placeholder?: string;
   keyboardType?: "default" | "decimal-pad" | "number-pad";
   followText?: false | string;
 };
 
-export default function Information({
+const Information: FC<Props> = function ({
   editMode,
-  infoChangeHandler,
+  infoChangeHandler = (_) => {},
   label,
   value,
-  placeholder,
-  keyboardType,
+  placeholder = "",
+  keyboardType = "default",
   followText = false,
-}: Props) {
+}) {
   const Input = () => (
     <TextInput
       style={
@@ -66,7 +66,9 @@ export default function Information({
       </View>
     </View>
   );
-}
+};
+
+export default Information;
 
 const styles = StyleSheet.create({
   container: {

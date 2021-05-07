@@ -7,6 +7,7 @@ type Info = {
   placeholder: string;
   keyboardType: "default" | "number-pad" | "decimal-pad";
   infoChangeHandler: (text: string) => void;
+  excludeInViewMode?: boolean;
 };
 
 type Props = {
@@ -29,11 +30,15 @@ export default function ArrayInformation({ editMode, label, info }: Props) {
           />
         </View>
       ))
-    : info.map((val, index) => (
-        <View key={index} style={styles.infoRow}>
-          <Text style={styles.infoText}>{val.value}</Text>
-        </View>
-      ));
+    : info.map((val, index) => {
+        if (!val.excludeInViewMode) {
+          return (
+            <View key={index} style={styles.infoRow}>
+              <Text style={styles.infoText}>{val.value}</Text>
+            </View>
+          );
+        }
+      });
 
   return (
     <View style={styles.container}>

@@ -3,22 +3,22 @@
 import { NextFunction } from "express";
 import { Schema, model, Model, Document } from "mongoose";
 
-// Interface for Series Schema
-export interface SeriesDocument extends Document {
-  _id: string;
+interface Series {
   title: string;
   timeSpan: { start: number; end: number | null };
   creators: string[];
   cast: string[];
   genres: string[];
-  seasons: number;
-  episodes: number;
+  seasons: number[];
   meanRuntime: number;
   imdb: { rating: number; link: string };
   rottenTomatoes: { rating: number | null };
   seenEpisodes: number;
   poster: string;
 }
+
+// Interface for Series Schema
+export type SeriesDocument = Series & Document;
 
 // For model type
 export interface SeriesModelInterface extends Model<SeriesDocument> {}
@@ -40,8 +40,7 @@ const SeriesSchema = new Schema<SeriesDocument, SeriesModelInterface>(
     creators: [String],
     cast: [String],
     genres: [String],
-    seasons: Number,
-    episodes: Number,
+    seasons: [Number],
     meanRuntime: Number,
     imdb: { rating: Number, link: String },
     rottenTomatoes: { rating: Number },

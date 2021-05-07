@@ -10,6 +10,7 @@ import {
 } from "@react-navigation/drawer";
 
 import MoviesStack from "./moviesStack";
+import SeriesStack from "./seriesStack";
 import { AuthContext } from "../contexts/AuthContext";
 
 type CustomDrawerProps = DrawerContentComponentProps<DrawerContentOptions> & {
@@ -66,6 +67,11 @@ export default function QnQDrawer() {
         name="MoviesStack"
         component={MoviesStack}
         options={{ title: "Movies" }}
+      />
+      <Drawer.Screen
+        name="SeriesStack"
+        component={SeriesStack}
+        options={{ title: "Series" }}
       />
     </Drawer.Navigator>
   );

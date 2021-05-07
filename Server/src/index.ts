@@ -4,7 +4,6 @@ import bodyParser from "body-parser";
 import session from "express-session";
 const MongoStore = require("connect-mongo")(session);
 import passport from "passport";
-import chalk from "chalk";
 import routes from "./routes";
 
 require("dotenv").config();
