@@ -562,6 +562,18 @@ export default function MovieListScreen({ navigation, route }: Props) {
                 }}
                 onEndReachedThreshold={0.1}
                 numColumns={2}
+                onRefresh={() => {
+                  dispatch({ type: "CLEAR_LIST" });
+                  loadSeries(
+                    watchFilter,
+                    searchCriteria,
+                    searchString,
+                    sortCriteria,
+                    sortOrder,
+                    0
+                  );
+                }}
+                refreshing={isLoading}
                 ListFooterComponent={() => (
                   <Text
                     style={{
