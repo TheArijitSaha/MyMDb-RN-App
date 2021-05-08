@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
+import SeriesProgress from "./SeriesProgress";
+
 interface SeriesListItemProps {
   series: Series;
   navigation: any;
@@ -77,15 +79,14 @@ export default class SeriesListItem extends PureComponent<SeriesListItemProps> {
           >
             <LinearGradient
               // Background Linear Gradient
-              colors={[
-                "transparent",
-                "transparent",
-                "transparent",
-                "rgba(0,0,0,0.9)",
-              ]}
+              colors={["transparent", "transparent", "rgba(0,0,0,0.9)"]}
               style={styles.linearGradient}
             >
               <View style={styles.label}>
+                <SeriesProgress
+                  seasons={series.seasons}
+                  seenEpisodes={series.seenEpisodes}
+                />
                 <Text style={styles.title}>{series.title}</Text>
               </View>
             </LinearGradient>

@@ -36,10 +36,10 @@ type State = {
   //   readonly searchString: string;
   //   readonly unseenFilter: boolean;
   //   readonly searchCriteria: SearchCriteria;
-  //   readonly isSelectingSearchCriteria: boolean;
+  readonly isSelectingSearchCriteria: boolean;
   //   readonly sortOrder: SortOrder;
   //   readonly sortCriteria: SortCriteria;
-  //   readonly isSelectingSortCriteria: boolean;
+  readonly isSelectingSortCriteria: boolean;
 };
 
 type Props = StackScreenProps<SeriesStackParamList, "Series">;
@@ -47,27 +47,27 @@ type Props = StackScreenProps<SeriesStackParamList, "Series">;
 type Action =
   | { type: "LOAD_MORE"; data: { additionalSeries: Series[] } }
   | { type: "WAIT_TO_LOAD" }
-  | { type: "CLEAR_LIST" };
-//   | { type: "TOGGLE_UNSEEN_FILTER" }
-//   | { type: "UPDATE_SEARCH_STRING"; data: { searchString: string } }
-//   | {
-//       type: "CHANGE_SEARCH_CRITERIA";
-//       data: {
-//         criteria: SearchCriteria;
-//       };
-//     }
-//   | { type: "TOGGLE_IS_SELECTING_SEARCH_CRITERIA" }
-//   | {
-//       type: "CHANGE_SORT_CRITERIA";
-//       data: {
-//         criteria: SortCriteria;
-//       };
-//     }
-//   | {
-//       type: "TOGGLE_SORT_ORDER";
-//     }
-//   | { type: "TOGGLE_IS_SELECTING_SORT_CRITERIA" }
-//   | { type: "SINGLE_UPDATE"; data: { series: Series[] } };
+  | { type: "CLEAR_LIST" }
+  //   | { type: "TOGGLE_UNSEEN_FILTER" }
+  //   | { type: "UPDATE_SEARCH_STRING"; data: { searchString: string } }
+  //   | {
+  //       type: "CHANGE_SEARCH_CRITERIA";
+  //       data: {
+  //         criteria: SearchCriteria;
+  //       };
+  //     }
+  //   | { type: "TOGGLE_IS_SELECTING_SEARCH_CRITERIA" }
+  //   | {
+  //       type: "CHANGE_SORT_CRITERIA";
+  //       data: {
+  //         criteria: SortCriteria;
+  //       };
+  //     }
+  //   | {
+  //       type: "TOGGLE_SORT_ORDER";
+  //     }
+  //   | { type: "TOGGLE_IS_SELECTING_SORT_CRITERIA" }
+  | { type: "SINGLE_UPDATE"; data: { series: Series[] } };
 
 const initialState: State = {
   series: [],
@@ -76,10 +76,10 @@ const initialState: State = {
   //   searchString: "",
   //   unseenFilter: false,
   //   searchCriteria: "title",
-  //   isSelectingSearchCriteria: false,
+  isSelectingSearchCriteria: false,
   //   sortOrder: "desc",
   //   sortCriteria: "releaseYear",
-  //   isSelectingSortCriteria: false,
+  isSelectingSortCriteria: false,
 };
 
 function reducer(prevState: State, action: Action): State {
@@ -105,13 +105,13 @@ function reducer(prevState: State, action: Action): State {
     //       };
     case "CLEAR_LIST":
       return { ...prevState, series: [], hasMore: true };
-    //     case "SINGLE_UPDATE":
-    //       return {
-    //         ...prevState,
-    //         series: action.data.series,
-    //         isSelectingSearchCriteria: false,
-    //         isSelectingSortCriteria: false,
-    //       };
+    case "SINGLE_UPDATE":
+      return {
+        ...prevState,
+        series: action.data.series,
+        isSelectingSearchCriteria: false,
+        isSelectingSortCriteria: false,
+      };
     //     case "TOGGLE_UNSEEN_FILTER":
     //       return {
     //         ...prevState,
@@ -176,22 +176,22 @@ export default function MovieListScreen({ navigation, route }: Props) {
   const { userToken } = useContext(AuthContext);
   const limit = 26;
 
-  //   useEffect(
-  //     useCallback(() => {
-  //       if (route.params && route.params.singleUpdate) {
-  //         const updatedId = route.params.singleUpdate.series._id;
-  //         const updatedMovieIndex = series.findIndex(
-  //           (ele) => ele._id == updatedId
-  //         );
-  //         let updatedMovies = [...series];
-  //         updatedMovies[updatedMovieIndex] = {
-  //           ...route.params.singleUpdate.series,
-  //         };
-  //         dispatch({ type: "SINGLE_UPDATE", data: { series: updatedMovies } });
-  //       }
-  //     }, [route]),
-  //     [route]
-  //   );
+  useEffect(
+    useCallback(() => {
+      if (route.params && route.params.singleUpdate) {
+        const updatedId = route.params.singleUpdate.series._id;
+        const updatedSeriesIndex = series.findIndex(
+          (ele) => ele._id == updatedId
+        );
+        let updatedSeries = [...series];
+        updatedSeries[updatedSeriesIndex] = {
+          ...route.params.singleUpdate.series,
+        };
+        dispatch({ type: "SINGLE_UPDATE", data: { series: updatedSeries } });
+      }
+    }, [route]),
+    [route]
+  );
 
   const loadSeries = async (
     //     unseenFilter: boolean,

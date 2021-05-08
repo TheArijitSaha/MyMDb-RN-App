@@ -456,7 +456,7 @@ export default function MovieDetailScreen({ navigation, route }: Props) {
                   infoChangeHandler: getChangeHandler("imdb.rating"),
                 },
                 {
-                  value: series.imdb.link,
+                  value: isEditing ? editedSeries.imdb.link : series.imdb.link,
                   placeholder: "link",
                   keyboardType: "default",
                   infoChangeHandler: getChangeHandler("imdb.link"),
@@ -483,8 +483,8 @@ export default function MovieDetailScreen({ navigation, route }: Props) {
             )}
             {isEditing && (
               <Information
-                value={series.poster}
-                editMode={isEditing}
+                value={editedSeries.poster}
+                editMode={true}
                 label="Poster"
                 infoChangeHandler={getChangeHandler("poster")}
                 placeholder="link"
