@@ -270,82 +270,82 @@ router.get(
 
     const link = req.query.link.toString();
 
-    const response = await axios.get(link, {
-      headers: { "Accept-Language": "en-US,en;" },
-    });
-
-    const $ = load(response.data, { xmlMode: true });
-
-    const title = $("div.title_wrapper h1")
-      .eq(0)
-      .text()
-      .trim()
-      .split("&nbsp;")[0]
-      .trim();
-
-    const subtitle = $("div.originalTitle")
-      .eq(0)
-      .text()
-      .trim()
-      .split("(original")[0]
-      .trim();
-
-    let imdbMovie = JSON.parse(
-      $('script[type="application/ld+json"]').eq(0).html()
-    );
-
-    let directors = [];
-    if (Array.isArray(imdbMovie.director)) {
-      for (let dir of imdbMovie.director) {
-        directors.push(dir.name);
-      }
-    } else {
-      directors.push(imdbMovie.director.name);
-    }
-
-    let cast = [];
-    if (Array.isArray(imdbMovie.actor)) {
-      for (let i = 0; i < Math.min(imdbMovie.actor.length, 3); ++i) {
-        cast.push(imdbMovie.actor[i].name);
-      }
-    } else {
-      cast.push(imdbMovie.actor.name);
-    }
-
-    let genres = [];
-    if (Array.isArray(imdbMovie.genre)) {
-      for (let i = 0; i < Math.min(imdbMovie.genre.length, 3); ++i) {
-        genres.push(imdbMovie.genre[i]);
-      }
-    } else {
-      genres.push(imdbMovie.genre);
-    }
-
-    let runtimeArray = imdbMovie.duration
-      .substring(2, imdbMovie.duration.length - 1)
-      .split("H");
-    let runtime =
-      runtimeArray.length == 2
-        ? parseInt(runtimeArray[0], 10) * 60 + parseInt(runtimeArray[1], 10)
-        : imdbMovie.duration[imdbMovie.duration.length - 1] === "H"
-        ? parseInt(runtimeArray[0], 10) * 60
-        : parseInt(runtimeArray[0], 10);
-
-    const scrapedMovie = {
-      title,
-      subtitle: subtitle.length > 0 ? subtitle : null,
-      releaseYear: parseInt(imdbMovie.datePublished, 10),
-      directors,
-      cast,
-      genres,
-      imdb: {
-        rating: parseFloat(imdbMovie.aggregateRating.ratingValue),
-        link,
-      },
-      runtime,
-    };
-
     try {
+      const response = await axios.get(link.replace("m.imdb", "imdb"), {
+        headers: { "Accept-Language": "en-US,en;" },
+      });
+
+      const $ = load(response.data, { xmlMode: true, decodeEntities: false });
+
+      const title = $("div.title_wrapper h1")
+        .eq(0)
+        .text()
+        .trim()
+        .split("&nbsp;")[0]
+        .trim();
+
+      const subtitle = $("div.originalTitle")
+        .eq(0)
+        .text()
+        .trim()
+        .split("(original")[0]
+        .trim();
+
+      let imdbMovie = JSON.parse(
+        $('script[type="application/ld+json"]').eq(0).html()
+      );
+
+      let directors = [];
+      if (Array.isArray(imdbMovie.director)) {
+        for (let dir of imdbMovie.director) {
+          directors.push(dir.name);
+        }
+      } else {
+        directors.push(imdbMovie.director.name);
+      }
+
+      let cast = [];
+      if (Array.isArray(imdbMovie.actor)) {
+        for (let actor of imdbMovie.actor.length) {
+          cast.push(actor);
+        }
+      } else {
+        cast.push(imdbMovie.actor.name);
+      }
+
+      let genres = [];
+      if (Array.isArray(imdbMovie.genre)) {
+        for (let i = 0; i < Math.min(imdbMovie.genre.length, 3); ++i) {
+          genres.push(imdbMovie.genre[i]);
+        }
+      } else {
+        genres.push(imdbMovie.genre);
+      }
+
+      let runtimeArray = imdbMovie.duration
+        .substring(2, imdbMovie.duration.length - 1)
+        .split("H");
+      let runtime =
+        runtimeArray.length == 2
+          ? parseInt(runtimeArray[0], 10) * 60 + parseInt(runtimeArray[1], 10)
+          : imdbMovie.duration[imdbMovie.duration.length - 1] === "H"
+          ? parseInt(runtimeArray[0], 10) * 60
+          : parseInt(runtimeArray[0], 10);
+
+      const scrapedMovie = {
+        title,
+        subtitle: subtitle.length > 0 ? subtitle : null,
+        releaseYear: parseInt(imdbMovie.datePublished, 10),
+        directors,
+        cast,
+        genres,
+        imdb: {
+          rating: parseFloat(imdbMovie.aggregateRating.ratingValue),
+          link,
+        },
+        runtime,
+      };
+
       res.json(scrapedMovie);
     } catch (e) {
       next(e);

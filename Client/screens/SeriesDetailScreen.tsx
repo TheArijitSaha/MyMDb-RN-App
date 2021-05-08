@@ -89,11 +89,6 @@ type Action =
 
 function reducer(prevState: State, action: Action): State {
   switch (action.type) {
-    //     case "TOGGLE_SEEN":
-    //       return {
-    //         ...prevState,
-    //         series: { ...prevState.series, seen: !prevState.series.seen },
-    //       };
     case "TOGGLE_EDIT_MODE":
       return {
         ...prevState,

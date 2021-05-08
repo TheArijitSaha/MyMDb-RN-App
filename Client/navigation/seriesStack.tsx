@@ -3,7 +3,7 @@ import React from "react";
 // import Icon from "react-native-vector-icons/Octicons";
 import { createStackNavigator } from "@react-navigation/stack";
 
-// import MovieAddScreen from "../screens/MovieAddScreen";
+import SeriesAddScreen from "../screens/SeriesAddScreen";
 import SeriesListScreen from "../screens/SeriesListScreen";
 import SeriesDetailScreen from "../screens/SeriesDetailScreen";
 
@@ -46,15 +46,13 @@ export default function MoviesStack() {
           headerShown: false,
         }}
       />
-      {
-        // <Stack.Screen
-        //   name="SeriesAdd"
-        //   component={MovieAddScreen}
-        //   options={{
-        //     headerShown: false,
-        //   }}
-        // />
-      }
+      <Stack.Screen
+        name="SeriesAdd"
+        component={SeriesAddScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 }
