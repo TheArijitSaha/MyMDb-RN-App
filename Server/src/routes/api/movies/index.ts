@@ -307,7 +307,7 @@ router.get(
       let cast = [];
       if (Array.isArray(imdbMovie.actor)) {
         for (let actor of imdbMovie.actor) {
-          cast.push(actor);
+          cast.push(actor.name);
         }
       } else {
         cast.push(imdbMovie.actor.name);
