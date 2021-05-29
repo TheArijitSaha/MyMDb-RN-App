@@ -1,14 +1,12 @@
 import express, { Request, Response, NextFunction } from "express";
 
 import axios from "axios";
-import chalk from "chalk";
 import { load } from "cheerio";
 
 import Auth from "../../auth";
 import Series from "../../../models/Series";
 
 const router = express.Router();
-const currentRoute = "/api/series";
 
 // GET list of series
 router.get(
@@ -21,17 +19,11 @@ router.get(
     const limit = parseInt((req.query.limit ?? defaultLimit).toString(), 10);
     const offset = parseInt((req.query.offset ?? defaultOffset).toString(), 10);
 
-    let logString = `${chalk.inverse.blue("GET")}   : ${chalk.italic.cyan(
-      `${currentRoute}`
-    )}${chalk.gray(` offset=${offset}, limit=${limit}`)}`;
-
     let filterArray = [];
 
     // Title filter
     if (req.query.title) {
       try {
-        logString += chalk.gray(`, title=${req.query.title as string}`);
-
         filterArray.push({
           title: {
             $regex: `^(.* )*${req.query.title as string}.*$`,
@@ -47,8 +39,6 @@ router.get(
     // Genres Filter
     if (req.query.genre) {
       try {
-        logString += chalk.gray(`, genre=${req.query.genre as string}`);
-
         filterArray.push({
           genres: {
             $regex: `^(.* )*(${req.query.genre as string}).*$`,
@@ -64,8 +54,6 @@ router.get(
     // Creators Filter
     if (req.query.creator) {
       try {
-        logString += chalk.gray(`, creator=${req.query.creator as string}`);
-
         filterArray.push({
           creators: {
             $regex: `^(.* )*(${req.query.creator as string}).*$`,
@@ -81,8 +69,6 @@ router.get(
     // Cast Filter
     if (req.query.cast) {
       try {
-        logString += chalk.gray(`, cast=${req.query.cast as string}`);
-
         filterArray.push({
           cast: {
             $regex: `^(.* )*(${req.query.cast as string}).*$`,
@@ -98,8 +84,6 @@ router.get(
     // Status Filter
     if (req.query.status) {
       try {
-        logString += chalk.gray(`, status=${req.query.status as string}`);
-
         switch (req.query.status as string) {
           case "seen":
             filterArray.push({
@@ -128,8 +112,6 @@ router.get(
         console.log(e);
       }
     }
-
-    console.log(logString);
 
     // Form query and apply filters, if any
     let query = Series.find();
@@ -325,6 +307,137 @@ router.get(
       };
 
       res.json(scrapedSeries);
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
+// GET /stats/count - fetches count of series
+router.get(
+  "/stats/count",
+  Auth.required,
+  async (req: Request, res: Response, next: NextFunction) => {
+    let filter: false | "seen" | "unseen" | "ongoing" = false;
+
+    // Status Filter
+    if (req.query.filter) {
+      try {
+        const stringFilter = req.query.filter as string;
+        switch (stringFilter) {
+          case "seen":
+          case "unseen":
+          case "ongoing":
+            filter = stringFilter;
+            break;
+          default:
+            return res.status(400).json({
+              error: `The filter ${req.query.filter} is invalid. It must be 'seen', 'unseen' or 'ongoing'.`,
+            });
+        }
+      } catch (e) {
+        console.error(e);
+        return res
+          .status(400)
+          .json({ error: `Invalid filter. Could not be parsed!` });
+      }
+    }
+
+    // Form query and apply filters, if any
+    let query = Series.find();
+    if (filter) {
+      switch (filter) {
+        case "seen":
+          query = query
+            .where({
+              "timeSpan.end": { $ne: null },
+            })
+            .where({
+              $expr: { $eq: ["$seenEpisodes", { $sum: "$seasons" }] },
+            });
+          break;
+        case "ongoing":
+          query = query.where({
+            $or: [
+              { $expr: { $lt: ["$seenEpisodes", { $sum: "$seasons" }] } },
+              { "timeSpan.end": null },
+            ],
+          });
+          break;
+        case "unseen":
+          query = query.where({
+            $expr: { $lt: ["$seenEpisodes", { $sum: "$seasons" }] },
+          });
+          break;
+      }
+    }
+
+    try {
+      const data = await query.countDocuments();
+      res.json(data);
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
+// GET /stats/time - fetches total time spent on watching series in hrs
+router.get(
+  "/stats/time",
+  Auth.required,
+  async (_req: Request, res: Response, next: NextFunction) => {
+    try {
+      const data = await Series.aggregate().group({
+        _id: "seen",
+        minutes: { $sum: { $multiply: ["$seenEpisodes", "$meanRuntime"] } },
+      });
+      res.json(Math.floor(data[0].minutes / 60));
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
+// GET /stats/episodes - fetches total # of episodes (seen/unseen/unfiltered)
+router.get(
+  "/stats/episodes",
+  Auth.required,
+  async (req: Request, res: Response, next: NextFunction) => {
+    let filter: false | "seen" | "unseen" = false;
+
+    // Status Filter
+    if (req.query.filter) {
+      try {
+        const stringFilter = req.query.filter as string;
+        switch (stringFilter) {
+          case "seen":
+          case "unseen":
+            filter = stringFilter;
+            break;
+          default:
+            return res.status(400).json({
+              error: `The filter ${req.query.filter} is invalid. It must be either 'seen' or 'unseen'.`,
+            });
+        }
+      } catch (e) {
+        console.error(e);
+        return res
+          .status(400)
+          .json({ error: `Invalid filter. Could not be parsed!` });
+      }
+    }
+
+    try {
+      const data = await Series.aggregate().group({
+        _id: filter,
+        count:
+          filter === false
+            ? { $sum: { $sum: "$seasons" } }
+            : filter === "seen"
+            ? { $sum: "$seenEpisodes" }
+            : { $sum: { $subtract: [{ $sum: "$seasons" }, "$seenEpisodes"] } },
+      });
+      res.json(data[0].count);
     } catch (e) {
       next(e);
     }
