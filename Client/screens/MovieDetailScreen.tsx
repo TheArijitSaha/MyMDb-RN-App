@@ -20,6 +20,7 @@ import { debounce } from "lodash";
 import { API_URL } from "../constants";
 import { AuthContext } from "../contexts/AuthContext";
 import { MoviesStackParamList } from "../navigation/moviesStack";
+import { HomeStackParamList } from "../navigation/homeStack";
 import ArrayInformation from "../components/common/ArrayInformation";
 import DictInformation from "../components/common/DictInformation";
 import Information from "../components/common/Information";
@@ -71,7 +72,9 @@ const getEditedMovie = (movie: Movie): EditedMovie => {
   };
 };
 
-type Props = StackScreenProps<MoviesStackParamList, "MovieDetail">;
+type Props =
+  | StackScreenProps<MoviesStackParamList, "MovieDetail">
+  | StackScreenProps<HomeStackParamList, "MovieSuggestionDetail">;
 
 type State = {
   movie: Movie;
@@ -196,6 +199,12 @@ export default function MovieDetailScreen({ navigation, route }: Props) {
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
+        if (route.name === "MovieSuggestionDetail") {
+          navigation.pop();
+          return true;
+        }
+
+        // TODO: Correct this
         navigation.navigate("Movies", { singleUpdate: { movie: movie } });
         return true;
       };

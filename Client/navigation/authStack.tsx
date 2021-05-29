@@ -21,11 +21,7 @@ export default function authStack(props: Props) {
       })}
     >
       {props.userToken == null ? (
-        <Stack.Screen
-          name="SignInScreen"
-          component={SignInScreen}
-          animationTypeForReplace={props.isSignout ? "pop" : "push"}
-        />
+        <Stack.Screen name="SignInScreen" component={SignInScreen} />
       ) : (
         <Stack.Screen name="Drawer" component={Drawer} />
       )}

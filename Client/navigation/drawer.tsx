@@ -9,6 +9,7 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 
+import HomeStack from "./homeStack";
 import MoviesStack from "./moviesStack";
 import SeriesStack from "./seriesStack";
 import { AuthContext } from "../contexts/AuthContext";
@@ -61,8 +62,13 @@ export default function QnQDrawer() {
       drawerPosition="left"
       drawerStyle={styles.drawer}
       drawerType="front"
-      initialRouteName="MoviesStack"
+      initialRouteName="Home"
     >
+      <Drawer.Screen
+        name="HomeStack"
+        component={HomeStack}
+        options={{ title: "Home" }}
+      />
       <Drawer.Screen
         name="MoviesStack"
         component={MoviesStack}

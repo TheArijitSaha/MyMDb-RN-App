@@ -19,6 +19,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { API_URL } from "../constants";
 import { AuthContext } from "../contexts/AuthContext";
 import { SeriesStackParamList } from "../navigation/seriesStack";
+import { HomeStackParamList } from "../navigation/homeStack";
 import ArrayInformation from "../components/common/ArrayInformation";
 import DictInformation from "../components/common/DictInformation";
 import Information from "../components/common/Information";
@@ -74,7 +75,9 @@ const getEditedSeries = (series: Series): EditedSeries => {
   };
 };
 
-type Props = StackScreenProps<SeriesStackParamList, "SeriesDetail">;
+type Props =
+  | StackScreenProps<SeriesStackParamList, "SeriesDetail">
+  | StackScreenProps<HomeStackParamList, "SeriesSuggestionDetail">;
 
 type State = {
   series: Series;
@@ -196,6 +199,12 @@ export default function MovieDetailScreen({ navigation, route }: Props) {
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
+        if (route.name === "SeriesSuggestionDetail") {
+          navigation.pop();
+          return true;
+        }
+
+        // TODO: Correct this
         navigation.navigate("Series", { singleUpdate: { series: series } });
         return true;
       };
