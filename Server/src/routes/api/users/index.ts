@@ -1,21 +1,13 @@
 import express, { Request, Response, NextFunction } from "express";
-import chalk from "chalk";
 import passport from "passport";
 
 import Auth from "../../auth";
 import User from "../../../models/User";
 
 const router = express.Router();
-const currentRoute = "/api/users";
 
 // POST login, open access
 router.post("/login", (req: Request, res: Response, next: NextFunction) => {
-  console.log(
-    `${chalk.inverse.green("POST")} : ${chalk.italic.cyan(
-      `${currentRoute}/login`
-    )}`
-  );
-
   const {
     body: { user },
   } = req;
@@ -60,13 +52,7 @@ router.post("/login", (req: Request, res: Response, next: NextFunction) => {
 router.get(
   "/me",
   Auth.required,
-  (req: Request, res: Response, next: NextFunction) => {
-    console.log(
-      `${chalk.inverse.blue("GET")}   : ${chalk.italic.cyan(
-        `${currentRoute}/me`
-      )}`
-    );
-
+  (req: Request, res: Response, _next: NextFunction) => {
     if (!req.payload) {
       // No JWT was given, first login from a device
       return res.json({ error: "No JWT" });
