@@ -51,11 +51,6 @@ export default class MovieListItem extends PureComponent<MovieListItemProps> {
         flex: 1,
         color: "white",
       },
-      releaseYear: {
-        textAlign: "center",
-        flex: 1,
-        color: "white",
-      },
     });
 
     return (
