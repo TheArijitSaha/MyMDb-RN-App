@@ -108,7 +108,7 @@ export default function Home({ navigation }: Props) {
     dispatch,
   ] = useReducer(reducer, initialState);
   const { userToken } = useContext(AuthContext);
-  const suggestionLimit = 15;
+  const suggestionLimit = 20;
   const { width: windowWidth } = useWindowDimensions();
 
   const statArray = [
@@ -122,7 +122,7 @@ export default function Home({ navigation }: Props) {
   const loadSeriesSuggestions = async () => {
     try {
       const jsonResponse = await fetch(
-        API_URL + `series?limit=${suggestionLimit}&status=unseen`,
+        API_URL + `series/suggestions?count=${suggestionLimit}`,
         {
           method: "GET",
           headers: {
@@ -151,7 +151,7 @@ export default function Home({ navigation }: Props) {
   const loadMovieSuggestions = async () => {
     try {
       const jsonResponse = await fetch(
-        API_URL + `movies?limit=${suggestionLimit}&status=unseen`,
+        API_URL + `movies/suggestions?count=${suggestionLimit}`,
         {
           method: "GET",
           headers: {

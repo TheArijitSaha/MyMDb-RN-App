@@ -394,4 +394,22 @@ router.get(
   }
 );
 
+// GET /suggestions - fetches random suggestion of movies
+router.get(
+  "/suggestions",
+  Auth.required,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const defaultCount = 20;
+
+    const count = parseInt((req.query.count ?? defaultCount).toString(), 10);
+
+    try {
+      const data = await Movie.aggregate().match({ seen: false }).sample(count);
+      res.json(data);
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
 export default router;
