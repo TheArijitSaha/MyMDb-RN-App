@@ -1,6 +1,5 @@
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
 
-import { NextFunction } from "express";
 import { Schema, model, Model, Document } from "mongoose";
 
 // Interface for Movie Schema
