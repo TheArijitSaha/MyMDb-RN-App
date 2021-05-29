@@ -1,14 +1,12 @@
 import express, { Request, Response, NextFunction } from "express";
 
 import axios from "axios";
-import chalk from "chalk";
 import { load } from "cheerio";
 
 import Auth from "../../auth";
 import Movie from "../../../models/Movie";
 
 const router = express.Router();
-const currentRoute = "/api/movies";
 
 // GET / - fetches list of movies
 router.get(
@@ -21,17 +19,11 @@ router.get(
     const limit = parseInt((req.query.limit ?? defaultLimit).toString(), 10);
     const offset = parseInt((req.query.offset ?? defaultOffset).toString(), 10);
 
-    let logString = `${chalk.inverse.blue("GET")}   : ${chalk.italic.cyan(
-      `${currentRoute}`
-    )}${chalk.gray(` offset=${offset}, limit=${limit}`)}`;
-
     let filterArray = [];
 
     // Title filter
     if (req.query.title) {
       try {
-        logString += chalk.gray(`, title=${req.query.title as string}`);
-
         filterArray.push({
           $or: [
             {
@@ -57,10 +49,6 @@ router.get(
     // Release year Filter
     if (req.query.releaseYear) {
       try {
-        logString += chalk.gray(
-          `, releaseYear=${req.query.releaseYear as string}`
-        );
-
         filterArray.push({
           releaseYear: parseInt(req.query.releaseYear as string, 10),
         });
@@ -73,8 +61,6 @@ router.get(
     // Genre Filter
     if (req.query.genre) {
       try {
-        logString += chalk.gray(`, genre=${req.query.genre as string}`);
-
         filterArray.push({
           genres: {
             $regex: `^(.* )*(${req.query.genre as string}).*$`,
@@ -90,8 +76,6 @@ router.get(
     // Director Filter
     if (req.query.director) {
       try {
-        logString += chalk.gray(`, director=${req.query.director as string}`);
-
         filterArray.push({
           directors: {
             $regex: `^(.* )*(${req.query.director as string}).*$`,
@@ -107,8 +91,6 @@ router.get(
     // Cast Filter
     if (req.query.cast) {
       try {
-        logString += chalk.gray(`, cast=${req.query.cast as string}`);
-
         filterArray.push({
           cast: {
             $regex: `^(.* )*(${req.query.cast as string}).*$`,
@@ -124,8 +106,6 @@ router.get(
     // Status Filter
     if (req.query.status) {
       try {
-        logString += chalk.gray(`, status=${req.query.status as string}`);
-
         switch (req.query.status as string) {
           case "seen":
             filterArray.push({
@@ -143,8 +123,6 @@ router.get(
         console.log(e);
       }
     }
-
-    console.log(logString);
 
     // Form query and apply filters, if any
     let query = Movie.find();
@@ -347,6 +325,69 @@ router.get(
       };
 
       res.json(scrapedMovie);
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
+// GET /stats/count - fetches count of movies
+router.get(
+  "/stats/count",
+  Auth.required,
+  async (req: Request, res: Response, next: NextFunction) => {
+    let filter: false | "seen" | "unseen" = false;
+
+    // Status Filter
+    if (req.query.filter) {
+      try {
+        const stringFilter = req.query.filter as string;
+        switch (stringFilter) {
+          case "seen":
+          case "unseen":
+            filter = stringFilter;
+            break;
+          default:
+            return res.status(400).json({
+              error: `The filter ${req.query.filter} is invalid. It must be either 'seen' or 'unseen'.`,
+            });
+        }
+      } catch (e) {
+        console.error(e);
+        return res
+          .status(400)
+          .json({ error: `Invalid filter. Could not be parsed!` });
+      }
+    }
+
+    // Form query and apply filters, if any
+    let query = Movie.find();
+    if (filter) {
+      query = query.where({ seen: filter === "seen" });
+    }
+
+    try {
+      const data = await query.countDocuments();
+      res.json(data);
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
+// GET /stats/time - fetches total time spent on watching movies in hrs
+router.get(
+  "/stats/time",
+  Auth.required,
+  async (_req: Request, res: Response, next: NextFunction) => {
+    try {
+      const data = await Movie.aggregate()
+        .match({ seen: true })
+        .group({
+          _id: "seen",
+          minutes: { $sum: "$runtime" },
+        });
+      res.json(Math.floor(data[0].minutes / 60));
     } catch (e) {
       next(e);
     }
