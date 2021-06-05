@@ -24,7 +24,11 @@ import { HomeStackParamList } from "../navigation/homeStack";
 import ArrayInformation from "../components/common/ArrayInformation";
 import DictInformation from "../components/common/DictInformation";
 import Information from "../components/common/Information";
-import { getIntFromString, getFloatFromString } from "./MovieAddScreen";
+import {
+  getIntFromString,
+  getFloatFromString,
+  getScrapedIMDBInfo,
+} from "./MovieAddScreen";
 
 type EditedMovie = {
   subtitle: string;
@@ -216,6 +220,46 @@ export default function MovieDetailScreen({ navigation, route }: Props) {
     }, [movie])
   );
 
+  const handleScrape = async () => {
+    if (editedMovie.imdb.link.length < 1) {
+      return;
+    }
+
+    try {
+      const response = await getScrapedIMDBInfo(editedMovie.imdb.link);
+
+      if (response.error) {
+        console.error(response.error);
+        return;
+      }
+
+      if (response.title) {
+        delete response.title;
+      }
+      if (response.releaseYear) {
+        delete response.releaseYear;
+      }
+
+      dispatch({
+        type: "EDIT_MOVIE",
+        data: {
+          editedMovie: {
+            ...editedMovie,
+            ...response,
+            subtitle: response.subtitle ?? "",
+            imdb: {
+              ...movie.imdb,
+              rating: response.imdb.rating.toString(),
+            },
+            runtime: response.runtime.toString(),
+          },
+        },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const getChangeHandler = (
     property: EditableAtomicFields
   ): ((text: string) => void) => {
@@ -354,6 +398,19 @@ export default function MovieDetailScreen({ navigation, route }: Props) {
               </View>
             </View>
 
+            {isEditing && (
+              <View style={styles.scrapeBanner}>
+                <TouchableOpacity onPress={handleScrape}>
+                  <Icon
+                    name="aperture"
+                    size={25}
+                    color="floralwhite"
+                    style={styles.scrapeIcon}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+
             <ArrayInformation
               value={isEditing ? editedMovie.directors : movie.directors}
               label="Directed By"
@@ -410,7 +467,9 @@ export default function MovieDetailScreen({ navigation, route }: Props) {
                   infoChangeHandler: getChangeHandler("imdb.rating"),
                 },
                 {
-                  value: movie.imdb.link,
+                  value: isEditing
+                    ? editedMovie.imdb.link
+                    : movie.imdb.link.toString(),
                   placeholder: "link",
                   keyboardType: "default",
                   infoChangeHandler: getChangeHandler("imdb.link"),
@@ -437,8 +496,8 @@ export default function MovieDetailScreen({ navigation, route }: Props) {
             )}
             {isEditing && (
               <Information
-                value={movie.poster}
-                editMode={isEditing}
+                value={editedMovie.poster}
+                editMode={true}
                 label="Poster"
                 infoChangeHandler={getChangeHandler("poster")}
                 placeholder="link"
@@ -541,6 +600,11 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 20,
   },
+  scrapeBanner: {
+    display: "flex",
+    alignItems: "center",
+  },
+  scrapeIcon: {},
   scrollView: {
     minHeight: "100%",
   },

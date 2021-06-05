@@ -61,6 +61,27 @@ export const getIntFromString = (num: string, defaultRes: number | null) => {
   }
 };
 
+export const getScrapedIMDBInfo = async (link: string) => {
+  try {
+    const jsonResponse = await fetch(
+      `${API_URL}movies/scrape/imdb?link=${link}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const response = await jsonResponse.json();
+
+    return response;
+  } catch (e) {
+    return { error: "Some error occured" };
+  }
+};
+
 const getNewMovie = (movie: NewMovie): MovieWithoutID => {
   return {
     title: movie.title,
@@ -188,18 +209,7 @@ export default function MovieAddScreen({ navigation }: Props) {
     }
 
     try {
-      const jsonResponse = await fetch(
-        `${API_URL}movies/scrape/imdb?link=${movie.imdb.link}`,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const response = await jsonResponse.json();
+      const response = await getScrapedIMDBInfo(movie.imdb.link);
 
       if (response.error) {
         console.error(response.error);
