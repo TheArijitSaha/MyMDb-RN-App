@@ -4,12 +4,13 @@ import { StatusBar } from "expo-status-bar";
 import {
   Image,
   ListRenderItemInfo,
+  TouchableOpacity,
   ScrollView,
   Text,
   useWindowDimensions,
   View,
 } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
+// import Icon from "react-native-vector-icons/Ionicons";
 import Carousel from "react-native-snap-carousel";
 
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -336,7 +337,11 @@ export default function Home({ navigation }: Props) {
     }
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    loadMovieSuggestions();
+    loadSeriesSuggestions();
+  }, []);
+
   useFocusEffect(
     React.useCallback(() => {
       loadSeenFilmCount();
@@ -344,8 +349,6 @@ export default function Home({ navigation }: Props) {
       loadOngoingSeriesCount();
       loadWatchTime();
       loadSeenEpisodesCount();
-      loadMovieSuggestions();
-      loadSeriesSuggestions();
     }, [])
   );
 
@@ -377,7 +380,9 @@ export default function Home({ navigation }: Props) {
         />
 
         <View style={styles.suggestionHeading}>
-          <Text style={styles.suggestionText}>Movies to Watch</Text>
+          <TouchableOpacity onPress={() => loadMovieSuggestions()}>
+            <Text style={styles.suggestionText}>Movies to Watch</Text>
+          </TouchableOpacity>
         </View>
 
         {movieSugs.length > 0 ? (
@@ -395,7 +400,9 @@ export default function Home({ navigation }: Props) {
         )}
 
         <View style={styles.suggestionHeading}>
-          <Text style={styles.suggestionText}>Series to Binge</Text>
+          <TouchableOpacity onPress={() => loadSeriesSuggestions()}>
+            <Text style={styles.suggestionText}>Series to Binge</Text>
+          </TouchableOpacity>
         </View>
 
         {seriesSugs.length > 0 ? (
