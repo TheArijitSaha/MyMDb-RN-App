@@ -21,7 +21,6 @@ export default class MovieCarouselListItem extends PureComponent<
       container: {
         marginVertical: 20,
         borderRadius: 5,
-        height: 300,
       },
       poster: {
         height: 280,
