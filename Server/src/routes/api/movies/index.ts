@@ -255,7 +255,7 @@ router.get(
 
       const $ = load(response.data, { xmlMode: true, decodeEntities: false });
 
-      const title = $("div.title_wrapper h1")
+      let title = $("div.title_wrapper h1")
         .eq(0)
         .text()
         .trim()
@@ -272,6 +272,10 @@ router.get(
       let imdbMovie = JSON.parse(
         $('script[type="application/ld+json"]').eq(0).html()
       );
+
+      if (title.length < 1) {
+        title = imdbMovie.name;
+      }
 
       let directors = [];
       if (Array.isArray(imdbMovie.director)) {
