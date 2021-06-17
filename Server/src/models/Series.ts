@@ -74,3 +74,12 @@ const SeriesModel: Model<SeriesDocument> = model(
 );
 
 export default SeriesModel;
+
+export const getAllSeries = async () => {
+  try {
+    const data = await SeriesModel.find();
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};

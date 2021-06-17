@@ -51,3 +51,12 @@ MovieSchema.index({ title: 1, releaseYear: 1 }, { unique: true });
 const MovieModel: Model<MovieDocument> = model("Movie", MovieSchema, "Movies");
 
 export default MovieModel;
+
+export const getAllMovies = async () => {
+  try {
+    const data = await MovieModel.find();
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
