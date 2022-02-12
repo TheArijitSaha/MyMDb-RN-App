@@ -4,10 +4,10 @@ import cors from "cors";
 import { json } from "body-parser";
 import { initialize, session } from "passport";
 import routes from "./routes";
-import { scheduleJob } from "node-schedule";
-import { createTransport } from "nodemailer";
-import { getAllMovies } from "./models/Movie";
-import { getAllSeries } from "./models/Series";
+// import { scheduleJob } from "node-schedule";
+// import { createTransport } from "nodemailer";
+// import { getAllMovies } from "./models/Movie";
+// import { getAllSeries } from "./models/Series";
 
 import { PORT, DB, NODE_ENV, MAILER_PASS, MAILER_USER } from "./config/env.dev";
 
@@ -65,37 +65,37 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-const transporter = createTransport({
-  service: "gmail",
-  auth: {
-    user: MAILER_USER,
-    pass: MAILER_PASS,
-  },
-});
-
-scheduleJob("30 21 17 * *", async function () {
-  const mailOptions = {
-    from: `"MyMDb" ${MAILER_USER}`,
-    to: "arijitbiley@gmail.com",
-    subject: "MyMDb Backup",
-    text: "PFA the json content of Movies and Series stored in MyMDb.",
-    attachments: [
-      {
-        filename: "movies.json",
-        content: JSON.stringify(await getAllMovies()),
-      },
-      {
-        filename: "series.json",
-        content: JSON.stringify(await getAllSeries()),
-      },
-    ],
-  };
-
-  transporter.sendMail(mailOptions, function (err, _info) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Backup email sent!");
-    }
-  });
-});
+// const transporter = createTransport({
+//   service: "gmail",
+//   auth: {
+//     user: MAILER_USER,
+//     pass: MAILER_PASS,
+//   },
+// });
+//
+// scheduleJob("59 21 17 * *", async function () {
+//   const mailOptions = {
+//     from: `"MyMDb" ${MAILER_USER}`,
+//     to: "arijitbiley@gmail.com",
+//     subject: "MyMDb Backup",
+//     text: "PFA the json content of Movies and Series stored in MyMDb.",
+//     attachments: [
+//       {
+//         filename: "movies.json",
+//         content: JSON.stringify(await getAllMovies()),
+//       },
+//       {
+//         filename: "series.json",
+//         content: JSON.stringify(await getAllSeries()),
+//       },
+//     ],
+//   };
+//
+//   transporter.sendMail(mailOptions, function (err, _info) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       console.log("Backup email sent!");
+//     }
+//   });
+// });
