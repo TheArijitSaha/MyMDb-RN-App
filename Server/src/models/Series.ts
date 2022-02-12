@@ -47,7 +47,10 @@ const SeriesSchema = new Schema<SeriesDocument, SeriesModelInterface>(
     seenEpisodes: Number,
     poster: String,
   },
-  { emitIndexErrors: true }
+  { 
+    timestamps: true,
+    emitIndexErrors: true,
+  }
 );
 
 SeriesSchema.index({ title: 1, "timeSpan.start": 1 }, { unique: true });

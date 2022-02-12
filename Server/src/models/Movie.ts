@@ -42,7 +42,10 @@ const MovieSchema = new Schema<MovieDocument, MovieModelInterface>(
     seen: Boolean,
     poster: String,
   },
-  { emitIndexErrors: true }
+  { 
+    timestamps: true,
+    emitIndexErrors: true,
+  }
 );
 
 MovieSchema.index({ title: 1, releaseYear: 1 }, { unique: true });

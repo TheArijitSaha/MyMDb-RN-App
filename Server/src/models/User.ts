@@ -44,7 +44,10 @@ const UserSchema = new Schema<UserDocument, UserModelInterface>(
     hash: String,
     salt: String,
   },
-  { emitIndexErrors: true }
+  { 
+    timestamps: true,
+    emitIndexErrors: true,
+  }
 );
 
 UserSchema.methods.setPassword = function setPassword(password: string) {
