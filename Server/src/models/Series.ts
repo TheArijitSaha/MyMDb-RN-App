@@ -47,8 +47,8 @@ const SeriesSchema = new Schema<SeriesDocument, SeriesModelInterface>(
     seenEpisodes: Number,
     poster: String,
   },
-  { 
-    timestamps: true,
+  {
+    timestamps: { createdAt: true, updatedAt: false },
     emitIndexErrors: true,
   }
 );
