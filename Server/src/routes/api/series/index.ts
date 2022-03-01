@@ -275,7 +275,7 @@ router.get(
 
       const cast = [];
       if (Array.isArray(imdbSeries.actor)) {
-        Object.values(imdbSeries.actor).forEach((actor) =>
+        Object.values(imdbSeries.actor).forEach((actor: any) =>
           cast.push(actor.name)
         );
       } else {
