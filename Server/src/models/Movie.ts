@@ -16,6 +16,7 @@ export interface MovieDocument extends Document {
   runtime: number;
   seen: boolean;
   poster: string;
+  createdAt: Date;
 }
 
 // For model type

@@ -107,6 +107,8 @@ router.get(
               $expr: { $lt: ["$seenEpisodes", { $sum: "$seasons" }] },
             });
             break;
+          default:
+            break;
         }
       } catch (e) {
         console.log("Error while parsing cast filter query:");
@@ -268,21 +270,21 @@ router.get(
           if (cre["@type"] === "Person") creators.push(cre.name);
         }
       } else if (imdbSeries.creator["@type"] === "Person") {
-          creators.push(imdbSeries.creator.name);
-        }
+        creators.push(imdbSeries.creator.name);
+      }
 
       const cast = [];
       if (Array.isArray(imdbSeries.actor)) {
-        for (const actor of imdbSeries.actor) {
-          cast.push(actor.name);
-        }
+        Object.values(imdbSeries.actor).forEach((actor) =>
+          cast.push(actor.name)
+        );
       } else {
         cast.push(imdbSeries.actor.name);
       }
 
       const genres = [];
       if (Array.isArray(imdbSeries.genre)) {
-        for (let i = 0; i < Math.min(imdbSeries.genre.length, 3); ++i) {
+        for (let i = 0; i < Math.min(imdbSeries.genre.length, 3); i += 1) {
           genres.push(imdbSeries.genre[i]);
         }
       } else {
@@ -368,6 +370,8 @@ router.get(
             $expr: { $lt: ["$seenEpisodes", { $sum: "$seasons" }] },
           });
           break;
+        default:
+          break;
       }
     }
 
@@ -427,14 +431,17 @@ router.get(
     }
 
     try {
+      let count: any = {
+        $sum: { $subtract: [{ $sum: "$seasons" }, "$seenEpisodes"] },
+      };
+      if (filter === false) {
+        count = { $sum: { $sum: "$seasons" } };
+      } else if (filter === "seen") {
+        count = { $sum: "$seenEpisodes" };
+      }
       const data = await Series.aggregate().group({
         _id: filter,
-        count:
-          filter === false
-            ? { $sum: { $sum: "$seasons" } }
-            : filter === "seen"
-            ? { $sum: "$seenEpisodes" }
-            : { $sum: { $subtract: [{ $sum: "$seasons" }, "$seenEpisodes"] } },
+        count,
       });
       res.json(data[0].count);
     } catch (e) {

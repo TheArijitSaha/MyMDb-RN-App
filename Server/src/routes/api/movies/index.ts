@@ -309,7 +309,7 @@ router.get(
         .substring(2, imdbMovie.duration.length - 1)
         .split("H");
       const runtime =
-        runtimeArray.length == 2
+        runtimeArray.length === 2
           ? parseInt(runtimeArray[0], 10) * 60 + parseInt(runtimeArray[1], 10)
           : imdbMovie.duration[imdbMovie.duration.length - 1] === "H"
           ? parseInt(runtimeArray[0], 10) * 60

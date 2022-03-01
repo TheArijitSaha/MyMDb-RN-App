@@ -1,9 +1,9 @@
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
 
-import { NextFunction } from "express";
 import { Schema, model, Model, Document } from "mongoose";
 
-interface Series {
+// Interface for Series Schema
+export interface SeriesDocument extends Document {
   title: string;
   timeSpan: { start: number; end: number | null };
   creators: string[];
@@ -16,9 +16,6 @@ interface Series {
   seenEpisodes: number;
   poster: string;
 }
-
-// Interface for Series Schema
-export type SeriesDocument = Series & Document;
 
 // For model type
 export interface SeriesModelInterface extends Model<SeriesDocument> {}
@@ -55,21 +52,7 @@ const SeriesSchema = new Schema<SeriesDocument, SeriesModelInterface>(
 
 SeriesSchema.index({ title: 1, "timeSpan.start": 1 }, { unique: true });
 
-function handleE11000(error: any, series: SeriesDocument, next: NextFunction) {
-  if (error.name === "MongoError" && error.code === 11000) {
-    next(
-      new Error(
-        `Duplicate Entry: ${series.title} [${series.timeSpan.start}] already exists!`
-      )
-    );
-  } else {
-    next(error);
-  }
-}
-
-SeriesSchema.post("save", handleE11000);
-
-// create model for Movies
+// create model for Series
 const SeriesModel: Model<SeriesDocument> = model(
   "Series",
   SeriesSchema,

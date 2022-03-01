@@ -1,10 +1,13 @@
 require("dotenv").config();
 
-export const {PORT} = process.env;
-export const {DB} = process.env;
+export const {
+  DB,
+  MAILER_PASS,
+  MAILER_USER,
+  PORT,
+  SESSION_SECRET,
+} = process.env;
 export const NODE_ENV = process.env.NODE_ENV ?? "production";
-export const {MAILER_USER} = process.env;
-export const {MAILER_PASS} = process.env;
 
 if (!PORT) {
   throw new Error(
@@ -26,4 +29,10 @@ if (!MAILER_USER) {
 
 if (!DB) {
   throw new Error(".env is missing the definition of DB environment variable");
+}
+
+if (!SESSION_SECRET) {
+  throw new Error(
+    ".env is missing the definition of SESSION_SECRET environmental variable"
+  );
 }

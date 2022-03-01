@@ -1,4 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
+import session from "express-session";
 import { json } from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
@@ -9,7 +10,7 @@ import routes from "./routes";
 // import { getAllMovies } from "./models/Movie";
 // import { getAllSeries } from "./models/Series";
 
-import { PORT, DB, NODE_ENV, MAILER_PASS, MAILER_USER } from "./config/env.dev";
+import { PORT, DB, NODE_ENV, SESSION_SECRET } from "./config/env.dev";
 import "./config/passport";
 
 const app = express();
@@ -17,12 +18,7 @@ app.use(cors());
 
 // Connect to the database
 mongoose
-  .connect(DB, {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-  })
+  .connect(DB)
   .then(() => console.log("Database connected successfully"))
   .catch((err: any) => console.log(err));
 
@@ -36,6 +32,15 @@ if (NODE_ENV === "development") {
 }
 
 app.use(json());
+
+app.use(
+  session({
+    secret: SESSION_SECRET,
+    cookie: { maxAge: 60000 },
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 // passport related
 app.use(passport.initialize());
