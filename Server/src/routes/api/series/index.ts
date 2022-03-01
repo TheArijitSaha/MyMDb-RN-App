@@ -5,13 +5,14 @@ import { load } from "cheerio";
 
 import Auth from "../../auth";
 import Series from "../../../models/Series";
+import { NODE_ENV } from "../../../config/env.dev";
 
 const router = express.Router();
 
 // GET list of series
 router.get(
   "/",
-  Auth.required,
+  NODE_ENV === "development" ? Auth.optional : Auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     const defaultLimit = 25;
     const defaultOffset = 0;
@@ -19,7 +20,7 @@ router.get(
     const limit = parseInt((req.query.limit ?? defaultLimit).toString(), 10);
     const offset = parseInt((req.query.offset ?? defaultOffset).toString(), 10);
 
-    let filterArray = [];
+    const filterArray = [];
 
     // Title filter
     if (req.query.title) {
@@ -210,7 +211,7 @@ router.patch(
       return;
     }
 
-    let updatedSeries = req.body.series;
+    const updatedSeries = req.body.series;
 
     // Delete title and releaseYear as they should not be edited
     delete updatedSeries.title;
@@ -255,33 +256,31 @@ router.get(
 
       const $ = load(response.data, { xmlMode: true, decodeEntities: false });
 
-      let imdbSeries = JSON.parse(
+      const imdbSeries = JSON.parse(
         $('script[type="application/ld+json"]').eq(0).html()
       );
 
       const title = imdbSeries.name;
 
-      let creators = [];
+      const creators = [];
       if (Array.isArray(imdbSeries.creator)) {
-        for (let cre of imdbSeries.creator) {
+        for (const cre of imdbSeries.creator) {
           if (cre["@type"] === "Person") creators.push(cre.name);
         }
-      } else {
-        if (imdbSeries.creator["@type"] === "Person") {
+      } else if (imdbSeries.creator["@type"] === "Person") {
           creators.push(imdbSeries.creator.name);
         }
-      }
 
-      let cast = [];
+      const cast = [];
       if (Array.isArray(imdbSeries.actor)) {
-        for (let actor of imdbSeries.actor) {
+        for (const actor of imdbSeries.actor) {
           cast.push(actor.name);
         }
       } else {
         cast.push(imdbSeries.actor.name);
       }
 
-      let genres = [];
+      const genres = [];
       if (Array.isArray(imdbSeries.genre)) {
         for (let i = 0; i < Math.min(imdbSeries.genre.length, 3); ++i) {
           genres.push(imdbSeries.genre[i]);
@@ -316,7 +315,7 @@ router.get(
 // GET /stats/count - fetches count of series
 router.get(
   "/stats/count",
-  Auth.required,
+  NODE_ENV === "development" ? Auth.optional : Auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     let filter: false | "seen" | "unseen" | "ongoing" = false;
 
@@ -384,7 +383,7 @@ router.get(
 // GET /stats/time - fetches total time spent on watching series in hrs
 router.get(
   "/stats/time",
-  Auth.required,
+  NODE_ENV === "development" ? Auth.optional : Auth.required,
   async (_req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Series.aggregate().group({
@@ -401,7 +400,7 @@ router.get(
 // GET /stats/episodes - fetches total # of episodes (seen/unseen/unfiltered)
 router.get(
   "/stats/episodes",
-  Auth.required,
+  NODE_ENV === "development" ? Auth.optional : Auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     let filter: false | "seen" | "unseen" = false;
 
@@ -447,7 +446,7 @@ router.get(
 // GET /suggestions - fetches random suggestion of series
 router.get(
   "/suggestions",
-  Auth.required,
+  NODE_ENV === "development" ? Auth.optional : Auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     const defaultCount = 20;
 

@@ -5,13 +5,14 @@ import { load } from "cheerio";
 
 import Auth from "../../auth";
 import Movie from "../../../models/Movie";
+import { NODE_ENV } from "../../../config/env.dev";
 
 const router = express.Router();
 
 // GET / - fetches list of movies
 router.get(
   "/",
-  Auth.required,
+  NODE_ENV === "development" ? Auth.optional : Auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     const defaultLimit = 25;
     const defaultOffset = 0;
@@ -19,7 +20,7 @@ router.get(
     const limit = parseInt((req.query.limit ?? defaultLimit).toString(), 10);
     const offset = parseInt((req.query.offset ?? defaultOffset).toString(), 10);
 
-    let filterArray = [];
+    const filterArray = [];
 
     // Title filter
     if (req.query.title) {
@@ -216,7 +217,7 @@ router.patch(
       return;
     }
 
-    let updatedMovie = req.body.movie;
+    const updatedMovie = req.body.movie;
 
     // Delete title and releaseYear as they should not be edited
     delete updatedMovie.title;
@@ -269,7 +270,7 @@ router.get(
         .split("(original")[0]
         .trim();
 
-      let imdbMovie = JSON.parse(
+      const imdbMovie = JSON.parse(
         $('script[type="application/ld+json"]').eq(0).html()
       );
 
@@ -277,25 +278,25 @@ router.get(
         title = imdbMovie.name;
       }
 
-      let directors = [];
+      const directors = [];
       if (Array.isArray(imdbMovie.director)) {
-        for (let dir of imdbMovie.director) {
+        for (const dir of imdbMovie.director) {
           directors.push(dir.name);
         }
       } else {
         directors.push(imdbMovie.director.name);
       }
 
-      let cast = [];
+      const cast = [];
       if (Array.isArray(imdbMovie.actor)) {
-        for (let actor of imdbMovie.actor) {
+        for (const actor of imdbMovie.actor) {
           cast.push(actor.name);
         }
       } else {
         cast.push(imdbMovie.actor.name);
       }
 
-      let genres = [];
+      const genres = [];
       if (Array.isArray(imdbMovie.genre)) {
         for (let i = 0; i < Math.min(imdbMovie.genre.length, 3); ++i) {
           genres.push(imdbMovie.genre[i]);
@@ -304,10 +305,10 @@ router.get(
         genres.push(imdbMovie.genre);
       }
 
-      let runtimeArray = imdbMovie.duration
+      const runtimeArray = imdbMovie.duration
         .substring(2, imdbMovie.duration.length - 1)
         .split("H");
-      let runtime =
+      const runtime =
         runtimeArray.length == 2
           ? parseInt(runtimeArray[0], 10) * 60 + parseInt(runtimeArray[1], 10)
           : imdbMovie.duration[imdbMovie.duration.length - 1] === "H"
@@ -338,7 +339,7 @@ router.get(
 // GET /stats/count - fetches count of movies
 router.get(
   "/stats/count",
-  Auth.required,
+  NODE_ENV === "development" ? Auth.optional : Auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     let filter: false | "seen" | "unseen" = false;
 
@@ -382,7 +383,7 @@ router.get(
 // GET /stats/time - fetches total time spent on watching movies in hrs
 router.get(
   "/stats/time",
-  Auth.required,
+  NODE_ENV === "development" ? Auth.optional : Auth.required,
   async (_req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Movie.aggregate()
@@ -401,7 +402,7 @@ router.get(
 // GET /suggestions - fetches random suggestion of movies
 router.get(
   "/suggestions",
-  Auth.required,
+  NODE_ENV === "development" ? Auth.optional : Auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     const defaultCount = 20;
 

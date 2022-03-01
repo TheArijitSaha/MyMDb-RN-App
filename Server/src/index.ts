@@ -10,6 +10,7 @@ import routes from "./routes";
 // import { getAllSeries } from "./models/Series";
 
 import { PORT, DB, NODE_ENV, MAILER_PASS, MAILER_USER } from "./config/env.dev";
+import "./config/passport";
 
 const app = express();
 app.use(cors());
@@ -39,7 +40,6 @@ app.use(json());
 // passport related
 app.use(passport.initialize());
 app.use(passport.session());
-import "./config/passport";
 
 app.use("/", routes);
 

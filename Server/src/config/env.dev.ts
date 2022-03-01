@@ -1,10 +1,10 @@
 require("dotenv").config();
 
-export const PORT = process.env.PORT;
-export const DB = process.env.DB;
+export const {PORT} = process.env;
+export const {DB} = process.env;
 export const NODE_ENV = process.env.NODE_ENV ?? "production";
-export const MAILER_USER = process.env.MAILER_USER;
-export const MAILER_PASS = process.env.MAILER_PASS;
+export const {MAILER_USER} = process.env;
+export const {MAILER_PASS} = process.env;
 
 if (!PORT) {
   throw new Error(
