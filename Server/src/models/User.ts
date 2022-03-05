@@ -44,7 +44,7 @@ const UserSchema = new Schema<UserDocument, UserModelInterface>(
     hash: String,
     salt: String,
   },
-  { 
+  {
     timestamps: true,
     emitIndexErrors: true,
   }
@@ -78,7 +78,7 @@ UserSchema.methods.generateJWT = function generateJWT(): string {
     },
     process.env.JWT_SECRET || "secret",
     {
-      expiresIn: "2d",
+      expiresIn: "60d",
     }
   );
 };
