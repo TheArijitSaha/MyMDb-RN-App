@@ -2,6 +2,12 @@ import React, { useEffect, useMemo, useReducer } from "react";
 
 import AppLoading from "expo-app-loading";
 import { StatusBar } from "expo-status-bar";
+import {
+  authenticateAsync,
+  hasHardwareAsync,
+  isEnrolledAsync,
+  supportedAuthenticationTypesAsync,
+} from "expo-local-authentication";
 import { Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
@@ -60,10 +66,58 @@ function reducer(prevState: State, action: Action): State {
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const handleBiometricAuth = async () => {
+    // Check if hardware supports biometrics
+    const isBiometricAvailable = await hasHardwareAsync();
+
+    // Force to authenticate by password if Fingerprint is not available
+    if (!isBiometricAvailable) {
+      AsyncStorage.removeItem(USER_TOKEN).then(() => {
+        dispatch({
+          type: "RESTORE_TOKEN",
+          data: { token: null, user: null },
+        });
+      });
+      return false;
+    }
+
+    // Check Biometrics types available (Fingerprint, Facial recognition, Iris recognition)
+    const supportedBiometrics = await supportedAuthenticationTypesAsync();
+
+    // Check Biometrics are saved locally in user's device
+    const savedBiometrics = await isEnrolledAsync();
+    if (!savedBiometrics) {
+      // Force to authenticate by password if no biometrics are available
+      AsyncStorage.removeItem(USER_TOKEN).then(() => {
+        dispatch({
+          type: "RESTORE_TOKEN",
+          data: { token: null, user: null },
+        });
+      });
+      return false;
+    }
+
+    // Authenticate use with Biometrics (Fingerprint, Facial recognition, Iris recognition)
+    const biometricAuth = await authenticateAsync({
+      promptMessage: "Login with Fingerprint",
+      cancelLabel: "Use password instead",
+      disableDeviceFallback: true,
+    });
+    return true;
+  };
+
   useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken: string | null = null;
+
+      // Try to login biometrically
+      const biometricLoginSuccess = await handleBiometricAuth();
+      if (!biometricLoginSuccess) {
+        // If unsuccessful, do not try to refresh token. Force user to login
+        // through password
+        return;
+      }
 
       try {
         userToken = await AsyncStorage.getItem(USER_TOKEN);
