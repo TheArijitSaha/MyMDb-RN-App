@@ -42,7 +42,7 @@ const MovieSchema = new Schema<MovieDocument, MovieModelInterface>(
     runtime: Number,
     seen: Boolean,
     poster: String,
-    createdAt: { type: Date, default: new Date(2000, 1, 1) },
+    createdAt: { type: Date, default: new Date() },
   },
   {
     timestamps: { createdAt: true, updatedAt: false },
