@@ -46,7 +46,6 @@ const UserSchema = new Schema<UserDocument, UserModelInterface>(
   },
   {
     timestamps: true,
-    emitIndexErrors: true,
   }
 );
 

@@ -46,7 +46,6 @@ const MovieSchema = new Schema<MovieDocument, MovieModelInterface>(
   },
   {
     timestamps: { createdAt: true, updatedAt: false },
-    emitIndexErrors: true,
   }
 );
 

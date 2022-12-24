@@ -46,7 +46,6 @@ const SeriesSchema = new Schema<SeriesDocument, SeriesModelInterface>(
   },
   {
     timestamps: { createdAt: true, updatedAt: false },
-    emitIndexErrors: true,
   }
 );
 
