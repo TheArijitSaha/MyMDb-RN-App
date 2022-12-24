@@ -2,7 +2,7 @@
   "expo": {
     "name": "MyMDb",
     "slug": "MyMDb",
-    "version": "3.0.0",
+    "version": "4.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -11,7 +11,8 @@
       "backgroundColor": "#000000"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/ba670ec1-0fc8-4f93-9975-7b30ff4af688"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -21,7 +22,7 @@
     },
     "android": {
       "package": "com.arijit.mymdb",
-      "versionCode": 6,
+      "versionCode": 7,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
@@ -35,6 +36,9 @@
       "eas": {
         "projectId": "ba670ec1-0fc8-4f93-9975-7b30ff4af688"
       }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }
