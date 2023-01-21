@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useReducer } from "react";
+import React, { useCallback, useEffect, useMemo, useReducer } from "react";
 
-import AppLoading from "expo-app-loading";
+import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import {
   authenticateAsync,
@@ -229,7 +229,7 @@ export default function App() {
   );
 
   if (state.isLoading) {
-    return <AppLoading />;
+    return null;
   }
 
   return (

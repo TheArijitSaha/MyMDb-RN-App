@@ -10,7 +10,6 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-// import Icon from "react-native-vector-icons/Ionicons";
 import Carousel from "react-native-snap-carousel";
 
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -34,7 +33,6 @@ type State = {
   readonly ongoingSeriesCount: string | number;
   readonly watchTime: string | number;
   readonly seenEpisodesCount: string | number;
-  // readonly isLoading: boolean;
 };
 
 type Action =
@@ -69,7 +67,6 @@ const initialState: State = {
   ongoingSeriesCount: "#",
   watchTime: "#",
   seenEpisodesCount: "#",
-  // isLoading: false,
 };
 
 function reducer(prevState: State, action: Action): State {
@@ -104,7 +101,6 @@ export default function Home({ navigation }: Props) {
       ongoingSeriesCount,
       watchTime,
       seenEpisodesCount,
-      // isLoading,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
