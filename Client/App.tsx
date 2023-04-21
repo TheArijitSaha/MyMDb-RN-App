@@ -1,3 +1,5 @@
+import "react-native-gesture-handler";
+
 import React, { useCallback, useEffect, useMemo, useReducer } from "react";
 
 import * as SplashScreen from "expo-splash-screen";
@@ -116,6 +118,7 @@ export default function App() {
       if (!biometricLoginSuccess) {
         // If unsuccessful, do not try to refresh token. Force user to login
         // through password
+        dispatch({ type: "RESTORE_TOKEN", data: { token: null, user: null } });
         return;
       }
 
@@ -198,6 +201,10 @@ export default function App() {
           });
 
           const response = await jsonResponse.json();
+
+          if (response.error) {
+            return { error: response.error };
+          }
 
           if (response.message) {
             return { error: response.message };

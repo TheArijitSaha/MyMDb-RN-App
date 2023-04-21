@@ -351,14 +351,16 @@ export default function Home({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
-      <View style={styles.banner}>
-        <Text style={styles.bannerText}>My</Text>
-        <Image
-          source={require("../assets/icon.png")}
-          style={styles.bannerLogo}
-        />
-        <Text style={styles.bannerText}>Db</Text>
-      </View>
+      <TouchableOpacity onPress={() => navigation.openDrawer()} >
+        <View style={styles.banner}>
+          <Text style={styles.bannerText}>My</Text>
+          <Image
+            source={require("../assets/icon.png")}
+            style={styles.bannerLogo}
+          />
+          <Text style={styles.bannerText}>Db</Text>
+        </View>
+      </TouchableOpacity>
 
       <ScrollView>
         <Carousel

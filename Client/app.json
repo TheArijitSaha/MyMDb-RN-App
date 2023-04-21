@@ -2,7 +2,7 @@
   "expo": {
     "name": "MyMDb",
     "slug": "MyMDb",
-    "version": "4.0.0",
+    "version": "5.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -22,7 +22,7 @@
     },
     "android": {
       "package": "com.arijit.mymdb",
-      "versionCode": 7,
+      "versionCode": 8,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"

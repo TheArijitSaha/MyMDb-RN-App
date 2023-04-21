@@ -378,7 +378,9 @@ export default function MovieListScreen({ navigation, route }: Props) {
       <StatusBar style="light" />
 
       <View style={styles.banner}>
-        <Text style={styles.bannerText}>Movies</Text>
+        <TouchableOpacity onPress={() => navigation.openDrawer()} >
+          <Text style={styles.bannerText}>Movies</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate("MovieAdd", {})}
           style={styles.bannerRight}

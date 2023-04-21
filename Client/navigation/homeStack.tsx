@@ -16,27 +16,22 @@ const Stack = createStackNavigator<HomeStackParamList>();
 
 export default function HomeStack() {
   return (
-    <Stack.Navigator mode="modal">
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Stack.Screen
         name="Home"
         component={Home}
-        options={{
-          headerShown: false,
-        }}
       />
       <Stack.Screen
         name="MovieSuggestionDetail"
         component={MovieDetailScreen}
-        options={{
-          headerShown: false,
-        }}
       />
       <Stack.Screen
         name="SeriesSuggestionDetail"
         component={SeriesDetailScreen}
-        options={{
-          headerShown: false,
-        }}
       />
     </Stack.Navigator>
   );

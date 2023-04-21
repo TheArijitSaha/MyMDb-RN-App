@@ -15,10 +15,9 @@ interface Props {
 export default function authStack(props: Props) {
   return (
     <Stack.Navigator
-      mode="modal"
-      screenOptions={() => ({
+      screenOptions={{
         headerShown: false,
-      })}
+      }}
     >
       {props.userToken == null ? (
         <Stack.Screen name="SignInScreen" component={SignInScreen} />

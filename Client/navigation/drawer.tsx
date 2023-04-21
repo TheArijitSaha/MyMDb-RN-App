@@ -21,14 +21,22 @@ type CustomDrawerProps = DrawerContentComponentProps<DrawerContentOptions> & {
 const CustomDrawer = (props: CustomDrawerProps) => {
   return (
     <React.Fragment>
-      <DrawerContentScrollView {...props}>
+      <DrawerContentScrollView {...props}
+          style={{
+            backgroundColor: "black"
+          }}>
         <SafeAreaView style={styles.drawerBannerView}>
           <Image
             source={require("../assets/icon.png")}
             style={styles.drawerAppImage}
           ></Image>
         </SafeAreaView>
-        <DrawerItemList {...props} />
+        <DrawerItemList {...props}
+          activeTintColor="#eb233a"
+          inactiveTintColor="#eb233a"
+          activeBackgroundColor="#300202"
+          inactiveBackgroundColor="black"
+        />
       </DrawerContentScrollView>
       <View
         style={{
@@ -36,18 +44,22 @@ const CustomDrawer = (props: CustomDrawerProps) => {
           borderBottomWidth: 0.2,
         }}
       />
-      <DrawerItem
-        label="Sign Out"
-        inactiveTintColor="gray"
-        onPress={props.signOutHandler}
-      />
+      <View style={{ backgroundColor: "black"}}>
+        <DrawerItem
+          label="Sign Out"
+          inactiveTintColor="gray"
+          activeBackgroundColor="black"
+          inactiveBackgroundColor="black"
+          onPress={props.signOutHandler}
+        />
+      </View>
     </React.Fragment>
   );
 };
 
 const Drawer = createDrawerNavigator();
 
-export default function QnQDrawer() {
+export default function MyMDbDrawer() {
   const { signOut } = useContext(AuthContext);
 
   return (
@@ -55,14 +67,15 @@ export default function QnQDrawer() {
       drawerContent={(props) => (
         <CustomDrawer {...props} signOutHandler={signOut} />
       )}
-      drawerContentOptions={{
-        activeTintColor: "#eb233a",
-        inactiveTintColor: "#eb233a",
+      initialRouteName="HomeStack"
+      screenOptions={{
+        drawerActiveTintColor: "#eb233a",
+        drawerInactiveTintColor: "#eb233a",
+        drawerPosition: "right",
+        drawerActiveBackgroundColor: "black",
+        drawerInactiveBackgroundColor: "black",
+        drawerType: "front",
       }}
-      drawerPosition="left"
-      drawerStyle={styles.drawer}
-      drawerType="front"
-      initialRouteName="Home"
     >
       <Drawer.Screen
         name="HomeStack"
@@ -84,10 +97,6 @@ export default function QnQDrawer() {
 }
 
 const styles = StyleSheet.create({
-  drawer: {
-    backgroundColor: "black",
-    width: 300,
-  },
   drawerBannerView: {
     backgroundColor: "black",
     flexDirection: "column",
@@ -102,8 +111,5 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: 100,
     marginBottom: -10,
-  },
-  drawerLogoutItem: {
-    color: "white",
   },
 });
