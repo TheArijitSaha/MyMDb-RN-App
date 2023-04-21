@@ -9,6 +9,8 @@ import { NODE_ENV } from "../../../config/env.dev";
 
 const router = express.Router();
 
+const FAKE_USER_AGENT = 'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148';
+
 // GET / - fetches list of movies
 router.get(
   "/",
@@ -251,7 +253,10 @@ router.get(
 
     try {
       const response = await axios.get(link.replace("m.imdb", "imdb"), {
-        headers: { "Accept-Language": "en-US,en;" },
+        headers: {
+          "Accept-Language": "en-US,en;",
+          "User-Agent": FAKE_USER_AGENT,
+        },
       });
 
       const $ = load(response.data, { xmlMode: true, decodeEntities: false });
